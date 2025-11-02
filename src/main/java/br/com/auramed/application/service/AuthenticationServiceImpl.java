@@ -9,11 +9,14 @@ import br.com.auramed.domain.repository.AuthMedicoRepository;
 import br.com.auramed.domain.repository.MedicoRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import org.mindrot.jbcrypt.BCrypt;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.HttpHeaders;
+import org.jboss.logging.Logger;
 
 import java.util.UUID;
 import java.time.LocalDateTime;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.List;
 
 @ApplicationScoped
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -26,7 +29,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Inject
     PasswordService passwordService;
-    
+
+    @Inject
+    Logger logger;
+
+    @Context
+    HttpHeaders httpHeaders;
+
     private final ConcurrentHashMap<String, TokenInfo> tokens = new ConcurrentHashMap<>();
 
     private static class TokenInfo {
@@ -40,6 +49,63 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
+    public Medico getMedicoLogado() throws EntidadeNaoLocalizadaException {
+        try {
+            String token = obterTokenDaRequisicaoAtual();
+
+            if (token == null || token.isBlank()) {
+                logger.error("❌ Token não encontrado na requisição");
+                throw new EntidadeNaoLocalizadaException("Token de autenticação não encontrado");
+            }
+
+            logger.debug("🔐 Obtendo médico do token: " + token);
+            return obterMedicoPorToken(token);
+
+        } catch (EntidadeNaoLocalizadaException e) {
+            throw e;
+        } catch (Exception e) {
+            logger.error("💥 Erro ao obter médico logado: " + e.getMessage());
+            throw new EntidadeNaoLocalizadaException("Erro ao obter médico autenticado");
+        }
+    }
+
+    @Override
+    public Integer getMedicoLogadoId() throws EntidadeNaoLocalizadaException {
+        return getMedicoLogado().getId();
+    }
+
+    private String obterTokenDaRequisicaoAtual() {
+        try {
+            if (httpHeaders == null) {
+                logger.warn("⚠️ HttpHeaders não disponível no contexto");
+                return null;
+            }
+
+            List<String> authHeaders = httpHeaders.getRequestHeader("Authorization");
+            if (authHeaders == null || authHeaders.isEmpty()) {
+                logger.debug("📭 Header Authorization não encontrado");
+                return null;
+            }
+
+            String authHeader = authHeaders.get(0);
+            logger.debug("📨 Authorization header: " + authHeader);
+
+            if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                String token = authHeader.substring(7);
+                logger.debug("✅ Token extraído: " + token);
+                return token;
+            }
+
+            logger.warn("⚠️ Formato do header Authorization inválido");
+            return null;
+
+        } catch (Exception e) {
+            logger.error("💥 Erro ao obter token: " + e.getMessage());
+            return null;
+        }
+    }
+
+    @Override
     public String login(String email, String senha) throws EntidadeNaoLocalizadaException {
         System.out.println("=== AUTH SERVICE LOGIN ===");
 
@@ -49,7 +115,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new EntidadeNaoLocalizadaException("Credenciais inválidas");
         }
 
-        // USAR BCRYPT DIRETO - NÃO USAR PasswordService
         boolean senhaCorreta = org.mindrot.jbcrypt.BCrypt.checkpw(senha, authMedico.getSenhaHash());
         System.out.println("DEBUG: BCrypt direto: " + senhaCorreta);
 
@@ -91,7 +156,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public Medico obterMedicoPorToken(String token) throws EntidadeNaoLocalizadaException {
-        System.out.println("=== OBTTER MÉDICO POR TOKEN ===");
+        System.out.println("=== OBTER MÉDICO POR TOKEN ===");
         System.out.println("DEBUG: Token: " + token);
 
         if (!validarToken(token)) {

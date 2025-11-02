@@ -26,18 +26,13 @@ public class PerfilCognitivoServiceImpl implements PerfilCognitivoService {
     @Override
     public PerfilCognitivo criar(PerfilCognitivo perfilCognitivo) {
         try {
-            // Validações do perfil cognitivo
             perfilCognitivo.validarIndicadores();
-
-            // Verificar se paciente existe
             pacienteRepository.buscarPorId(perfilCognitivo.getIdPaciente());
 
-            // Verificar se já existe perfil cognitivo para este paciente
             try {
                 perfilCognitivoRepository.buscarPorPaciente(perfilCognitivo.getIdPaciente());
                 throw new RuntimeException("Já existe perfil cognitivo para este paciente");
-            } catch (EntidadeNaoLocalizadaException e) {
-                // Não existe perfil cognitivo para este paciente, pode criar
+            } catch (EntidadeNaoLocalizadaException ignored) {
             }
 
             PerfilCognitivo perfilSalvo = perfilCognitivoRepository.salvar(perfilCognitivo);
@@ -58,20 +53,15 @@ public class PerfilCognitivoServiceImpl implements PerfilCognitivoService {
     public PerfilCognitivo editar(Integer idPerfilCognitivo, PerfilCognitivo perfilCognitivo) throws EntidadeNaoLocalizadaException {
         try {
             PerfilCognitivo perfilExistente = perfilCognitivoRepository.buscarPorId(idPerfilCognitivo);
-
-            // Validações do perfil cognitivo
             perfilCognitivo.validarIndicadores();
 
-            // Verificar se paciente existe (se alterado)
             if (!perfilExistente.getIdPaciente().equals(perfilCognitivo.getIdPaciente())) {
                 pacienteRepository.buscarPorId(perfilCognitivo.getIdPaciente());
 
-                // Verificar se já existe perfil cognitivo para o novo paciente
                 try {
                     perfilCognitivoRepository.buscarPorPaciente(perfilCognitivo.getIdPaciente());
                     throw new RuntimeException("Já existe perfil cognitivo para este paciente");
                 } catch (EntidadeNaoLocalizadaException e) {
-                    // Não existe perfil cognitivo para este paciente, pode editar
                 }
             }
 
@@ -123,7 +113,6 @@ public class PerfilCognitivoServiceImpl implements PerfilCognitivoService {
     @Override
     public PerfilCognitivo localizarPorPaciente(Integer idPaciente) throws EntidadeNaoLocalizadaException {
         try {
-            // Verificar se paciente existe
             pacienteRepository.buscarPorId(idPaciente);
 
             PerfilCognitivo perfilCognitivo = perfilCognitivoRepository.buscarPorPaciente(idPaciente);
@@ -149,6 +138,18 @@ public class PerfilCognitivoServiceImpl implements PerfilCognitivoService {
         } catch (Exception e) {
             logger.error("Erro ao listar perfis cognitivos: " + e.getMessage());
             throw new RuntimeException("Falha ao listar perfis cognitivos: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void removerPorPaciente(Integer idPaciente) throws EntidadeNaoLocalizadaException {
+        try {
+            PerfilCognitivo perfil = perfilCognitivoRepository.buscarPorPaciente(idPaciente);
+            perfilCognitivoRepository.remover(perfil.getIdPerfilCognitivo());
+            logger.info("Perfil cognitivo removido para paciente: " + idPaciente);
+        } catch (EntidadeNaoLocalizadaException e) {
+            logger.debug("Perfil cognitivo não encontrado para paciente: " + idPaciente);
+            throw e;
         }
     }
 }

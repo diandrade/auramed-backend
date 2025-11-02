@@ -22,16 +22,16 @@ public class MedicoServiceImpl implements MedicoService {
     @Override
     public Medico criar(Medico medico) {
         try {
-            medico.validarPessoa();
-            medico.validarCrm();
-            medico.validarAceitaTeleconsulta();
+            medico.validar();
 
             if (existeMedicoComCrm(medico.getCrm())) {
                 throw new RuntimeException("Já existe médico cadastrado com este CRM: " + medico.getCrm());
             }
 
             Medico medicoSalvo = medicoRepository.salvar(medico);
-            logger.info("Médico criado com sucesso. ID: " + medicoSalvo.getId() + " - CRM: " + medicoSalvo.getCrm());
+            logger.info("Médico criado com sucesso. ID: " + medicoSalvo.getId() +
+                    " - CRM: " + medicoSalvo.getCrm() +
+                    " - Nome: " + (medicoSalvo.getPessoa() != null ? medicoSalvo.getPessoa().getNome() : "N/A"));
 
             return medicoSalvo;
 
@@ -45,10 +45,7 @@ public class MedicoServiceImpl implements MedicoService {
     public Medico editar(Integer id, Medico medico) throws EntidadeNaoLocalizadaException {
         try {
             Medico medicoExistente = medicoRepository.buscarPorId(id);
-
-            medico.validarPessoa();
-            medico.validarCrm();
-            medico.validarAceitaTeleconsulta();
+            medico.validar();
 
             if (!medicoExistente.getCrm().equals(medico.getCrm()) &&
                     existeMedicoComCrm(medico.getCrm())) {
@@ -57,7 +54,8 @@ public class MedicoServiceImpl implements MedicoService {
 
             medico.setId(id);
             Medico medicoAtualizado = medicoRepository.editar(medico);
-            logger.info("Médico atualizado com sucesso. ID: " + id);
+            logger.info("Médico atualizado com sucesso. ID: " + id +
+                    " - Nome: " + (medicoAtualizado.getPessoa() != null ? medicoAtualizado.getPessoa().getNome() : "N/A"));
 
             return medicoAtualizado;
         } catch (EntidadeNaoLocalizadaException e) {
@@ -75,7 +73,8 @@ public class MedicoServiceImpl implements MedicoService {
             Medico medico = medicoRepository.buscarPorId(id);
 
             medicoRepository.remover(id);
-            logger.info("Médico removido com sucesso. ID: " + id);
+            logger.info("Médico removido com sucesso. ID: " + id +
+                    " - Nome: " + (medico.getPessoa() != null ? medico.getPessoa().getNome() : "N/A"));
 
             return medico;
         } catch (EntidadeNaoLocalizadaException e) {
@@ -91,7 +90,8 @@ public class MedicoServiceImpl implements MedicoService {
     public Medico localizar(Integer id) throws EntidadeNaoLocalizadaException {
         try {
             Medico medico = medicoRepository.buscarPorId(id);
-            logger.info("Médico localizado. ID: " + id);
+            logger.info("Médico localizado. ID: " + id +
+                    " - Nome: " + (medico.getPessoa() != null ? medico.getPessoa().getNome() : "N/A"));
             return medico;
 
         } catch (EntidadeNaoLocalizadaException e) {
@@ -107,7 +107,8 @@ public class MedicoServiceImpl implements MedicoService {
     public Medico localizarPorCrm(String crm) throws EntidadeNaoLocalizadaException {
         try {
             Medico medico = medicoRepository.buscarPorCrm(crm);
-            logger.info("Médico localizado por CRM: " + crm);
+            logger.info("Médico localizado por CRM: " + crm +
+                    " - Nome: " + (medico.getPessoa() != null ? medico.getPessoa().getNome() : "N/A"));
             return medico;
 
         } catch (EntidadeNaoLocalizadaException e) {
@@ -123,6 +124,13 @@ public class MedicoServiceImpl implements MedicoService {
     public List<Medico> listarTodos() {
         try {
             List<Medico> medicos = medicoRepository.buscarTodos();
+
+            for (Medico medico : medicos) {
+                logger.debug("Médico listado - ID: " + medico.getId() +
+                        ", CRM: " + medico.getCrm() +
+                        ", Nome: " + (medico.getPessoa() != null ? medico.getPessoa().getNome() : "NULL"));
+            }
+
             logger.info("Listados " + medicos.size() + " médicos");
             return medicos;
 
@@ -152,7 +160,9 @@ public class MedicoServiceImpl implements MedicoService {
             medico.setAceitaTeleconsulta(aceitaTeleconsulta);
 
             Medico medicoAtualizado = medicoRepository.editar(medico);
-            logger.info("Status de teleconsulta alterado para " + aceitaTeleconsulta + ". Médico ID: " + id);
+            logger.info("Status de teleconsulta alterado para " + aceitaTeleconsulta +
+                    ". Médico ID: " + id +
+                    " - Nome: " + (medicoAtualizado.getPessoa() != null ? medicoAtualizado.getPessoa().getNome() : "N/A"));
 
             return medicoAtualizado;
         } catch (EntidadeNaoLocalizadaException e) {

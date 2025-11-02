@@ -24,7 +24,6 @@ public class BaseConhecimentoServiceImpl implements BaseConhecimentoService {
         try {
             logger.info("Buscando melhor resposta para: " + pergunta);
 
-            // Primeiro busca por palavras-chave exatas
             BaseConhecimento resposta = baseConhecimentoRepository
                     .buscarPorPalavrasChave(pergunta);
 
@@ -33,7 +32,6 @@ public class BaseConhecimentoServiceImpl implements BaseConhecimentoService {
                 return resposta;
             }
 
-            // Depois busca por similaridade textual
             resposta = baseConhecimentoRepository.buscarPorSimilaridade(pergunta);
 
             if (resposta != null) {
@@ -53,7 +51,6 @@ public class BaseConhecimentoServiceImpl implements BaseConhecimentoService {
     @Override
     public BaseConhecimento criar(BaseConhecimento conhecimento) {
         try {
-            // Removidas validações se não existirem - usar validações básicas
             if (conhecimento.getPergunta() == null || conhecimento.getPergunta().trim().isEmpty()) {
                 throw new RuntimeException("Pergunta não pode ser vazia");
             }
@@ -78,10 +75,8 @@ public class BaseConhecimentoServiceImpl implements BaseConhecimentoService {
     @Override
     public BaseConhecimento editar(String id, BaseConhecimento conhecimento) throws EntidadeNaoLocalizadaException {
         try {
-            // Verificar se existe (variável usada agora)
             BaseConhecimento conhecimentoExistente = baseConhecimentoRepository.buscarPorId(id);
 
-            // Validações básicas
             if (conhecimento.getPergunta() == null || conhecimento.getPergunta().trim().isEmpty()) {
                 throw new RuntimeException("Pergunta não pode ser vazia");
             }

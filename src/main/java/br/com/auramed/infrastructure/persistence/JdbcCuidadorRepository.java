@@ -73,7 +73,7 @@ public class JdbcCuidadorRepository implements CuidadorRepository {
 
     @Override
     public List<Cuidador> buscarAtivos() {
-        return buscarTodos(); // Mesma implementação para este caso
+        return buscarTodos();
     }
 
     @Override

@@ -11,4 +11,5 @@ public interface InfoTeleconsultaService {
     InfoTeleconsulta localizarPorId(Integer idInfoTeleconsulta) throws EntidadeNaoLocalizadaException;
     InfoTeleconsulta localizarPorPaciente(Integer idPaciente) throws EntidadeNaoLocalizadaException;
     List<InfoTeleconsulta> listarTodos();
+    void removerPorPaciente(Integer idPaciente) throws EntidadeNaoLocalizadaException;
 }

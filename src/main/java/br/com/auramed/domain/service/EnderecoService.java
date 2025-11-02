@@ -14,4 +14,6 @@ public interface EnderecoService {
     Endereco definirComoPrincipal(Integer id) throws EntidadeNaoLocalizadaException;
     Endereco definirComoNaoPrincipal(Integer id) throws EntidadeNaoLocalizadaException;
     List<Endereco> listarEnderecosPrincipais();
+    void removerPorPessoa(Integer idPessoa) throws EntidadeNaoLocalizadaException;
+    List<Endereco> buscarPorPessoa(Integer idPessoa) throws EntidadeNaoLocalizadaException;
 }

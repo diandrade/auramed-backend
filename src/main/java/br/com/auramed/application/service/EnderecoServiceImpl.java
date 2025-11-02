@@ -20,6 +20,41 @@ public class EnderecoServiceImpl implements EnderecoService {
     Logger logger;
 
     @Override
+    public void removerPorPessoa(Integer idPessoa) throws EntidadeNaoLocalizadaException {
+        try {
+            logger.debug("🗑️ Buscando endereços para remoção da pessoa ID: " + idPessoa);
+
+            List<Endereco> enderecos = enderecoRepository.buscarPorPessoaId(idPessoa);
+
+            if (enderecos.isEmpty()) {
+                logger.debug("ℹ️ Nenhum endereço encontrado para pessoa: " + idPessoa);
+                throw new EntidadeNaoLocalizadaException("Nenhum endereço encontrado para a pessoa: " + idPessoa);
+            }
+
+            int contador = 0;
+            for (Endereco endereco : enderecos) {
+                enderecoRepository.remover(endereco.getId());
+                contador++;
+                logger.debug("✅ Endereço removido - ID: " + endereco.getId());
+            }
+
+            logger.info("🗑️ " + contador + " endereço(s) removido(s) para pessoa ID: " + idPessoa);
+
+        } catch (EntidadeNaoLocalizadaException e) {
+            logger.debug("ℹ️ " + e.getMessage());
+            throw e;
+        } catch (Exception e) {
+            logger.error("💥 Erro ao remover endereços da pessoa " + idPessoa + ": " + e.getMessage());
+            throw new RuntimeException("Falha ao remover endereços: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public List<Endereco> buscarPorPessoa(Integer idPessoa) throws EntidadeNaoLocalizadaException {
+        return listarPorPessoaId(idPessoa);
+    }
+
+    @Override
     public Endereco criar(Endereco endereco) {
         try {
             endereco.validarPessoa();
@@ -147,11 +182,7 @@ public class EnderecoServiceImpl implements EnderecoService {
     public Endereco definirComoPrincipal(Integer id) throws EntidadeNaoLocalizadaException {
         try {
             Endereco endereco = enderecoRepository.buscarPorId(id);
-
-            // Remover status principal de outros endereços da mesma pessoa
             removerPrincipalDeOutrosEnderecos(endereco.getPessoa().getId());
-
-            // Definir este endereço como principal
             endereco.definirComoPrincipal();
 
             Endereco enderecoAtualizado = enderecoRepository.editar(endereco);
