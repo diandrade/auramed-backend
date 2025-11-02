@@ -11,7 +11,7 @@ public interface PacienteController {
     PacienteResponseDTO getPacienteById(Integer idPessoa) throws EntidadeNaoLocalizadaException;
     void deletePaciente(Integer idPessoa) throws EntidadeNaoLocalizadaException;
     List<PacienteResponseDTO> getAllPacientes();
-    List<PacienteResponseDTO> getPacientesPorMedico(Integer idMedicoResponsavel);
+    List<PacienteResponseDTO> getPacientesPorMedico(Integer idMedico) throws EntidadeNaoLocalizadaException;
     PacienteResponseDTO ativarPaciente(Integer idPessoa) throws EntidadeNaoLocalizadaException;
     PacienteResponseDTO inativarPaciente(Integer idPessoa) throws EntidadeNaoLocalizadaException;
 }

@@ -8,6 +8,7 @@ import br.com.auramed.interfaces.dto.response.PacienteCompletoResponseDTO;
 import br.com.auramed.interfaces.mappers.*;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import org.jboss.logging.Logger;
 
 @ApplicationScoped
 public class PacienteCompletoControllerImpl implements PacienteCompletoController {
@@ -25,6 +26,9 @@ public class PacienteCompletoControllerImpl implements PacienteCompletoControlle
     PerfilCognitivoService perfilCognitivoService;
 
     @Inject
+    AuthenticationService authenticationService;
+
+    @Inject
     PessoaMapper pessoaMapper;
 
     @Inject
@@ -39,16 +43,30 @@ public class PacienteCompletoControllerImpl implements PacienteCompletoControlle
     @Inject
     PacienteCompletoMapper pacienteCompletoMapper;
 
+    @Inject
+    Logger logger;
+
     @Override
     public PacienteCompletoResponseDTO criarPacienteCompleto(PacienteCompletoRequestDTO pacienteCompletoRequest) throws EntidadeNaoLocalizadaException {
         try {
+            logger.info("🏥 INICIANDO CRIAÇÃO DE PACIENTE COMPLETO");
+
             // 1. Criar Pessoa
             Pessoa pessoa = pessoaMapper.toDomain(pacienteCompletoRequest.getPessoa());
             Pessoa pessoaCriada = pessoaService.criar(pessoa);
 
-            // 2. Criar Paciente
+            // ✅ CORREÇÃO: Obter médico logado automaticamente
+            Integer idMedicoLogado = authenticationService.getMedicoLogadoId();
+            Medico medicoLogado = authenticationService.getMedicoLogado();
+
+            logger.info("🔐 Vinculando paciente ao médico logado: " +
+                    medicoLogado.getPessoa().getNome() + " (ID: " + idMedicoLogado + ")");
+
+            // 2. Criar Paciente com médico logado
             Paciente paciente = pacienteMapper.toDomain(pacienteCompletoRequest.getPaciente());
             paciente.setIdPessoa(pessoaCriada.getId());
+            paciente.setIdMedicoResponsavel(idMedicoLogado); // ✅ VINCULA AUTOMATICAMENTE
+
             Paciente pacienteCriado = pacienteService.criar(paciente);
 
             // 3. Criar InfoTeleconsulta
@@ -80,9 +98,15 @@ public class PacienteCompletoControllerImpl implements PacienteCompletoControlle
                 response.setPerfilCognitivo(perfilCognitivoMapper.toResponseDTO(perfilCognitivo));
             }
 
+            logger.info("✅ PACIENTE COMPLETO CRIADO COM SUCESSO - " +
+                    "ID Pessoa: " + pessoaCriada.getId() +
+                    " | Médico responsável: " + medicoLogado.getPessoa().getNome() +
+                    " (ID: " + idMedicoLogado + ")");
+
             return response;
 
         } catch (Exception e) {
+            logger.error("💥 ERRO AO CRIAR PACIENTE COMPLETO: " + e.getMessage());
             throw e;
         }
     }

@@ -157,4 +157,16 @@ public class InfoTeleconsultaServiceImpl implements InfoTeleconsultaService {
             throw new RuntimeException("Falha ao listar infoTeleconsultas: " + e.getMessage());
         }
     }
+
+    @Override
+    public void removerPorPaciente(Integer idPaciente) throws EntidadeNaoLocalizadaException {
+        try {
+            InfoTeleconsulta info = infoTeleconsultaRepository.buscarPorPaciente(idPaciente);
+            infoTeleconsultaRepository.remover(info.getIdInfoTeleconsulta());
+            logger.info("Info teleconsulta removida para paciente: " + idPaciente);
+        } catch (EntidadeNaoLocalizadaException e) {
+            logger.debug("Info teleconsulta não encontrada para paciente: " + idPaciente);
+            throw e;
+        }
+    }
 }

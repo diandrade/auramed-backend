@@ -151,4 +151,16 @@ public class PerfilCognitivoServiceImpl implements PerfilCognitivoService {
             throw new RuntimeException("Falha ao listar perfis cognitivos: " + e.getMessage());
         }
     }
+
+    @Override
+    public void removerPorPaciente(Integer idPaciente) throws EntidadeNaoLocalizadaException {
+        try {
+            PerfilCognitivo perfil = perfilCognitivoRepository.buscarPorPaciente(idPaciente);
+            perfilCognitivoRepository.remover(perfil.getIdPerfilCognitivo());
+            logger.info("Perfil cognitivo removido para paciente: " + idPaciente);
+        } catch (EntidadeNaoLocalizadaException e) {
+            logger.debug("Perfil cognitivo não encontrado para paciente: " + idPaciente);
+            throw e;
+        }
+    }
 }

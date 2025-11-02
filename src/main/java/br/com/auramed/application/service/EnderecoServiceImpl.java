@@ -19,6 +19,43 @@ public class EnderecoServiceImpl implements EnderecoService {
     @Inject
     Logger logger;
 
+    // ✅ MÉTODO NOVO: Remover todos os endereços de uma pessoa (para exclusão em cascata)
+    @Override
+    public void removerPorPessoa(Integer idPessoa) throws EntidadeNaoLocalizadaException {
+        try {
+            logger.debug("🗑️ Buscando endereços para remoção da pessoa ID: " + idPessoa);
+
+            List<Endereco> enderecos = enderecoRepository.buscarPorPessoaId(idPessoa);
+
+            if (enderecos.isEmpty()) {
+                logger.debug("ℹ️ Nenhum endereço encontrado para pessoa: " + idPessoa);
+                throw new EntidadeNaoLocalizadaException("Nenhum endereço encontrado para a pessoa: " + idPessoa);
+            }
+
+            int contador = 0;
+            for (Endereco endereco : enderecos) {
+                enderecoRepository.remover(endereco.getId());
+                contador++;
+                logger.debug("✅ Endereço removido - ID: " + endereco.getId());
+            }
+
+            logger.info("🗑️ " + contador + " endereço(s) removido(s) para pessoa ID: " + idPessoa);
+
+        } catch (EntidadeNaoLocalizadaException e) {
+            logger.debug("ℹ️ " + e.getMessage());
+            throw e;
+        } catch (Exception e) {
+            logger.error("💥 Erro ao remover endereços da pessoa " + idPessoa + ": " + e.getMessage());
+            throw new RuntimeException("Falha ao remover endereços: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public List<Endereco> buscarPorPessoa(Integer idPessoa) throws EntidadeNaoLocalizadaException {
+        return listarPorPessoaId(idPessoa);
+    }
+
+    // Seus métodos existentes mantidos abaixo...
     @Override
     public Endereco criar(Endereco endereco) {
         try {

@@ -1,8 +1,15 @@
 package br.com.auramed.application.service;
 
 import br.com.auramed.domain.model.Pessoa;
+import br.com.auramed.domain.model.Paciente;
+import br.com.auramed.domain.model.PerfilCognitivo;
+import br.com.auramed.domain.model.InfoTeleconsulta;
 import br.com.auramed.domain.repository.PessoaRepository;
 import br.com.auramed.domain.service.PessoaService;
+import br.com.auramed.domain.service.PacienteService;
+import br.com.auramed.domain.service.PerfilCognitivoService;
+import br.com.auramed.domain.service.InfoTeleconsultaService;
+import br.com.auramed.domain.service.EnderecoService;
 import br.com.auramed.domain.exception.EntidadeNaoLocalizadaException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -15,6 +22,18 @@ public class PessoaServiceImpl implements PessoaService {
 
     @Inject
     PessoaRepository pessoaRepository;
+    
+    @Inject
+    PacienteService pacienteService;
+
+    @Inject
+    PerfilCognitivoService perfilCognitivoService;
+
+    @Inject
+    InfoTeleconsultaService infoTeleconsultaService;
+
+    @Inject
+    EnderecoService enderecoService;
 
     @Inject
     Logger logger;
@@ -29,16 +48,6 @@ public class PessoaServiceImpl implements PessoaService {
             pessoa.validarTipoPessoa();
             pessoa.validarDataNascimento();
             pessoa.validarGenero();
-
-            if (pessoa.getEmail() != null && !pessoa.getEmail().isBlank() &&
-                    existePessoaComEmail(pessoa.getEmail())) {
-                throw new RuntimeException("Já existe pessoa cadastrada com este email: " + pessoa.getEmail());
-            }
-
-            if (pessoa.getCpf() != null && !pessoa.getCpf().isBlank() &&
-                    existePessoaComCpf(pessoa.getCpf())) {
-                throw new RuntimeException("Já existe pessoa cadastrada com este CPF: " + pessoa.getCpf());
-            }
 
             Pessoa pessoaSalva = pessoaRepository.salvar(pessoa);
             logger.info("Pessoa criada com sucesso. ID: " + pessoaSalva.getId() + " - Tipo: " + pessoaSalva.getTipoPessoa());
@@ -64,18 +73,6 @@ public class PessoaServiceImpl implements PessoaService {
             pessoa.validarDataNascimento();
             pessoa.validarGenero();
 
-            if (pessoa.getEmail() != null && !pessoa.getEmail().isBlank() &&
-                    !pessoaExistente.getEmail().equals(pessoa.getEmail()) &&
-                    existePessoaComEmail(pessoa.getEmail())) {
-                throw new RuntimeException("Já existe pessoa cadastrada com este email: " + pessoa.getEmail());
-            }
-
-            if (pessoa.getCpf() != null && !pessoa.getCpf().isBlank() &&
-                    !pessoaExistente.getCpf().equals(pessoa.getCpf()) &&
-                    existePessoaComCpf(pessoa.getCpf())) {
-                throw new RuntimeException("Já existe pessoa cadastrada com este CPF: " + pessoa.getCpf());
-            }
-
             pessoa.setId(id);
             Pessoa pessoaAtualizada = pessoaRepository.editar(pessoa);
             logger.info("Pessoa atualizada com sucesso. ID: " + id);
@@ -95,10 +92,48 @@ public class PessoaServiceImpl implements PessoaService {
         try {
             Pessoa pessoa = pessoaRepository.buscarPorId(id);
 
+            // ✅ EXCLUSÃO EM CASCATA: Primeiro remove dependências
+            logger.info("🗑️ Iniciando exclusão em cascata para pessoa ID: " + id);
+
+            // 1. Remover paciente (se existir)
+            try {
+                Paciente paciente = pacienteService.localizar(id);
+                pacienteService.remover(id);
+                logger.info("✅ Paciente removido: " + id);
+            } catch (EntidadeNaoLocalizadaException e) {
+                logger.debug("ℹ️ Nenhum paciente encontrado para pessoa: " + id);
+            }
+
+            // 2. Remover perfil cognitivo (se existir)
+            try {
+                perfilCognitivoService.removerPorPaciente(id);
+                logger.info("✅ Perfil cognitivo removido: " + id);
+            } catch (EntidadeNaoLocalizadaException e) {
+                logger.debug("ℹ️ Nenhum perfil cognitivo encontrado para paciente: " + id);
+            }
+
+            // 3. Remover info teleconsulta (se existir)
+            try {
+                infoTeleconsultaService.removerPorPaciente(id);
+                logger.info("✅ Info teleconsulta removida: " + id);
+            } catch (EntidadeNaoLocalizadaException e) {
+                logger.debug("ℹ️ Nenhuma info teleconsulta encontrada para paciente: " + id);
+            }
+
+            // 4. Remover endereços (se existirem)
+            try {
+                enderecoService.removerPorPessoa(id);
+                logger.info("✅ Endereços removidos: " + id);
+            } catch (EntidadeNaoLocalizadaException e) {
+                logger.debug("ℹ️ Nenhum endereço encontrado para pessoa: " + id);
+            }
+
+            // 5. Agora remove a pessoa
             pessoaRepository.remover(id);
-            logger.info("Pessoa removida com sucesso. ID: " + id);
+            logger.info("✅ Pessoa removida com sucesso. ID: " + id);
 
             return pessoa;
+
         } catch (EntidadeNaoLocalizadaException e) {
             logger.error("Pessoa não encontrada para remoção. ID: " + id);
             throw e;
@@ -185,24 +220,6 @@ public class PessoaServiceImpl implements PessoaService {
         } catch (Exception e) {
             logger.error("Erro ao inativar pessoa. ID: " + id + ": " + e.getMessage());
             throw new RuntimeException("Falha ao inativar pessoa: " + e.getMessage());
-        }
-    }
-
-    private boolean existePessoaComEmail(String email) {
-        try {
-            pessoaRepository.buscarPorEmail(email);
-            return true;
-        } catch (EntidadeNaoLocalizadaException e) {
-            return false;
-        }
-    }
-
-    private boolean existePessoaComCpf(String cpf) {
-        try {
-            pessoaRepository.buscarPorCpf(cpf);
-            return true;
-        } catch (EntidadeNaoLocalizadaException e) {
-            return false;
         }
     }
 }

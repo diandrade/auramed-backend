@@ -11,4 +11,6 @@ public interface AuthenticationService {
     void alterarSenha(String email, String senhaAtual, String novaSenha) throws EntidadeNaoLocalizadaException;
     void solicitarRecuperacaoSenha(String email) throws EntidadeNaoLocalizadaException;
     void redefinirSenha(String token, String novaSenha) throws EntidadeNaoLocalizadaException;
+    Integer getMedicoLogadoId() throws EntidadeNaoLocalizadaException;
+    Medico getMedicoLogado() throws EntidadeNaoLocalizadaException;
 }
