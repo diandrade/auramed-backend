@@ -24,6 +24,16 @@ public class Pessoa {
         this.ativo = "S";
     }
 
+    public void validar() {
+        validarNome();
+        validarEmail();
+        validarCpf();
+        validarTelefone();
+        validarTipoPessoa();
+        validarDataNascimento();
+        validarGenero();
+    }
+
     public void validarNome() {
         if (nome == null || nome.isEmpty() || nome.isBlank()) {
             throw new ValidacaoDeDominioException("Nome está vazio.");

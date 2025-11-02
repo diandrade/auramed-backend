@@ -16,7 +16,15 @@ public class PacienteMapperImpl implements PacienteMapper {
             return null;
         }
 
-        Paciente paciente = new Paciente(dto.getIdPessoa(), dto.getIdMedicoResponsavel(), dto.getNrCartaoSUS());
+        // ✅ CORREÇÃO: Garantir que idMedicoResponsavel não seja null
+        Integer idMedicoResponsavel = (dto.getIdMedicoResponsavel() != null) ? dto.getIdMedicoResponsavel() : 1;
+
+        // ✅ CORREÇÃO: Usar construtor com valores não nulos
+        Paciente paciente = new Paciente(
+                dto.getIdPessoa(),
+                idMedicoResponsavel,
+                dto.getNrCartaoSUS()
+        );
 
         return paciente;
     }

@@ -26,33 +26,43 @@ public class PacienteServiceImpl implements PacienteService {
     @Override
     public Paciente criar(Paciente paciente) {
         try {
+            logger.info("🏥 INICIANDO CRIAÇÃO DE PACIENTE - ID Pessoa: " + paciente.getIdPessoa());
+
             // Validações do paciente
+            logger.debug("🔍 Validando cartão SUS...");
             paciente.validarCartaoSUS();
 
             // Verificar se a pessoa existe e é do tipo PACIENTE
+            logger.debug("🔍 Verificando pessoa...");
             var pessoa = pessoaRepository.buscarPorId(paciente.getIdPessoa());
             if (!"PACIENTE".equals(pessoa.getTipoPessoa())) {
+                logger.error("❌ Pessoa não é do tipo PACIENTE: " + pessoa.getTipoPessoa());
                 throw new RuntimeException("A pessoa deve ser do tipo PACIENTE");
             }
 
             // Verificar se o médico responsável existe
+            logger.debug("🔍 Verificando médico responsável...");
             pessoaRepository.buscarPorId(paciente.getIdMedicoResponsavel());
 
             // Verificar unicidade do cartão SUS
+            logger.debug("🔍 Verificando unicidade do cartão SUS...");
             if (pacienteRepository.existeCartaoSUS(paciente.getNrCartaoSUS())) {
+                logger.error("❌ Cartão SUS já existe: " + paciente.getNrCartaoSUS());
                 throw new RuntimeException("Já existe paciente cadastrado com este Cartão SUS: " + paciente.getNrCartaoSUS());
             }
 
             Paciente pacienteSalvo = pacienteRepository.salvar(paciente);
-            logger.info("Paciente criado com sucesso. ID Pessoa: " + pacienteSalvo.getIdPessoa() + " - Médico: " + pacienteSalvo.getIdMedicoResponsavel());
+            logger.info("✅ PACIENTE CRIADO COM SUCESSO - ID Pessoa: " + pacienteSalvo.getIdPessoa() +
+                    " | Médico: " + pacienteSalvo.getIdMedicoResponsavel() +
+                    " | Cartão SUS: " + pacienteSalvo.getNrCartaoSUS());
 
             return pacienteSalvo;
 
         } catch (EntidadeNaoLocalizadaException e) {
-            logger.error("Pessoa ou médico não encontrado: " + e.getMessage());
+            logger.error("❌ Pessoa ou médico não encontrado: " + e.getMessage());
             throw new RuntimeException("Pessoa ou médico responsável não encontrado: " + e.getMessage());
         } catch (Exception e) {
-            logger.error("Erro ao criar paciente: " + e.getMessage());
+            logger.error("💥 ERRO AO CRIAR PACIENTE: " + e.getMessage());
             throw new RuntimeException("Falha ao criar paciente: " + e.getMessage());
         }
     }

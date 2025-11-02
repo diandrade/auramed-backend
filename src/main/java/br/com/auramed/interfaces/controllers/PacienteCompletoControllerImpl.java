@@ -55,7 +55,7 @@ public class PacienteCompletoControllerImpl implements PacienteCompletoControlle
             InfoTeleconsulta infoTeleconsulta = null;
             if (pacienteCompletoRequest.getInfoTeleconsulta() != null) {
                 infoTeleconsulta = infoTeleconsultaMapper.toDomain(pacienteCompletoRequest.getInfoTeleconsulta());
-                infoTeleconsulta.setIdPaciente(pessoaCriada.getId());
+                infoTeleconsulta.setIdPaciente(pacienteCriado.getIdPessoa());
                 infoTeleconsulta = infoTeleconsultaService.criar(infoTeleconsulta);
             }
 
@@ -63,7 +63,7 @@ public class PacienteCompletoControllerImpl implements PacienteCompletoControlle
             PerfilCognitivo perfilCognitivo = null;
             if (pacienteCompletoRequest.getPerfilCognitivo() != null) {
                 perfilCognitivo = perfilCognitivoMapper.toDomain(pacienteCompletoRequest.getPerfilCognitivo());
-                perfilCognitivo.setIdPaciente(pessoaCriada.getId());
+                perfilCognitivo.setIdPaciente(pacienteCriado.getIdPessoa());
                 perfilCognitivo = perfilCognitivoService.criar(perfilCognitivo);
             }
 
@@ -90,11 +90,8 @@ public class PacienteCompletoControllerImpl implements PacienteCompletoControlle
     @Override
     public PacienteCompletoResponseDTO getPacienteCompleto(Integer idPaciente) throws EntidadeNaoLocalizadaException {
         try {
-            // 1. Buscar Pessoa
-            Pessoa pessoa = pessoaService.localizar(idPaciente);
-
-            // 2. Buscar Paciente
             Paciente paciente = pacienteService.localizar(idPaciente);
+            Pessoa pessoa = pessoaService.localizar(paciente.getIdPessoa());
 
             // 3. Buscar InfoTeleconsulta (pode não existir)
             InfoTeleconsulta infoTeleconsulta = null;

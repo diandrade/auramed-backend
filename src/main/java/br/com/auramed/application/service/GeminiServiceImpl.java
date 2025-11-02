@@ -19,16 +19,31 @@ public class GeminiServiceImpl implements GeminiService {
     @Override
     public String gerarResposta(String pergunta, BaseConhecimento contexto) {
         try {
-            logger.info("Gerando resposta com Gemini para: " + pergunta);
+            logger.info("Gerando resposta com Gemini (Free) para: " + pergunta);
+
+            // Verificar limite de caracteres para o plano gratuito
+            if (pergunta.length() > 8000) {
+                logger.warn("Pergunta muito longa para o plano gratuito, truncando...");
+                pergunta = pergunta.substring(0, 8000);
+            }
 
             String textoPrompt = construirPrompt(pergunta, contexto);
             String resposta = modeloGemini.chat(textoPrompt);
 
-            logger.info("Resposta gerada com sucesso pelo Gemini");
+            logger.info("Resposta gerada com sucesso pelo Gemini Free");
             return resposta;
 
         } catch (Exception e) {
-            logger.error("Erro ao gerar resposta com Gemini: " + e.getMessage());
+            logger.error("Erro ao gerar resposta com Gemini Free: " + e.getMessage());
+
+            // Fallback para quando atinge os limites de taxa
+            if (e.getMessage() != null &&
+                    (e.getMessage().contains("rate limit") ||
+                            e.getMessage().contains("quota"))) {
+                logger.warn("Limite de taxa atingido, usando resposta padrão");
+                return "No momento estou processando muitas solicitações. Por favor, tente novamente em alguns instantes ou consulte nossa base de conhecimento.";
+            }
+
             throw new RuntimeException("Falha ao gerar resposta: " + e.getMessage());
         }
     }
@@ -48,6 +63,7 @@ public class GeminiServiceImpl implements GeminiService {
         prompt.append("- Use linguagem acessível para pacientes\n");
         prompt.append("- Se não souber, diga que vai consultar um especialista\n");
         prompt.append("- Mantenha o tom profissional mas acolhedor\n");
+        prompt.append("- Limite a resposta a 500 palavras\n");
 
         return prompt.toString();
     }
