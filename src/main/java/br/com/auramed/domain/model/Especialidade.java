@@ -43,7 +43,6 @@ public class Especialidade {
         }
     }
 
-    // Getters e Setters
     public Integer getId() {
         return id;
     }

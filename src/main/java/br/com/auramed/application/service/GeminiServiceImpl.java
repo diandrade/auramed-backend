@@ -21,7 +21,6 @@ public class GeminiServiceImpl implements GeminiService {
         try {
             logger.info("Gerando resposta com Gemini (Free) para: " + pergunta);
 
-            // Verificar limite de caracteres para o plano gratuito
             if (pergunta.length() > 8000) {
                 logger.warn("Pergunta muito longa para o plano gratuito, truncando...");
                 pergunta = pergunta.substring(0, 8000);
@@ -36,7 +35,6 @@ public class GeminiServiceImpl implements GeminiService {
         } catch (Exception e) {
             logger.error("Erro ao gerar resposta com Gemini Free: " + e.getMessage());
 
-            // Fallback para quando atinge os limites de taxa
             if (e.getMessage() != null &&
                     (e.getMessage().contains("rate limit") ||
                             e.getMessage().contains("quota"))) {

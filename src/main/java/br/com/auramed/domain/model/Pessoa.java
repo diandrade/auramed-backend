@@ -124,7 +124,6 @@ public class Pessoa {
         }
     }
 
-    // Getters e Setters
     public Integer getId() {
         return id;
     }

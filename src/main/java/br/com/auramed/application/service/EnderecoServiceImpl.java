@@ -19,7 +19,6 @@ public class EnderecoServiceImpl implements EnderecoService {
     @Inject
     Logger logger;
 
-    // ✅ MÉTODO NOVO: Remover todos os endereços de uma pessoa (para exclusão em cascata)
     @Override
     public void removerPorPessoa(Integer idPessoa) throws EntidadeNaoLocalizadaException {
         try {
@@ -55,7 +54,6 @@ public class EnderecoServiceImpl implements EnderecoService {
         return listarPorPessoaId(idPessoa);
     }
 
-    // Seus métodos existentes mantidos abaixo...
     @Override
     public Endereco criar(Endereco endereco) {
         try {
@@ -184,11 +182,7 @@ public class EnderecoServiceImpl implements EnderecoService {
     public Endereco definirComoPrincipal(Integer id) throws EntidadeNaoLocalizadaException {
         try {
             Endereco endereco = enderecoRepository.buscarPorId(id);
-
-            // Remover status principal de outros endereços da mesma pessoa
             removerPrincipalDeOutrosEnderecos(endereco.getPessoa().getId());
-
-            // Definir este endereço como principal
             endereco.definirComoPrincipal();
 
             Endereco enderecoAtualizado = enderecoRepository.editar(endereco);

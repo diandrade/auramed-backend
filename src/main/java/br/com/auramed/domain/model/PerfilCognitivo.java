@@ -42,7 +42,6 @@ public class PerfilCognitivo {
         }
     }
 
-    // Getters e Setters
     public Integer getIdPerfilCognitivo() {
         return idPerfilCognitivo;
     }

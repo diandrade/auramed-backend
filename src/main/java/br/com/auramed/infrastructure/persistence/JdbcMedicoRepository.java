@@ -206,7 +206,7 @@ public class JdbcMedicoRepository implements MedicoRepository {
 
     @Override
     public List<Medico> buscarAtivos() {
-        return buscarTodos(); // Já filtra por ativos
+        return buscarTodos();
     }
 
     @Override

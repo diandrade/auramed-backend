@@ -26,19 +26,18 @@ public class AuthMedicoRestController {
     private final AuthenticationService authenticationService;
     private final PasswordService passwordService;
     private final MedicoMapper medicoMapper;
-    private final AuthMedicoRepository authMedicoRepository; // Adicione esta linha
-
+    private final AuthMedicoRepository authMedicoRepository;
     @Inject
     public AuthMedicoRestController(AuthMedicoController authMedicoController,
                                     AuthenticationService authenticationService,
                                     PasswordService passwordService,
                                     MedicoMapper medicoMapper,
-                                    AuthMedicoRepository authMedicoRepository) { // Adicione este parâmetro
+                                    AuthMedicoRepository authMedicoRepository) {
         this.authMedicoController = authMedicoController;
         this.authenticationService = authenticationService;
         this.passwordService = passwordService;
         this.medicoMapper = medicoMapper;
-        this.authMedicoRepository = authMedicoRepository; // Adicione esta linha
+        this.authMedicoRepository = authMedicoRepository;
     }
 
     @POST
@@ -53,8 +52,6 @@ public class AuthMedicoRestController {
             );
 
             System.out.println("DEBUG: Token: " + token);
-
-            // Buscar médico para a resposta
             var medico = authenticationService.obterMedicoPorToken(token);
             System.out.println("DEBUG: Médico: " + medico);
 
@@ -271,14 +268,10 @@ public class AuthMedicoRestController {
     @Path("/test-bcrypt")
     public Response testBcrypt(String senha) {
         try {
-            // Buscar o hash atual do banco
             AuthMedico authMedico = authMedicoRepository.buscarPorEmail("joao.silva@hospital.com");
             String hashNoBanco = authMedico.getSenhaHash();
 
-            // Testar com BCrypt diretamente
             boolean resultadoDirect = org.mindrot.jbcrypt.BCrypt.checkpw(senha, hashNoBanco);
-
-            // Testar com PasswordService
             boolean resultadoService = passwordService.checkPassword(senha, hashNoBanco);
 
             String response = "Senha testada: " + senha +

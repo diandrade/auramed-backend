@@ -51,25 +51,20 @@ public class PacienteCompletoControllerImpl implements PacienteCompletoControlle
         try {
             logger.info("🏥 INICIANDO CRIAÇÃO DE PACIENTE COMPLETO");
 
-            // 1. Criar Pessoa
             Pessoa pessoa = pessoaMapper.toDomain(pacienteCompletoRequest.getPessoa());
             Pessoa pessoaCriada = pessoaService.criar(pessoa);
 
-            // ✅ CORREÇÃO: Obter médico logado automaticamente
             Integer idMedicoLogado = authenticationService.getMedicoLogadoId();
             Medico medicoLogado = authenticationService.getMedicoLogado();
 
             logger.info("🔐 Vinculando paciente ao médico logado: " +
                     medicoLogado.getPessoa().getNome() + " (ID: " + idMedicoLogado + ")");
 
-            // 2. Criar Paciente com médico logado
             Paciente paciente = pacienteMapper.toDomain(pacienteCompletoRequest.getPaciente());
             paciente.setIdPessoa(pessoaCriada.getId());
-            paciente.setIdMedicoResponsavel(idMedicoLogado); // ✅ VINCULA AUTOMATICAMENTE
+            paciente.setIdMedicoResponsavel(idMedicoLogado);
 
             Paciente pacienteCriado = pacienteService.criar(paciente);
-
-            // 3. Criar InfoTeleconsulta
             InfoTeleconsulta infoTeleconsulta = null;
             if (pacienteCompletoRequest.getInfoTeleconsulta() != null) {
                 infoTeleconsulta = infoTeleconsultaMapper.toDomain(pacienteCompletoRequest.getInfoTeleconsulta());
@@ -77,7 +72,6 @@ public class PacienteCompletoControllerImpl implements PacienteCompletoControlle
                 infoTeleconsulta = infoTeleconsultaService.criar(infoTeleconsulta);
             }
 
-            // 4. Criar PerfilCognitivo
             PerfilCognitivo perfilCognitivo = null;
             if (pacienteCompletoRequest.getPerfilCognitivo() != null) {
                 perfilCognitivo = perfilCognitivoMapper.toDomain(pacienteCompletoRequest.getPerfilCognitivo());
@@ -85,7 +79,6 @@ public class PacienteCompletoControllerImpl implements PacienteCompletoControlle
                 perfilCognitivo = perfilCognitivoService.criar(perfilCognitivo);
             }
 
-            // 5. Montar resposta
             PacienteCompletoResponseDTO response = new PacienteCompletoResponseDTO();
             response.setPessoa(pessoaMapper.toResponseDTO(pessoaCriada));
             response.setPaciente(pacienteMapper.toResponseDTO(pacienteCriado));
@@ -117,23 +110,18 @@ public class PacienteCompletoControllerImpl implements PacienteCompletoControlle
             Paciente paciente = pacienteService.localizar(idPaciente);
             Pessoa pessoa = pessoaService.localizar(paciente.getIdPessoa());
 
-            // 3. Buscar InfoTeleconsulta (pode não existir)
             InfoTeleconsulta infoTeleconsulta = null;
             try {
                 infoTeleconsulta = infoTeleconsultaService.localizarPorPaciente(idPaciente);
             } catch (EntidadeNaoLocalizadaException e) {
-                // InfoTeleconsulta não existe, é opcional
             }
 
-            // 4. Buscar PerfilCognitivo (pode não existir)
             PerfilCognitivo perfilCognitivo = null;
             try {
                 perfilCognitivo = perfilCognitivoService.localizarPorPaciente(idPaciente);
             } catch (EntidadeNaoLocalizadaException e) {
-                // PerfilCognitivo não existe, é opcional
             }
 
-            // 5. Montar resposta
             PacienteCompletoResponseDTO response = new PacienteCompletoResponseDTO();
             response.setPessoa(pessoaMapper.toResponseDTO(pessoa));
             response.setPaciente(pacienteMapper.toResponseDTO(paciente));

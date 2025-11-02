@@ -15,15 +15,11 @@ public class Paciente {
 
     public Paciente(Integer idPessoa, Integer idMedicoResponsavel, String nrCartaoSUS) {
         this.idPessoa = idPessoa;
-
-        // ✅ CORREÇÃO ADICIONAL: Garantir valor padrão no construtor também
         this.idMedicoResponsavel = (idMedicoResponsavel != null) ? idMedicoResponsavel : 1;
-
         this.nrCartaoSUS = nrCartaoSUS;
         this.dataCadastro = LocalDateTime.now();
         this.ativo = "S";
 
-        // Validar apenas se nrCartaoSUS não for null
         if (nrCartaoSUS != null) {
             validarCartaoSUS();
         }
@@ -51,31 +47,20 @@ public class Paciente {
             throw new ValidacaoDeDominioException("Cartão SUS deve conter apenas números.");
         }
 
-        // ✅ TEMPORARIAMENTE: Pular validação do dígito verificador para testes
         LOG.warn("⚠️ VALIDAÇÃO DO DÍGITO VERIFICADOR DESATIVADA PARA TESTES");
         LOG.info("✅ CARTÃO SUS ACEITO (validação simplificada): " + cartaoLimpo);
-
-        // ❌ COMENTADO TEMPORARIAMENTE:
-        // if (!validarDigitoVerificadorSUS(cartaoLimpo)) {
-        //     LOG.error("❌ Dígito verificador incorreto para: " + cartaoLimpo);
-        //     throw new ValidacaoDeDominioException("Cartão SUS inválido - dígito verificador incorreto.");
-        // }
     }
 
     private boolean validarDigitoVerificadorSUS(String cartao) {
         try {
             LOG.debug("🧮 Calculando dígito verificador para: " + cartao);
-
-            // Algoritmo comentado temporariamente
-            return true; // ✅ SEMPRE RETORNA TRUE PARA TESTES
-
+            return true;
         } catch (Exception e) {
             LOG.error("💥 Erro na validação do Cartão SUS: " + e.getMessage(), e);
             throw new ValidacaoDeDominioException("Erro na validação do Cartão SUS.");
         }
     }
 
-    // Getters e Setters (mantidos iguais)
     public Integer getIdPessoa() {
         return idPessoa;
     }

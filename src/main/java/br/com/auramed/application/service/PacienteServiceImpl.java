@@ -28,11 +28,9 @@ public class PacienteServiceImpl implements PacienteService {
         try {
             logger.info("🏥 INICIANDO CRIAÇÃO DE PACIENTE - ID Pessoa: " + paciente.getIdPessoa());
 
-            // Validações do paciente
             logger.debug("🔍 Validando cartão SUS...");
             paciente.validarCartaoSUS();
 
-            // Verificar se a pessoa existe e é do tipo PACIENTE
             logger.debug("🔍 Verificando pessoa...");
             var pessoa = pessoaRepository.buscarPorId(paciente.getIdPessoa());
             if (!"PACIENTE".equals(pessoa.getTipoPessoa())) {
@@ -40,11 +38,9 @@ public class PacienteServiceImpl implements PacienteService {
                 throw new RuntimeException("A pessoa deve ser do tipo PACIENTE");
             }
 
-            // Verificar se o médico responsável existe
             logger.debug("🔍 Verificando médico responsável...");
             pessoaRepository.buscarPorId(paciente.getIdMedicoResponsavel());
 
-            // Verificar unicidade do cartão SUS
             logger.debug("🔍 Verificando unicidade do cartão SUS...");
             if (pacienteRepository.existeCartaoSUS(paciente.getNrCartaoSUS())) {
                 logger.error("❌ Cartão SUS já existe: " + paciente.getNrCartaoSUS());
@@ -71,14 +67,9 @@ public class PacienteServiceImpl implements PacienteService {
     public Paciente editar(Integer idPessoa, Paciente paciente) throws EntidadeNaoLocalizadaException {
         try {
             Paciente pacienteExistente = pacienteRepository.buscarPorId(idPessoa);
-
-            // Validações do paciente
             paciente.validarCartaoSUS();
-
-            // Verificar se o médico responsável existe
             pessoaRepository.buscarPorId(paciente.getIdMedicoResponsavel());
 
-            // Verificar unicidade do cartão SUS (se alterado)
             if (!pacienteExistente.getNrCartaoSUS().equals(paciente.getNrCartaoSUS()) &&
                     pacienteRepository.existeCartaoSUS(paciente.getNrCartaoSUS())) {
                 throw new RuntimeException("Já existe paciente cadastrado com este Cartão SUS: " + paciente.getNrCartaoSUS());
@@ -148,7 +139,6 @@ public class PacienteServiceImpl implements PacienteService {
     @Override
     public List<Paciente> listarPorMedico(Integer idMedicoResponsavel) {
         try {
-            // Verificar se o médico existe
             pessoaRepository.buscarPorId(idMedicoResponsavel);
 
             List<Paciente> pacientes = pacienteRepository.buscarPorMedicoResponsavel(idMedicoResponsavel);

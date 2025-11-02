@@ -13,7 +13,6 @@ public class Conversacao {
     private LocalDateTime dataHora;
     private Double pontuacaoSentimento;
 
-    // Construtores, getters e setters
     public Conversacao() {}
 
     public Conversacao(String usuarioId, String perguntaUsuario, String respostaBot,

@@ -115,7 +115,7 @@ public class JdbcPacienteRepository implements PacienteRepository {
 
     @Override
     public List<Paciente> buscarAtivos() {
-        return buscarTodos(); // Mesma implementação para este caso
+        return buscarTodos();
     }
 
     @Override

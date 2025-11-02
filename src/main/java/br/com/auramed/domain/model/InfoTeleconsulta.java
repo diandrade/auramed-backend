@@ -69,7 +69,6 @@ public class InfoTeleconsulta {
         }
     }
 
-    // Getters e Setters
     public Integer getIdInfoTeleconsulta() {
         return idInfoTeleconsulta;
     }

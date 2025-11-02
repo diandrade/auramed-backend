@@ -37,11 +37,9 @@ public class MedicoControllerImpl implements MedicoController {
     public MedicoResponseDTO editarMedico(Integer id, MedicoRequestDTO medicoRequest) throws EntidadeNaoLocalizadaException {
         Medico medicoExistente = this.medicoService.localizar(id);
 
-        // Atualizar dados do médico
         medicoExistente.setCrm(medicoRequest.getCrm());
         medicoExistente.setAceitaTeleconsulta(medicoRequest.getAceitaTeleconsulta());
 
-        // Atualizar dados da pessoa associada
         if (medicoRequest.getPessoa() != null && medicoExistente.getPessoa() != null) {
             medicoExistente.getPessoa().setNome(medicoRequest.getPessoa().getNome());
             medicoExistente.getPessoa().setEmail(medicoRequest.getPessoa().getEmail());

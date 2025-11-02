@@ -48,7 +48,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
     }
 
-    // ✅ MÉTODO CORRIGIDO: Obter médico logado do token da requisição
     @Override
     public Medico getMedicoLogado() throws EntidadeNaoLocalizadaException {
         try {
@@ -75,7 +74,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return getMedicoLogado().getId();
     }
 
-    // ✅ MÉTODO AUXILIAR: Obter token do header Authorization
     private String obterTokenDaRequisicaoAtual() {
         try {
             if (httpHeaders == null) {
@@ -107,7 +105,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
     }
 
-    // Seus métodos existentes mantidos abaixo...
     @Override
     public String login(String email, String senha) throws EntidadeNaoLocalizadaException {
         System.out.println("=== AUTH SERVICE LOGIN ===");

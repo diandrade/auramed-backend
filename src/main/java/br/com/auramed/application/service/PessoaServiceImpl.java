@@ -2,8 +2,6 @@ package br.com.auramed.application.service;
 
 import br.com.auramed.domain.model.Pessoa;
 import br.com.auramed.domain.model.Paciente;
-import br.com.auramed.domain.model.PerfilCognitivo;
-import br.com.auramed.domain.model.InfoTeleconsulta;
 import br.com.auramed.domain.repository.PessoaRepository;
 import br.com.auramed.domain.service.PessoaService;
 import br.com.auramed.domain.service.PacienteService;
@@ -22,7 +20,7 @@ public class PessoaServiceImpl implements PessoaService {
 
     @Inject
     PessoaRepository pessoaRepository;
-    
+
     @Inject
     PacienteService pacienteService;
 
@@ -91,11 +89,8 @@ public class PessoaServiceImpl implements PessoaService {
     public Pessoa remover(Integer id) throws EntidadeNaoLocalizadaException {
         try {
             Pessoa pessoa = pessoaRepository.buscarPorId(id);
-
-            // ✅ EXCLUSÃO EM CASCATA: Primeiro remove dependências
             logger.info("🗑️ Iniciando exclusão em cascata para pessoa ID: " + id);
 
-            // 1. Remover paciente (se existir)
             try {
                 Paciente paciente = pacienteService.localizar(id);
                 pacienteService.remover(id);
@@ -104,7 +99,6 @@ public class PessoaServiceImpl implements PessoaService {
                 logger.debug("ℹ️ Nenhum paciente encontrado para pessoa: " + id);
             }
 
-            // 2. Remover perfil cognitivo (se existir)
             try {
                 perfilCognitivoService.removerPorPaciente(id);
                 logger.info("✅ Perfil cognitivo removido: " + id);
@@ -112,7 +106,6 @@ public class PessoaServiceImpl implements PessoaService {
                 logger.debug("ℹ️ Nenhum perfil cognitivo encontrado para paciente: " + id);
             }
 
-            // 3. Remover info teleconsulta (se existir)
             try {
                 infoTeleconsultaService.removerPorPaciente(id);
                 logger.info("✅ Info teleconsulta removida: " + id);
@@ -120,7 +113,6 @@ public class PessoaServiceImpl implements PessoaService {
                 logger.debug("ℹ️ Nenhuma info teleconsulta encontrada para paciente: " + id);
             }
 
-            // 4. Remover endereços (se existirem)
             try {
                 enderecoService.removerPorPessoa(id);
                 logger.info("✅ Endereços removidos: " + id);
@@ -128,7 +120,6 @@ public class PessoaServiceImpl implements PessoaService {
                 logger.debug("ℹ️ Nenhum endereço encontrado para pessoa: " + id);
             }
 
-            // 5. Agora remove a pessoa
             pessoaRepository.remover(id);
             logger.info("✅ Pessoa removida com sucesso. ID: " + id);
 
