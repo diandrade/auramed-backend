@@ -11,7 +11,8 @@ public class CorsConfig implements ContainerResponseFilter {
 
     private static final List<String> ALLOWED_ORIGINS = List.of(
             "http://localhost:5173",
-            "https://auramed-sem2-front.vercel.app"
+            "https://auramed-sem2-front.vercel.app",
+            "https://auramed-backend-6yw9.onrender.com"
     );
 
     @Override
