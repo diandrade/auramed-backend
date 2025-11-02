@@ -47,7 +47,6 @@ public class Cuidador {
         }
     }
 
-    // Getters e Setters
     public Integer getIdPessoa() {
         return idPessoa;
     }

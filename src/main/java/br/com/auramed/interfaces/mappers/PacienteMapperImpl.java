@@ -4,11 +4,17 @@ import br.com.auramed.domain.model.Paciente;
 import br.com.auramed.interfaces.dto.request.PacienteRequestDTO;
 import br.com.auramed.interfaces.dto.response.PacienteResponseDTO;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import org.jboss.logging.Logger;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class PacienteMapperImpl implements PacienteMapper {
+
+    @Inject
+    Logger logger;
 
     @Override
     public Paciente toDomain(PacienteRequestDTO dto) {
@@ -16,7 +22,14 @@ public class PacienteMapperImpl implements PacienteMapper {
             return null;
         }
 
-        Paciente paciente = new Paciente(dto.getIdPessoa(), dto.getIdMedicoResponsavel(), dto.getNrCartaoSUS());
+        Paciente paciente = new Paciente(
+                dto.getIdPessoa(),
+                null, // Será definido pelo controller
+                dto.getNrCartaoSUS()
+        );
+
+        logger.debug("🔧 Paciente mapeado - ID Pessoa: " + dto.getIdPessoa() +
+                " | Médico: (será definido pelo contexto)");
 
         return paciente;
     }

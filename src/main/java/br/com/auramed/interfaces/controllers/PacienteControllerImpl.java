@@ -62,8 +62,8 @@ public class PacienteControllerImpl implements PacienteController {
     }
 
     @Override
-    public List<PacienteResponseDTO> getPacientesPorMedico(Integer idMedicoResponsavel) {
-        List<Paciente> pacientes = pacienteService.listarPorMedico(idMedicoResponsavel);
+    public List<PacienteResponseDTO> getPacientesPorMedico(Integer idMedico) throws EntidadeNaoLocalizadaException {
+        List<Paciente> pacientes = pacienteService.listarPorMedico(idMedico);
         return pacienteMapper.toResponseDTOList(pacientes);
     }
 

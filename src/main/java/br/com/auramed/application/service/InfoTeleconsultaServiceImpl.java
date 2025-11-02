@@ -26,21 +26,16 @@ public class InfoTeleconsultaServiceImpl implements InfoTeleconsultaService {
     @Override
     public InfoTeleconsulta criar(InfoTeleconsulta infoTeleconsulta) {
         try {
-            // Validações da infoTeleconsulta
             infoTeleconsulta.validarHabilidadeDigital();
             infoTeleconsulta.validarCanalLembrete();
             infoTeleconsulta.validarPrecisaCuidador();
             infoTeleconsulta.validarJaFezTele();
-
-            // Verificar se paciente existe
             pacienteRepository.buscarPorId(infoTeleconsulta.getIdPaciente());
 
-            // Verificar se já existe infoTeleconsulta para este paciente
             try {
                 infoTeleconsultaRepository.buscarPorPaciente(infoTeleconsulta.getIdPaciente());
                 throw new RuntimeException("Já existe informação de teleconsulta para este paciente");
             } catch (EntidadeNaoLocalizadaException e) {
-                // Não existe infoTeleconsulta para este paciente, pode criar
             }
 
             InfoTeleconsulta infoSalva = infoTeleconsultaRepository.salvar(infoTeleconsulta);
@@ -61,23 +56,18 @@ public class InfoTeleconsultaServiceImpl implements InfoTeleconsultaService {
     public InfoTeleconsulta editar(Integer idInfoTeleconsulta, InfoTeleconsulta infoTeleconsulta) throws EntidadeNaoLocalizadaException {
         try {
             InfoTeleconsulta infoExistente = infoTeleconsultaRepository.buscarPorId(idInfoTeleconsulta);
-
-            // Validações da infoTeleconsulta
             infoTeleconsulta.validarHabilidadeDigital();
             infoTeleconsulta.validarCanalLembrete();
             infoTeleconsulta.validarPrecisaCuidador();
             infoTeleconsulta.validarJaFezTele();
 
-            // Verificar se paciente existe (se alterado)
             if (!infoExistente.getIdPaciente().equals(infoTeleconsulta.getIdPaciente())) {
                 pacienteRepository.buscarPorId(infoTeleconsulta.getIdPaciente());
 
-                // Verificar se já existe infoTeleconsulta para o novo paciente
                 try {
                     infoTeleconsultaRepository.buscarPorPaciente(infoTeleconsulta.getIdPaciente());
                     throw new RuntimeException("Já existe informação de teleconsulta para este paciente");
                 } catch (EntidadeNaoLocalizadaException e) {
-                    // Não existe infoTeleconsulta para este paciente, pode editar
                 }
             }
 
@@ -129,7 +119,6 @@ public class InfoTeleconsultaServiceImpl implements InfoTeleconsultaService {
     @Override
     public InfoTeleconsulta localizarPorPaciente(Integer idPaciente) throws EntidadeNaoLocalizadaException {
         try {
-            // Verificar se paciente existe
             pacienteRepository.buscarPorId(idPaciente);
 
             InfoTeleconsulta infoTeleconsulta = infoTeleconsultaRepository.buscarPorPaciente(idPaciente);
@@ -155,6 +144,18 @@ public class InfoTeleconsultaServiceImpl implements InfoTeleconsultaService {
         } catch (Exception e) {
             logger.error("Erro ao listar infoTeleconsultas: " + e.getMessage());
             throw new RuntimeException("Falha ao listar infoTeleconsultas: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void removerPorPaciente(Integer idPaciente) throws EntidadeNaoLocalizadaException {
+        try {
+            InfoTeleconsulta info = infoTeleconsultaRepository.buscarPorPaciente(idPaciente);
+            infoTeleconsultaRepository.remover(info.getIdInfoTeleconsulta());
+            logger.info("Info teleconsulta removida para paciente: " + idPaciente);
+        } catch (EntidadeNaoLocalizadaException e) {
+            logger.debug("Info teleconsulta não encontrada para paciente: " + idPaciente);
+            throw e;
         }
     }
 }

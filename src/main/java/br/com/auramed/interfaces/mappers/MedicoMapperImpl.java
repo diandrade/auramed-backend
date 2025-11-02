@@ -45,11 +45,18 @@ public class MedicoMapperImpl implements MedicoMapper {
         MedicoResponseDTO response = new MedicoResponseDTO();
         response.setId(medico.getId());
 
-        PessoaResponseDTO pessoaResponse = pessoaMapper.toResponseDTO(medico.getPessoa());
-        response.setPessoa(pessoaResponse);
+        if (medico.getPessoa() != null) {
+            PessoaResponseDTO pessoaResponse = pessoaMapper.toResponseDTO(medico.getPessoa());
+            response.setPessoa(pessoaResponse);
+            response.setDataCadastro(medico.getPessoa().getDataCadastro());
+        } else {
+            PessoaResponseDTO pessoaVazia = new PessoaResponseDTO();
+            pessoaVazia.setId(medico.getId());
+            response.setPessoa(pessoaVazia);
+        }
+
         response.setCrm(medico.getCrm());
         response.setAceitaTeleconsulta(medico.getAceitaTeleconsulta());
-        response.setDataCadastro(medico.getPessoa().getDataCadastro());
 
         return response;
     }

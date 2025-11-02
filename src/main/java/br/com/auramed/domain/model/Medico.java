@@ -1,54 +1,65 @@
 package br.com.auramed.domain.model;
 
 import br.com.auramed.domain.exception.ValidacaoDeDominioException;
+import java.time.Instant;
 
 public class Medico {
     private Integer id;
     private Pessoa pessoa;
     private String crm;
     private String aceitaTeleconsulta;
+    private Instant dataCadastro;
+
+    public Medico() {
+    }
 
     public Medico(Pessoa pessoa, String crm) {
         this.pessoa = pessoa;
         this.crm = crm;
         this.aceitaTeleconsulta = "S";
+        this.dataCadastro = Instant.now();
     }
 
     public void validarPessoa() {
         if (pessoa == null) {
             throw new ValidacaoDeDominioException("Pessoa é obrigatória para o médico.");
         }
-
-        if (!"MEDICO".equals(pessoa.getTipoPessoa())) {
-            throw new ValidacaoDeDominioException("Tipo de pessoa deve ser MEDICO.");
-        }
+        pessoa.validar();
     }
 
     public void validarCrm() {
-        if (crm == null || crm.isEmpty() || crm.isBlank()) {
-            throw new ValidacaoDeDominioException("CRM está vazio.");
+        if (crm == null || crm.trim().isEmpty()) {
+            throw new ValidacaoDeDominioException("CRM é obrigatório.");
         }
 
-        if (crm.length() > 20) {
-            throw new ValidacaoDeDominioException("CRM deve ter menos de 20 caracteres.");
+        String crmLimpo = crm.trim();
+
+        if (crmLimpo.length() > 20) {
+            throw new ValidacaoDeDominioException("CRM deve ter no máximo 20 caracteres.");
         }
 
-        if (!crm.matches("^[A-Z]{2}-?\\d+$")) {
-            throw new ValidacaoDeDominioException("Formato de CRM inválido. Use formato: UF123456");
+        if (!crmLimpo.matches("^[A-Z]{2}[\\s-]?\\d+$")) {
+            throw new ValidacaoDeDominioException("Formato de CRM inválido. Use formato: UF123456 ou UF-123456");
         }
     }
 
     public void validarAceitaTeleconsulta() {
-        if (aceitaTeleconsulta == null || aceitaTeleconsulta.isEmpty() || aceitaTeleconsulta.isBlank()) {
-            throw new ValidacaoDeDominioException("Campo aceita teleconsulta está vazio.");
+        if (aceitaTeleconsulta == null || aceitaTeleconsulta.trim().isEmpty()) {
+            throw new ValidacaoDeDominioException("Campo aceita teleconsulta é obrigatório.");
         }
 
-        if (!aceitaTeleconsulta.matches("^[SN]$")) {
+        String status = aceitaTeleconsulta.trim().toUpperCase();
+        if (!status.matches("^[SN]$")) {
             throw new ValidacaoDeDominioException("Aceita teleconsulta deve ser S (Sim) ou N (Não).");
         }
     }
 
-    // Getters e Setters
+    public void validar() {
+        validarPessoa();
+        validarCrm();
+        validarAceitaTeleconsulta();
+    }
+
     public Integer getId() {
         return id;
     }
@@ -63,7 +74,9 @@ public class Medico {
 
     public void setPessoa(Pessoa pessoa) {
         this.pessoa = pessoa;
-        validarPessoa();
+        if (pessoa != null) {
+            validarPessoa();
+        }
     }
 
     public String getCrm() {
@@ -72,7 +85,9 @@ public class Medico {
 
     public void setCrm(String crm) {
         this.crm = crm;
-        validarCrm();
+        if (crm != null) {
+            validarCrm();
+        }
     }
 
     public String getAceitaTeleconsulta() {
@@ -81,6 +96,27 @@ public class Medico {
 
     public void setAceitaTeleconsulta(String aceitaTeleconsulta) {
         this.aceitaTeleconsulta = aceitaTeleconsulta;
-        validarAceitaTeleconsulta();
+        if (aceitaTeleconsulta != null) {
+            validarAceitaTeleconsulta();
+        }
+    }
+
+    public Instant getDataCadastro() {
+        return dataCadastro;
+    }
+
+    public void setDataCadastro(Instant dataCadastro) {
+        this.dataCadastro = dataCadastro;
+    }
+
+    @Override
+    public String toString() {
+        return "Medico{" +
+                "id=" + id +
+                ", pessoa=" + (pessoa != null ? pessoa.getNome() : "null") +
+                ", crm='" + crm + '\'' +
+                ", aceitaTeleconsulta='" + aceitaTeleconsulta + '\'' +
+                ", dataCadastro=" + dataCadastro +
+                '}';
     }
 }

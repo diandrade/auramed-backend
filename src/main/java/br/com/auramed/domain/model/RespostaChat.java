@@ -24,14 +24,11 @@ public class RespostaChat {
         this.usuarioId = usuarioId;
     }
 
-    // getters
     public String getResposta() { return resposta; }
     public CategoriaPergunta getCategoria() { return categoria; }
     public Sentimento getSentimento() { return sentimento; }
     public String getFonteResposta() { return fonteResposta; }
     public String getUsuarioId() { return usuarioId; } // NOVO GETTER
-
-    // setters
     public void setResposta(String resposta) { this.resposta = resposta; }
     public void setCategoria(CategoriaPergunta categoria) { this.categoria = categoria; }
     public void setSentimento(Sentimento sentimento) { this.sentimento = sentimento; }

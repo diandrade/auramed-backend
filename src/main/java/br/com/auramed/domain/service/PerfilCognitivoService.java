@@ -11,4 +11,5 @@ public interface PerfilCognitivoService {
     PerfilCognitivo localizarPorId(Integer idPerfilCognitivo) throws EntidadeNaoLocalizadaException;
     PerfilCognitivo localizarPorPaciente(Integer idPaciente) throws EntidadeNaoLocalizadaException;
     List<PerfilCognitivo> listarTodos();
+    void removerPorPaciente(Integer idPaciente) throws EntidadeNaoLocalizadaException;
 }

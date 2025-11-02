@@ -21,11 +21,27 @@ public class JdbcMedicoRepository implements MedicoRepository {
     }
 
     private Medico mapResultSetToMedico(ResultSet rs) throws SQLException {
-        Pessoa pessoa = new Pessoa(null, null, null);
+        Pessoa pessoa = new Pessoa(
+                rs.getString("NM_PESSOA"),
+                rs.getString("NR_TELEFONE"),
+                rs.getString("TP_PESSOA")
+        );
+
         pessoa.setId(rs.getInt("ID_PESSOA"));
+        pessoa.setEmail(rs.getString("NM_EMAIL"));
+        pessoa.setCpf(rs.getString("NR_CPF"));
+        pessoa.setDataNascimento(rs.getDate("DT_NASCIMENTO") != null ?
+                rs.getDate("DT_NASCIMENTO").toLocalDate() : null);
+        pessoa.setGenero(rs.getString("ST_GENERO"));
+        Timestamp timestampCadastro = rs.getTimestamp("DT_CADASTRO");
+        if (timestampCadastro != null) {
+            pessoa.setDataCadastro(timestampCadastro.toLocalDateTime());
+        }
+
+        pessoa.setAtivo(rs.getString("IN_ATIVO"));
 
         Medico medico = new Medico(pessoa, rs.getString("NR_CRM"));
-        medico.setId(rs.getInt("ID_PESSOA")); // ID do médico é o mesmo da pessoa
+        medico.setId(rs.getInt("ID_PESSOA"));
         medico.setAceitaTeleconsulta(rs.getString("IN_ACEITA_TELECONSULTA"));
 
         return medico;
@@ -34,7 +50,9 @@ public class JdbcMedicoRepository implements MedicoRepository {
     @Override
     public Medico buscarPorId(Integer id) throws EntidadeNaoLocalizadaException {
         String sql = "SELECT m.T_ARMD_PESSOA_ID_PESSOA as ID_PESSOA, m.NR_CRM, m.IN_ACEITA_TELECONSULTA, " +
-                "p.IN_ATIVO FROM T_ARMD_MEDICO m " +
+                "p.NM_PESSOA, p.NM_EMAIL, p.NR_CPF, p.DT_NASCIMENTO, p.ST_GENERO, p.NR_TELEFONE, " +
+                "p.TP_PESSOA, p.DT_CADASTRO, p.IN_ATIVO " +
+                "FROM T_ARMD_MEDICO m " +
                 "INNER JOIN T_ARMD_PESSOA p ON m.T_ARMD_PESSOA_ID_PESSOA = p.ID_PESSOA " +
                 "WHERE m.T_ARMD_PESSOA_ID_PESSOA = ? AND p.IN_ATIVO = 'S'";
 
@@ -56,9 +74,37 @@ public class JdbcMedicoRepository implements MedicoRepository {
     }
 
     @Override
+    public List<Medico> buscarTodos() {
+        String sql = "SELECT m.T_ARMD_PESSOA_ID_PESSOA as ID_PESSOA, m.NR_CRM, m.IN_ACEITA_TELECONSULTA, " +
+                "p.NM_PESSOA, p.NM_EMAIL, p.NR_CPF, p.DT_NASCIMENTO, p.ST_GENERO, p.NR_TELEFONE, " +
+                "p.TP_PESSOA, p.DT_CADASTRO, p.IN_ATIVO " +
+                "FROM T_ARMD_MEDICO m " +
+                "INNER JOIN T_ARMD_PESSOA p ON m.T_ARMD_PESSOA_ID_PESSOA = p.ID_PESSOA " +
+                "WHERE p.IN_ATIVO = 'S'";
+
+        List<Medico> medicos = new ArrayList<>();
+
+        try (Connection conn = databaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                medicos.add(mapResultSetToMedico(rs));
+            }
+
+            return medicos;
+
+        } catch (SQLException e) {
+            throw new InfrastructureException("Erro ao buscar todos médicos: " + e.getMessage());
+        }
+    }
+
+    @Override
     public Medico buscarPorCrm(String crm) throws EntidadeNaoLocalizadaException {
         String sql = "SELECT m.T_ARMD_PESSOA_ID_PESSOA as ID_PESSOA, m.NR_CRM, m.IN_ACEITA_TELECONSULTA, " +
-                "p.IN_ATIVO FROM T_ARMD_MEDICO m " +
+                "p.NM_PESSOA, p.NM_EMAIL, p.NR_CPF, p.DT_NASCIMENTO, p.ST_GENERO, p.NR_TELEFONE, " +
+                "p.TP_PESSOA, p.DT_CADASTRO, p.IN_ATIVO " +
+                "FROM T_ARMD_MEDICO m " +
                 "INNER JOIN T_ARMD_PESSOA p ON m.T_ARMD_PESSOA_ID_PESSOA = p.ID_PESSOA " +
                 "WHERE m.NR_CRM = ? AND p.IN_ATIVO = 'S'";
 
@@ -81,7 +127,9 @@ public class JdbcMedicoRepository implements MedicoRepository {
     @Override
     public Medico buscarPorPessoaId(Integer pessoaId) throws EntidadeNaoLocalizadaException {
         String sql = "SELECT m.T_ARMD_PESSOA_ID_PESSOA as ID_PESSOA, m.NR_CRM, m.IN_ACEITA_TELECONSULTA, " +
-                "p.IN_ATIVO FROM T_ARMD_MEDICO m " +
+                "p.NM_PESSOA, p.NM_EMAIL, p.NR_CPF, p.DT_NASCIMENTO, p.ST_GENERO, p.NR_TELEFONE, " +
+                "p.TP_PESSOA, p.DT_CADASTRO, p.IN_ATIVO " +
+                "FROM T_ARMD_MEDICO m " +
                 "INNER JOIN T_ARMD_PESSOA p ON m.T_ARMD_PESSOA_ID_PESSOA = p.ID_PESSOA " +
                 "WHERE m.T_ARMD_PESSOA_ID_PESSOA = ? AND p.IN_ATIVO = 'S'";
 
@@ -102,32 +150,11 @@ public class JdbcMedicoRepository implements MedicoRepository {
     }
 
     @Override
-    public List<Medico> buscarTodos() {
-        String sql = "SELECT m.T_ARMD_PESSOA_ID_PESSOA as ID_PESSOA, m.NR_CRM, m.IN_ACEITA_TELECONSULTA, " +
-                "p.IN_ATIVO FROM T_ARMD_MEDICO m " +
-                "INNER JOIN T_ARMD_PESSOA p ON m.T_ARMD_PESSOA_ID_PESSOA = p.ID_PESSOA " +
-                "WHERE p.IN_ATIVO = 'S'";
-        List<Medico> medicos = new ArrayList<>();
-
-        try (Connection conn = databaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-
-            while (rs.next()) {
-                medicos.add(mapResultSetToMedico(rs));
-            }
-
-            return medicos;
-
-        } catch (SQLException e) {
-            throw new InfrastructureException("Erro ao buscar todos médicos: " + e.getMessage());
-        }
-    }
-
-    @Override
     public List<Medico> buscarPorEspecialidade(Integer idEspecialidade) {
         String sql = "SELECT DISTINCT m.T_ARMD_PESSOA_ID_PESSOA as ID_PESSOA, m.NR_CRM, m.IN_ACEITA_TELECONSULTA, " +
-                "p.IN_ATIVO FROM T_ARMD_MEDICO m " +
+                "p.NM_PESSOA, p.NM_EMAIL, p.NR_CPF, p.DT_NASCIMENTO, p.ST_GENERO, p.NR_TELEFONE, " +
+                "p.TP_PESSOA, p.DT_CADASTRO, p.IN_ATIVO " +
+                "FROM T_ARMD_MEDICO m " +
                 "INNER JOIN T_ARMD_PESSOA p ON m.T_ARMD_PESSOA_ID_PESSOA = p.ID_PESSOA " +
                 "INNER JOIN T_ARMD_MEDICO_ESPECIALIDADE me ON m.T_ARMD_PESSOA_ID_PESSOA = me.T_ARMD_MEDICO_ID_PESSOA " +
                 "WHERE me.T_ARMD_ESPECIALIDADE_ID_ESPECIALIDADE = ? AND p.IN_ATIVO = 'S'";
@@ -153,7 +180,9 @@ public class JdbcMedicoRepository implements MedicoRepository {
     @Override
     public List<Medico> buscarPorAceitaTeleconsulta(String aceitaTeleconsulta) {
         String sql = "SELECT m.T_ARMD_PESSOA_ID_PESSOA as ID_PESSOA, m.NR_CRM, m.IN_ACEITA_TELECONSULTA, " +
-                "p.IN_ATIVO FROM T_ARMD_MEDICO m " +
+                "p.NM_PESSOA, p.NM_EMAIL, p.NR_CPF, p.DT_NASCIMENTO, p.ST_GENERO, p.NR_TELEFONE, " +
+                "p.TP_PESSOA, p.DT_CADASTRO, p.IN_ATIVO " +
+                "FROM T_ARMD_MEDICO m " +
                 "INNER JOIN T_ARMD_PESSOA p ON m.T_ARMD_PESSOA_ID_PESSOA = p.ID_PESSOA " +
                 "WHERE m.IN_ACEITA_TELECONSULTA = ? AND p.IN_ATIVO = 'S'";
         List<Medico> medicos = new ArrayList<>();
@@ -177,7 +206,7 @@ public class JdbcMedicoRepository implements MedicoRepository {
 
     @Override
     public List<Medico> buscarAtivos() {
-        return buscarTodos(); // Já filtra por ativos
+        return buscarTodos();
     }
 
     @Override

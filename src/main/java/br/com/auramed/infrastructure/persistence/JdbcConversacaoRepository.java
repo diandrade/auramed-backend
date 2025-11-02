@@ -55,7 +55,6 @@ public class JdbcConversacaoRepository implements ConversacaoRepository {
 
             try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    // Convertendo int para String
                     conversacao.setId(String.valueOf(generatedKeys.getInt(1)));
                 }
             }

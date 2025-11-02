@@ -37,7 +37,6 @@ public class ChatbotServiceImpl implements ChatbotService {
         try {
             logger.info("Processando pergunta do usuário: " + usuarioId + " - " + perguntaUsuario);
 
-            // 1. Buscar na base de conhecimento primeiro
             BaseConhecimento melhorResposta = baseConhecimentoService
                     .buscarMelhorResposta(perguntaUsuario);
 
@@ -54,11 +53,9 @@ public class ChatbotServiceImpl implements ChatbotService {
                 logger.info("Resposta gerada pelo Gemini");
             }
 
-            // 3. Analisar sentimento e categoria
             Sentimento sentimento = analiseSentimentalService.analisar(perguntaUsuario);
             CategoriaPergunta categoria = categorizacaoService.categorizar(perguntaUsuario);
 
-            // 4. Salvar conversa
             Conversacao conversa = new Conversacao();
             conversa.setUsuarioId(usuarioId);
             conversa.setPerguntaUsuario(perguntaUsuario);
@@ -70,7 +67,6 @@ public class ChatbotServiceImpl implements ChatbotService {
             conversacaoRepository.salvar(conversa);
             logger.info("Conversa salva com sucesso para usuário: " + usuarioId);
 
-            // 5. Retornar resposta incluindo o usuarioId
             return new RespostaChat(respostaFinal, categoria, sentimento, fonteResposta, usuarioId);
 
         } catch (Exception e) {

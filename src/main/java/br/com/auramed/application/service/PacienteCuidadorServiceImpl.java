@@ -30,16 +30,10 @@ public class PacienteCuidadorServiceImpl implements PacienteCuidadorService {
     @Override
     public PacienteCuidador associar(PacienteCuidador pacienteCuidador) {
         try {
-            // Validações da associação
             pacienteCuidador.validarTipoRelacionamento();
-
-            // Verificar se paciente existe e está ativo
             pacienteRepository.buscarPorId(pacienteCuidador.getIdPaciente());
-
-            // Verificar se cuidador existe e está ativo
             cuidadorRepository.buscarPorId(pacienteCuidador.getIdCuidador());
 
-            // Verificar se associação já existe
             if (pacienteCuidadorRepository.existeAssociacao(pacienteCuidador.getIdPaciente(), pacienteCuidador.getIdCuidador())) {
                 throw new RuntimeException("Associação entre paciente e cuidador já existe");
             }
@@ -62,7 +56,6 @@ public class PacienteCuidadorServiceImpl implements PacienteCuidadorService {
     @Override
     public void desassociar(Integer idPaciente, Integer idCuidador) throws EntidadeNaoLocalizadaException {
         try {
-            // Verificar se a associação existe
             pacienteCuidadorRepository.buscarPorIds(idPaciente, idCuidador);
 
             pacienteCuidadorRepository.remover(idPaciente, idCuidador);
@@ -97,7 +90,6 @@ public class PacienteCuidadorServiceImpl implements PacienteCuidadorService {
     @Override
     public List<PacienteCuidador> listarCuidadoresDoPaciente(Integer idPaciente) {
         try {
-            // Verificar se paciente existe
             pacienteRepository.buscarPorId(idPaciente);
 
             List<PacienteCuidador> associacoes = pacienteCuidadorRepository.buscarPorPaciente(idPaciente);
@@ -116,7 +108,6 @@ public class PacienteCuidadorServiceImpl implements PacienteCuidadorService {
     @Override
     public List<PacienteCuidador> listarPacientesDoCuidador(Integer idCuidador) {
         try {
-            // Verificar se cuidador existe
             cuidadorRepository.buscarPorId(idCuidador);
 
             List<PacienteCuidador> associacoes = pacienteCuidadorRepository.buscarPorCuidador(idCuidador);

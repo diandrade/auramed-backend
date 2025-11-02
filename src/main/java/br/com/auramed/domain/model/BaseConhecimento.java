@@ -8,7 +8,6 @@ public class BaseConhecimento {
     private String palavrasChave;
     private Double confianca;
 
-    // Construtores, getters e setters
     public BaseConhecimento() {
     }
 

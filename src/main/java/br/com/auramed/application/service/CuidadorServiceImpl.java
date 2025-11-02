@@ -26,11 +26,9 @@ public class CuidadorServiceImpl implements CuidadorService {
     @Override
     public Cuidador criar(Cuidador cuidador) {
         try {
-            // Validações do cuidador
             cuidador.validarParentesco();
             cuidador.validarTempoCuidado();
 
-            // Verificar se a pessoa existe e é do tipo CUIDADOR
             var pessoa = pessoaRepository.buscarPorId(cuidador.getIdPessoa());
             if (!"CUIDADOR".equals(pessoa.getTipoPessoa())) {
                 throw new RuntimeException("A pessoa deve ser do tipo CUIDADOR");
@@ -54,8 +52,6 @@ public class CuidadorServiceImpl implements CuidadorService {
     public Cuidador editar(Integer idPessoa, Cuidador cuidador) throws EntidadeNaoLocalizadaException {
         try {
             Cuidador cuidadorExistente = cuidadorRepository.buscarPorId(idPessoa);
-
-            // Validações do cuidador
             cuidador.validarParentesco();
             cuidador.validarTempoCuidado();
 
