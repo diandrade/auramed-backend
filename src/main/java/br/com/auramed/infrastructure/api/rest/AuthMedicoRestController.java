@@ -271,12 +271,12 @@ public class AuthMedicoRestController {
             AuthMedico authMedico = authMedicoRepository.buscarPorEmail("joao.silva@hospital.com");
             String hashNoBanco = authMedico.getSenhaHash();
 
-            boolean resultadoDirect = org.mindrot.jbcrypt.BCrypt.checkpw(senha, hashNoBanco);
+            boolean resultadoDirect = passwordService.checkPassword(senha, hashNoBanco);
             boolean resultadoService = passwordService.checkPassword(senha, hashNoBanco);
 
             String response = "Senha testada: " + senha +
                     "\nHash no banco: " + hashNoBanco +
-                    "\nBCrypt direto: " + resultadoDirect +
+                    "\nBCrypt (via Service): " + resultadoDirect +
                     "\nPasswordService: " + resultadoService +
                     "\nHashes iguais: " + hashNoBanco.equals(passwordService.hashPassword(senha));
 

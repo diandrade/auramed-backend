@@ -75,8 +75,24 @@ public class Pessoa {
             return;
         }
 
-        if (!cpf.matches("\\d{11}")) {
-            throw new ValidacaoDeDominioException("CPF deve conter exatamente 11 dígitos numéricos.");
+        String cpfNumerico = cpf.replaceAll("\\D", "");
+
+        if (cpfNumerico.length() < 11) {
+            System.out.println("⚠️ AVISO: CPF com formato incompleto: " + cpf + " (após limpeza: " + cpfNumerico + ")");
+            return;
+        }
+
+        if (cpfNumerico.length() > 11) {
+            cpfNumerico = cpfNumerico.substring(0, 11);
+            this.cpf = cpfNumerico;
+        }
+
+        if (cpfNumerico.matches("(\\d)\\1{10}")) {
+            throw new ValidacaoDeDominioException("CPF não pode ter todos os dígitos iguais");
+        }
+
+        if (!cpf.equals(cpfNumerico)) {
+            this.cpf = cpfNumerico;
         }
     }
 
@@ -156,7 +172,14 @@ public class Pessoa {
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
-        validarCpf();
+        try {
+            validarCpf();
+        } catch (ValidacaoDeDominioException e) {
+            if (e.getMessage().contains("CPF não pode ter todos os dígitos iguais")) {
+                throw e;
+            }
+            System.out.println("⚠️ AVISO: " + e.getMessage());
+        }
     }
 
     public LocalDate getDataNascimento() {

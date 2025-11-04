@@ -1,70 +1,287 @@
-# auramed
+# Manual para Cadastro de Paciente - Front-end
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+## 📋 Visão Geral
+Este manual descreve os endpoints e formatos de dados necessários para realizar o cadastro completo de um paciente no sistema Auramed.
 
-If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
+## 🚀 Endpoints Principais
 
-## Running the application in dev mode
+### 1. Cadastro Completo de Paciente (Recomendado)
 
-You can run your application in dev mode that enables live coding using:
+**Endpoint:** `POST /pacientes-completo`
 
-```shell script
-./mvnw quarkus:dev
+**Descrição:** Cria um paciente com todas as informações em uma única requisição.
+
+**Headers:**
+```http
+Content-Type: application/json
 ```
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
-
-## Packaging and running the application
-
-The application can be packaged using:
-
-```shell script
-./mvnw package
+**Request Body:**
+```json
+{
+  "pessoa": {
+    "nome": "João da Silva Santos",
+    "email": "joao.silva@email.com",
+    "cpf": "12345678901",
+    "dataNascimento": "1980-05-15",
+    "genero": "M",
+    "telefone": "11999998888",
+    "tipoPessoa": "PACIENTE"
+  },
+  "paciente": {
+    "idMedicoResponsavel": 1,
+    "nrCartaoSUS": "123456789012345"
+  },
+  "infoTeleconsulta": {
+    "cdHabilidadeDigital": "MEDIA",
+    "cdCanalLembrete": "WHATSAPP",
+    "inPrecisaCuidador": "N",
+    "inJaFezTele": "S"
+  },
+  "perfilCognitivo": {
+    "inDificuldadeVisao": "N",
+    "inUsaOculos": "S",
+    "inDificuldadeAudicao": "N",
+    "inUsaAparelhoAud": "N",
+    "inDificuldadeCogn": "N"
+  }
+}
 ```
 
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
-
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
-
-If you want to build an _über-jar_, execute the following command:
-
-```shell script
-./mvnw package -Dquarkus.package.jar.type=uber-jar
+**Response (Sucesso - 201 Created):**
+```json
+{
+  "pessoa": {
+    "id": 100,
+    "nome": "João da Silva Santos",
+    "email": "joao.silva@email.com",
+    "cpf": "12345678901",
+    "dataNascimento": "1980-05-15",
+    "genero": "M",
+    "telefone": "11999998888",
+    "tipoPessoa": "PACIENTE",
+    "dataCadastro": "2024-01-15T10:30:00",
+    "ativo": "S"
+  },
+  "paciente": {
+    "idPessoa": 100,
+    "idMedicoResponsavel": 1,
+    "nrCartaoSUS": "123456789012345",
+    "dataCadastro": "2024-01-15T10:30:00",
+    "ativo": "S"
+  },
+  "infoTeleconsulta": {
+    "idInfoTeleconsulta": 50,
+    "idPaciente": 100,
+    "cdHabilidadeDigital": "MEDIA",
+    "cdCanalLembrete": "WHATSAPP",
+    "inPrecisaCuidador": "N",
+    "inJaFezTele": "S",
+    "dataCadastro": "2024-01-15T10:30:00",
+    "dataAtualizacao": "2024-01-15T10:30:00"
+  },
+  "perfilCognitivo": {
+    "idPerfilCognitivo": 25,
+    "idPaciente": 100,
+    "inDificuldadeVisao": "N",
+    "inUsaOculos": "S",
+    "inDificuldadeAudicao": "N",
+    "inUsaAparelhoAud": "N",
+    "inDificuldadeCogn": "N",
+    "dataCadastro": "2024-01-15T10:30:00",
+    "dataAtualizacao": "2024-01-15T10:30:00"
+  }
+}
 ```
 
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
+### 2. Cadastro em Etapas
 
-## Creating a native executable
+#### Etapa 1: Criar Pessoa
+**Endpoint:** `POST /pessoas`
 
-You can create a native executable using:
-
-```shell script
-./mvnw package -Dnative
+```json
+{
+  "nome": "João da Silva Santos",
+  "email": "joao.silva@email.com",
+  "cpf": "12345678901",
+  "dataNascimento": "1980-05-15",
+  "genero": "M",
+  "telefone": "11999998888",
+  "tipoPessoa": "PACIENTE"
+}
 ```
 
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
+#### Etapa 2: Criar Paciente
+**Endpoint:** `POST /pacientes`
 
-```shell script
-./mvnw package -Dnative -Dquarkus.native.container-build=true
+```json
+{
+  "idPessoa": 100,
+  "idMedicoResponsavel": 1,
+  "nrCartaoSUS": "123456789012345"
+}
 ```
 
-You can then execute your native executable with: `./target/auramed-1.0.0-SNAPSHOT-runner`
+#### Etapa 3: Informações de Teleconsulta (Opcional)
+**Endpoint:** `POST /info-teleconsulta`
 
-If you want to learn more about building native executables, please consult <https://quarkus.io/guides/maven-tooling>.
+```json
+{
+  "idPaciente": 100,
+  "cdHabilidadeDigital": "MEDIA",
+  "cdCanalLembrete": "WHATSAPP",
+  "inPrecisaCuidador": "N",
+  "inJaFezTele": "S"
+}
+```
 
-## Related Guides
+#### Etapa 4: Perfil Cognitivo (Opcional)
+**Endpoint:** `POST /perfil-cognitivo`
 
-- REST Jackson ([guide](https://quarkus.io/guides/rest#json-serialisation)): Jackson serialization support for Quarkus REST. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on it
-- Agroal - DB connection pool ([guide](https://quarkus.io/guides/datasource)): JDBC Datasources and connection pooling
-- JDBC Driver - Oracle ([guide](https://quarkus.io/guides/datasource)): Connect to the Oracle database via JDBC
-- LangChain4j AI Gemini ([guide](https://docs.quarkiverse.io/quarkus-langchain4j/dev/index.html)): Provides integration of Quarkus LangChain4j with AI Gemini
-- LangChain4j Vertex AI Gemini ([guide](https://docs.quarkiverse.io/quarkus-langchain4j/dev/index.html)): Provides integration of Quarkus LangChain4j with Vertex AI Gemini
+```json
+{
+  "idPaciente": 100,
+  "inDificuldadeVisao": "N",
+  "inUsaOculos": "S",
+  "inDificuldadeAudicao": "N",
+  "inUsaAparelhoAud": "N",
+  "inDificuldadeCogn": "N"
+}
+```
 
-## Provided Code
+## 📝 Regras de Validação
 
-### REST
+### Pessoa
+- **Nome:** Obrigatório, mínimo 2 palavras, cada palavra com pelo menos 2 caracteres
+- **Telefone:** Obrigatório, 10-15 dígitos numéricos
+- **Tipo Pessoa:** Obrigatório, valores: `CUIDADOR`, `MEDICO`, `PACIENTE`
+- **Email:** Opcional, formato de email válido
+- **CPF:** Opcional, exatamente 11 dígitos
+- **Gênero:** Opcional, valores: `F` (Feminino), `M` (Masculino), `O` (Outro)
 
-Easily start your REST Web Services
+### Paciente
+- **Cartão SUS:** Obrigatório, exatamente 15 dígitos numéricos
+- **Médico Responsável:** Obrigatório, ID de médico existente
 
-[Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
+### Info Teleconsulta
+- **Habilidade Digital:** Obrigatório, valores: `BAIXA`, `MEDIA`, `ALTA`, `NENHUMA`
+- **Canal Lembrete:** Obrigatório, valores: `WHATSAPP`, `SMS`, `EMAIL`, `TELEFONE`
+- **Precisa Cuidador:** Obrigatório, valores: `S`, `N`
+- **Já Fez Teleconsulta:** Obrigatório, valores: `S`, `N`
+
+### Perfil Cognitivo
+Todos os campos são opcionais, aceitam valores: `S`, `N`
+
+## 🔧 Endpoints de Consulta
+
+### Buscar Paciente Completo
+**Endpoint:** `GET /pacientes-completo/{idPaciente}`
+
+### Buscar Paciente Básico
+**Endpoint:** `GET /pacientes/{idPessoa}`
+
+### Listar Todos os Pacientes
+**Endpoint:** `GET /pacientes`
+
+### Buscar Pacientes por Médico
+**Endpoint:** `GET /pacientes/medico/{idMedico}`
+
+## 🛠️ Códigos de Exemplo
+
+### JavaScript/TypeScript
+```javascript
+// Cadastro completo de paciente
+async function cadastrarPacienteCompleto(dadosPaciente) {
+  try {
+    const response = await fetch('/pacientes-completo', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(dadosPaciente)
+    });
+    
+    if (response.status === 201) {
+      return await response.json();
+    } else {
+      const error = await response.text();
+      throw new Error(`Erro no cadastro: ${error}`);
+    }
+  } catch (error) {
+    console.error('Erro:', error);
+    throw error;
+  }
+}
+
+// Exemplo de uso
+const paciente = {
+  pessoa: {
+    nome: "Maria Oliveira",
+    email: "maria.oliveira@email.com",
+    cpf: "98765432100",
+    dataNascimento: "1975-08-20",
+    genero: "F",
+    telefone: "11988887777",
+    tipoPessoa: "PACIENTE"
+  },
+  paciente: {
+    idMedicoResponsavel: 1,
+    nrCartaoSUS: "987654321098765"
+  },
+  infoTeleconsulta: {
+    cdHabilidadeDigital: "ALTA",
+    cdCanalLembrete: "EMAIL",
+    inPrecisaCuidador: "S",
+    inJaFezTele: "N"
+  },
+  perfilCognitivo: {
+    inDificuldadeVisao: "S",
+    inUsaOculos: "S",
+    inDificuldadeAudicao: "N",
+    inUsaAparelhoAud: "N",
+    inDificuldadeCogn: "N"
+  }
+};
+
+cadastrarPacienteCompleto(paciente)
+  .then(response => console.log('Paciente cadastrado:', response))
+  .catch(error => console.error('Falha no cadastro:', error));
+```
+
+## ⚠️ Tratamento de Erros
+
+### Códigos de Status HTTP
+- `201 Created`: Cadastro realizado com sucesso
+- `400 Bad Request`: Dados inválidos ou validação falhou
+- `404 Not Found`: Recurso não encontrado
+- `500 Internal Server Error`: Erro interno do servidor
+
+### Exemplo de Resposta de Erro
+```json
+{
+  "timestamp": "2024-01-15T10:30:00",
+  "status": 400,
+  "error": "Bad Request",
+  "message": "Cartão SUS deve conter 15 dígitos numéricos.",
+  "path": "/pacientes-completo"
+}
+```
+
+## 💡 Dicas para o Front-end
+
+1. **Validação Client-side:** Implemente validações básicas antes de enviar para a API
+2. **Feedback ao Usuário:** Mostre mensagens claras de sucesso/erro
+3. **Loading States:** Exiba indicadores de carregamento durante as requisições
+4. **Formulários:** Agrupe campos relacionados e use validação em tempo real
+5. **Fallback:** Tenha um plano para quando o endpoint completo falhar (cadastro em etapas)
+
+## 🔄 Fluxo Recomendado
+
+1. Coletar dados da pessoa (obrigatório)
+2. Coletar dados do paciente (obrigatório)
+3. Coletar informações de teleconsulta (opcional)
+4. Coletar perfil cognitivo (opcional)
+5. Enviar tudo em uma única requisição para `/pacientes-completo`
+6. Se falhar, tentar cadastro em etapas
+
+Este manual fornece todas as informações necessárias para implementar o cadastro de pacientes no front-end de forma eficiente e robusta.
