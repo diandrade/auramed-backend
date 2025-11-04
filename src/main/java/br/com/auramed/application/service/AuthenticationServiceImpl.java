@@ -115,8 +115,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new EntidadeNaoLocalizadaException("Credenciais inválidas");
         }
 
-        boolean senhaCorreta = org.mindrot.jbcrypt.BCrypt.checkpw(senha, authMedico.getSenhaHash());
-        System.out.println("DEBUG: BCrypt direto: " + senhaCorreta);
+        boolean senhaCorreta = passwordService.checkPassword(senha, authMedico.getSenhaHash());
+        System.out.println("DEBUG: BCrypt via PasswordService: " + senhaCorreta);
 
         if (!senhaCorreta) {
             throw new EntidadeNaoLocalizadaException("Credenciais inválidas");

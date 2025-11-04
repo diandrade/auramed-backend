@@ -36,7 +36,7 @@ public class AuthMedicoControllerImpl implements AuthMedicoController {
     @Override
     public AuthMedicoResponseDTO criarAuthMedico(AuthMedicoRequestDTO authMedicoRequest) throws EntidadeNaoLocalizadaException {
         try {
-            String senhaHash = org.mindrot.jbcrypt.BCrypt.hashpw(authMedicoRequest.getSenha(), org.mindrot.jbcrypt.BCrypt.gensalt(12));
+            String senhaHash = passwordService.hashPassword(authMedicoRequest.getSenha());
             authMedicoRequest.setSenha(senhaHash);
 
             AuthMedico authMedico = authMedicoMapper.toDomain(authMedicoRequest);
@@ -99,7 +99,7 @@ public class AuthMedicoControllerImpl implements AuthMedicoController {
 
     @Override
     public AuthMedicoResponseDTO atualizarSenha(Integer id, String novaSenha) throws EntidadeNaoLocalizadaException {
-        String novaSenhaHash = org.mindrot.jbcrypt.BCrypt.hashpw(novaSenha, org.mindrot.jbcrypt.BCrypt.gensalt(12));
+        String novaSenhaHash = passwordService.hashPassword(novaSenha);
         AuthMedico authMedicoAtualizado = this.authMedicoService.atualizarSenha(id, novaSenhaHash);
         return authMedicoMapper.toResponseDTO(authMedicoAtualizado);
     }
