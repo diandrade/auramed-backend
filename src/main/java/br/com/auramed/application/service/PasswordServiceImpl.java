@@ -1,7 +1,7 @@
 package br.com.auramed.application.service;
 
 import br.com.auramed.domain.service.PasswordService;
-import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
