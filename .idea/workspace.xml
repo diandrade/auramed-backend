@@ -6,22 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="675b3487-d989-468c-acfb-2e22e775cb51" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/application/service/GeminiServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/application/service/GeminiServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/domain/service/GeminiService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/domain/service/GeminiService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/infrastructure/api/rest/ChatbotRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/infrastructure/api/rest/ChatbotRestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/infrastructure/config/CorsConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/infrastructure/config/CorsConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/application/service/ChatbotServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/application/service/ChatbotServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/domain/model/CategoriaPergunta.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/domain/model/CategoriaPergunta.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/auramed-dev.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/auramed-dev.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/build-analytics-event.json" beforeDir="false" afterPath="$PROJECT_DIR$/target/build-analytics-event.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/build-metrics.json" beforeDir="false" afterPath="$PROJECT_DIR$/target/build-metrics.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/application/service/GeminiServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/application/service/GeminiServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/domain/service/GeminiService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/domain/service/GeminiService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/infrastructure/api/rest/ChatbotRestController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/infrastructure/api/rest/ChatbotRestController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/infrastructure/config/CorsConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/infrastructure/config/CorsConfig.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/null/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/null/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/null/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/null/inputFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/null/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/null/createdFiles.lst" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/quarkus/bootstrap/dev-app-model.dat" beforeDir="false" afterPath="$PROJECT_DIR$/target/quarkus/bootstrap/dev-app-model.dat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/quarkus/bootstrap/test-app-model.dat" beforeDir="false" afterPath="$PROJECT_DIR$/target/quarkus/bootstrap/test-app-model.dat" afterDir="false" />
     </list>
@@ -55,21 +44,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "feature/chatbot-gemini",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/infrastructure/config",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "two.files.diff.last.used.folder": "/home/diandrade/Desktop/auramed"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/chatbot-gemini&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/infrastructure/config&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;two.files.diff.last.used.folder&quot;: &quot;/home/diandrade/Desktop/auramed&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/java/br/com/auramed/infrastructure/config" />
