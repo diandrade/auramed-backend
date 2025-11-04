@@ -36,6 +36,6 @@ public class PasswordServiceImpl implements PasswordService {
 
     @Override
     public boolean isHashedPassword(String password) {
-        return password != null && password.startsWith("$2a$");
+        return password != null && password.matches("^\\$2[aby]\\$.+");
     }
 }
