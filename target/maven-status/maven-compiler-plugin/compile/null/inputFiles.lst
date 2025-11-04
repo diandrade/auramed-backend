@@ -56,6 +56,7 @@
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/domain/service/CuidadorService.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/domain/service/EnderecoService.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/domain/service/EspecialidadeService.java
+/home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/domain/service/GeminiAiService.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/domain/service/GeminiService.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/domain/service/InfoTeleconsultaService.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/domain/service/MedicoEspecialidadeService.java

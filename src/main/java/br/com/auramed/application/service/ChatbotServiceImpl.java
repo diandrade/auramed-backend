@@ -45,11 +45,11 @@ public class ChatbotServiceImpl implements ChatbotService {
 
             if (melhorResposta != null && melhorResposta.getConfianca() > 0.85) {
                 respostaFinal = melhorResposta.getResposta();
-                fonteResposta = "base_conhecimento";
+                fonteResposta = "BASE_CONHECIMENTO";
                 logger.info("Resposta encontrada na base de conhecimento");
             } else {
                 respostaFinal = geminiService.gerarResposta(perguntaUsuario, melhorResposta);
-                fonteResposta = "gemini";
+                fonteResposta = "GEMINI";
                 logger.info("Resposta gerada pelo Gemini");
             }
 

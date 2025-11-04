@@ -58,6 +58,7 @@ br/com/auramed/interfaces/dto/request/PerfilCognitivoRequestDTO.class
 br/com/auramed/domain/service/InfoTeleconsultaService.class
 br/com/auramed/infrastructure/api/rest/PacienteRestController.class
 br/com/auramed/domain/repository/AuthMedicoRepository.class
+br/com/auramed/domain/service/GeminiAiService.class
 br/com/auramed/application/service/GeminiServiceImpl.class
 br/com/auramed/infrastructure/exception/InfrastructureException.class
 br/com/auramed/interfaces/controllers/MedicoController.class
