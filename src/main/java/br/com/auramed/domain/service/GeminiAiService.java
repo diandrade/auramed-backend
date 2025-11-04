@@ -22,4 +22,12 @@ public interface GeminiAiService {
         - Limite a resposta a 500 palavras
         """)
     String responderPerguntaMedica(String pergunta);
+
+    @UserMessage("""
+        Analise o sentimento do seguinte texto em português e responda APENAS com uma destas palavras:
+        POSITIVO, NEUTRO ou NEGATIVO.
+        
+        Texto: "{texto}"
+        """)
+    String analisarSentimento(String texto);
 }

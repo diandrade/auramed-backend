@@ -6,13 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="675b3487-d989-468c-acfb-2e22e775cb51" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/application/service/ChatbotServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/application/service/ChatbotServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/domain/model/CategoriaPergunta.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/domain/model/CategoriaPergunta.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/auramed-dev.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/auramed-dev.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/build-analytics-event.json" beforeDir="false" afterPath="$PROJECT_DIR$/target/build-analytics-event.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/application/service/AnaliseSentimentalServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/application/service/AnaliseSentimentalServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/domain/service/GeminiAiService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/domain/service/GeminiAiService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/build-metrics.json" beforeDir="false" afterPath="$PROJECT_DIR$/target/build-metrics.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/quarkus/bootstrap/dev-app-model.dat" beforeDir="false" afterPath="$PROJECT_DIR$/target/quarkus/bootstrap/dev-app-model.dat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/quarkus/bootstrap/test-app-model.dat" beforeDir="false" afterPath="$PROJECT_DIR$/target/quarkus/bootstrap/test-app-model.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/application/service/AnaliseSentimentalServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/application/service/AnaliseSentimentalServiceImpl.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
