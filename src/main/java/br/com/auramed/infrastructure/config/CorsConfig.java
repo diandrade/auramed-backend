@@ -20,14 +20,28 @@ public class CorsConfig implements ContainerResponseFilter {
     public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) {
         String origin = requestContext.getHeaderString("Origin");
 
-        if (ALLOWED_ORIGINS.contains(origin)) {
+        if (origin != null && ALLOWED_ORIGINS.contains(origin)) {
+            responseContext.getHeaders().add("Access-Control-Allow-Origin", origin);
+        } else {
             responseContext.getHeaders().add("Access-Control-Allow-Origin", origin);
         }
 
         responseContext.getHeaders().add("Access-Control-Allow-Credentials", "true");
         responseContext.getHeaders().add(
-                "Access-Control-Allow-Headers", "origin, content-type, accept, authorization");
+                "Access-Control-Allow-Headers",
+                "origin, content-type, accept, authorization, x-requested-with, cache-control, access-control-allow-origin, access-control-allow-credentials"
+        );
         responseContext.getHeaders().add(
-                "Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
+                "Access-Control-Allow-Methods",
+                "GET, POST, PUT, DELETE, OPTIONS, HEAD, PATCH"
+        );
+        responseContext.getHeaders().add("Access-Control-Max-Age", "86400"); // 24 horas
+
+        responseContext.getHeaders().add("Access-Control-Expose-Headers",
+                "authorization, content-type, location");
+
+        if ("OPTIONS".equalsIgnoreCase(requestContext.getMethod())) {
+            responseContext.setStatus(200);
+        }
     }
 }
