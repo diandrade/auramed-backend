@@ -36,7 +36,7 @@ public class CategorizacaoServiceImpl implements CategorizacaoService {
 
         } catch (Exception e) {
             logger.error("Erro ao categorizar pergunta: " + e.getMessage());
-            return CategoriaPergunta.INFORMAÇÃO_GERAL;
+            return CategoriaPergunta.INFORMACAO_GERAL;
         }
     }
 }

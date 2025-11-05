@@ -1,8 +1,8 @@
 package br.com.auramed.application.service;
 
 import br.com.auramed.domain.model.BaseConhecimento;
+import br.com.auramed.domain.service.GeminiAiService;
 import br.com.auramed.domain.service.GeminiService;
-import dev.langchain4j.model.chat.ChatModel;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.jboss.logging.Logger;
@@ -11,7 +11,7 @@ import org.jboss.logging.Logger;
 public class GeminiServiceImpl implements GeminiService {
 
     @Inject
-    ChatModel modeloGemini;
+    GeminiAiService geminiAiService;
 
     @Inject
     Logger logger;
@@ -19,50 +19,62 @@ public class GeminiServiceImpl implements GeminiService {
     @Override
     public String gerarResposta(String pergunta, BaseConhecimento contexto) {
         try {
-            logger.info("Gerando resposta com Gemini (Free) para: " + pergunta);
+            logger.info("Gerando resposta com Gemini para: " + pergunta);
 
-            if (pergunta.length() > 8000) {
-                logger.warn("Pergunta muito longa para o plano gratuito, truncando...");
-                pergunta = pergunta.substring(0, 8000);
-            }
+            String perguntaComContexto = construirPerguntaComContexto(pergunta, contexto);
+            String resposta = geminiAiService.responderPergunta(perguntaComContexto);
 
-            String textoPrompt = construirPrompt(pergunta, contexto);
-            String resposta = modeloGemini.chat(textoPrompt);
-
-            logger.info("Resposta gerada com sucesso pelo Gemini Free");
+            logger.info("Resposta gerada com sucesso pelo Gemini");
             return resposta;
 
         } catch (Exception e) {
-            logger.error("Erro ao gerar resposta com Gemini Free: " + e.getMessage());
-
-            if (e.getMessage() != null &&
-                    (e.getMessage().contains("rate limit") ||
-                            e.getMessage().contains("quota"))) {
-                logger.warn("Limite de taxa atingido, usando resposta padrão");
-                return "No momento estou processando muitas solicitações. Por favor, tente novamente em alguns instantes ou consulte nossa base de conhecimento.";
-            }
-
-            throw new RuntimeException("Falha ao gerar resposta: " + e.getMessage());
+            logger.error("Erro ao gerar resposta com Gemini: " + e.getMessage());
+            return tratarRespostaFallback(pergunta, contexto);
         }
     }
 
-    private String construirPrompt(String pergunta, BaseConhecimento contexto) {
-        StringBuilder prompt = new StringBuilder();
-        prompt.append("Você é um assistente médico especializado chamado AuraMed. ");
-        prompt.append("Responda em português de forma clara, precisa e empática.\n\n");
+    @Override
+    public String categorizarPergunta(String pergunta) {
+        try {
+            return geminiAiService.categorizarPergunta(pergunta);
+        } catch (Exception e) {
+            logger.warn("Usando categorização fallback para: " + pergunta);
+            return GeminiService.super.categorizarPergunta(pergunta);
+        }
+    }
 
-        if (contexto != null) {
-            prompt.append("Contexto relevante: ").append(contexto.getResposta()).append("\n\n");
+    private String construirPerguntaComContexto(String pergunta, BaseConhecimento contexto) {
+        StringBuilder builder = new StringBuilder();
+
+        if (contexto != null && contexto.getResposta() != null) {
+            builder.append("Contexto relevante: ").append(contexto.getResposta()).append("\n\n");
         }
 
-        prompt.append("Pergunta do paciente: ").append(pergunta).append("\n\n");
-        prompt.append("Instruções: \n");
-        prompt.append("- Seja preciso e baseie-se em evidências médicas\n");
-        prompt.append("- Use linguagem acessível para pacientes\n");
-        prompt.append("- Se não souber, diga que vai consultar um especialista\n");
-        prompt.append("- Mantenha o tom profissional mas acolhedor\n");
-        prompt.append("- Limite a resposta a 500 palavras\n");
+        builder.append("Pergunta do paciente: ").append(pergunta);
+        return builder.toString();
+    }
 
-        return prompt.toString();
+    private String tratarRespostaFallback(String pergunta, BaseConhecimento contexto) {
+        logger.warn("Usando fallback devido a erro no Gemini");
+
+        if (contexto != null && contexto.getConfianca() > 0.5) {
+            return contexto.getResposta();
+        }
+
+        return "Desculpe, no momento nosso sistema está processando muitas solicitações. " +
+                "Para agendamentos ou dúvidas urgentes, entre em contato pelo telefone (11) 5180-7800 " +
+                "ou e-mail centrodepesquisa.imrea@hc.fm.usp.br";
+    }
+
+    @Override
+    public String testarConexao() {
+        try {
+            String resposta = geminiAiService.responderPergunta("Responda apenas com 'CONECTADO'");
+            logger.info("Teste de conexão com Gemini: SUCCESS");
+            return "Conexão OK - Resposta: " + resposta;
+        } catch (Exception e) {
+            logger.error("Teste de conexão com Gemini: FAILED - " + e.getMessage());
+            return "Falha na conexão: " + e.getMessage();
+        }
     }
 }

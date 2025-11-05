@@ -24,9 +24,6 @@ public class ChatbotServiceImpl implements ChatbotService {
     AnaliseSentimentalService analiseSentimentalService;
 
     @Inject
-    CategorizacaoService categorizacaoService;
-
-    @Inject
     ConversacaoRepository conversacaoRepository;
 
     @Inject
@@ -42,19 +39,22 @@ public class ChatbotServiceImpl implements ChatbotService {
 
             String respostaFinal;
             String fonteResposta;
+            CategoriaPergunta categoria;
 
             if (melhorResposta != null && melhorResposta.getConfianca() > 0.85) {
                 respostaFinal = melhorResposta.getResposta();
-                fonteResposta = "base_conhecimento";
+                fonteResposta = "BASE_CONHECIMENTO";
+                categoria = converterStringParaCategoria(melhorResposta.getCategoria());
                 logger.info("Resposta encontrada na base de conhecimento");
             } else {
                 respostaFinal = geminiService.gerarResposta(perguntaUsuario, melhorResposta);
-                fonteResposta = "gemini";
+                fonteResposta = "GEMINI";
+                String categoriaString = geminiService.categorizarPergunta(perguntaUsuario);
+                categoria = converterStringParaCategoria(categoriaString);
                 logger.info("Resposta gerada pelo Gemini");
             }
 
             Sentimento sentimento = analiseSentimentalService.analisar(perguntaUsuario);
-            CategoriaPergunta categoria = categorizacaoService.categorizar(perguntaUsuario);
 
             Conversacao conversa = new Conversacao();
             conversa.setUsuarioId(usuarioId);
@@ -71,7 +71,34 @@ public class ChatbotServiceImpl implements ChatbotService {
 
         } catch (Exception e) {
             logger.error("Erro ao processar pergunta do usuário " + usuarioId + ": " + e.getMessage());
-            throw new RuntimeException("Falha ao processar pergunta: " + e.getMessage());
+            return new RespostaChat(
+                    "Desculpe, estou com dificuldades técnicas. " +
+                            "Por favor, entre em contato conosco pelo telefone (11) 5180-7800 " +
+                            "ou e-mail centrodepesquisa.imrea@hc.fm.usp.br",
+                    CategoriaPergunta.ERRO,
+                    Sentimento.NEUTRO,
+                    "SISTEMA",
+                    usuarioId
+            );
+        }
+    }
+
+    private CategoriaPergunta converterStringParaCategoria(String categoriaString) {
+        if (categoriaString == null) {
+            return CategoriaPergunta.INFORMACAO_GERAL;
+        }
+
+        try {
+            return CategoriaPergunta.valueOf(categoriaString);
+        } catch (IllegalArgumentException e) {
+            return switch (categoriaString.toUpperCase()) {
+                case "AGENDAMENTO" -> CategoriaPergunta.AGENDAMENTO;
+                case "CONTATO" -> CategoriaPergunta.INFORMACAO_GERAL;
+                case "ORIENTACAO_PRE_CONSULTA" -> CategoriaPergunta.ORIENTACAO;
+                case "SIMULACAO_TELECONSULTA" -> CategoriaPergunta.ORIENTACAO;
+                case "INFORMACAO_GERAL" -> CategoriaPergunta.INFORMACAO_GERAL;
+                default -> CategoriaPergunta.INFORMACAO_GERAL;
+            };
         }
     }
 }
