@@ -10,4 +10,5 @@ public interface ConversacaoRepository {
     List<Conversacao> buscarPorUsuario(String usuarioId);
     List<Conversacao> buscarTodos();
     void remover(Integer id);
+    List<Object[]> buscarPerguntasFrequentes(int limite);
 }
