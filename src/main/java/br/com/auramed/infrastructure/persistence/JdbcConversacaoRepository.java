@@ -21,7 +21,6 @@ public class JdbcConversacaoRepository implements ConversacaoRepository {
 
     private Conversacao mapResultSetToConversacao(ResultSet rs) throws SQLException {
         Conversacao conversacao = new Conversacao();
-        // Ajustado para String - usando valueOf para converter int para String
         conversacao.setId(String.valueOf(rs.getInt("ID_CONVERSACAO")));
         conversacao.setUsuarioId(rs.getString("ID_USUARIO"));
         conversacao.setPerguntaUsuario(rs.getString("DS_PERGUNTA_USUARIO"));
@@ -143,6 +142,46 @@ public class JdbcConversacaoRepository implements ConversacaoRepository {
 
         } catch (SQLException e) {
             throw new InfrastructureException("Erro ao remover conversação: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public List<Object[]> buscarPerguntasFrequentes(int limite) {
+        String sql = """
+        SELECT DS_PERGUNTA_USUARIO, COUNT(*) as frequencia, 
+               COALESCE(TP_CATEGORIA, 'GERAL') as categoria 
+        FROM T_ARMD_CONVERSACAO 
+        WHERE DS_PERGUNTA_USUARIO IS NOT NULL 
+        AND LENGTH(TRIM(DS_PERGUNTA_USUARIO)) > 7
+        AND UPPER(DS_PERGUNTA_USUARIO) NOT IN ('OI', 'OLA', 'OLÁ', 'HELLO', 'HI', 'HEY', 'TCHAU', 'BYE', 'OK', 'TESTE')
+        AND REGEXP_LIKE(DS_PERGUNTA_USUARIO, '.*[A-Za-zÀ-ÿ].*')  -- Tem que ter pelo menos uma letra
+        GROUP BY DS_PERGUNTA_USUARIO, TP_CATEGORIA 
+        ORDER BY frequencia DESC 
+        FETCH FIRST ? ROWS ONLY
+        """;
+
+        List<Object[]> resultados = new ArrayList<>();
+
+        try (Connection conn = databaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, limite);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    String pergunta = rs.getString("DS_PERGUNTA_USUARIO");
+                    Long frequencia = rs.getLong("frequencia");
+                    String categoria = rs.getString("categoria");
+
+                    Object[] resultado = new Object[]{pergunta, frequencia, categoria};
+                    resultados.add(resultado);
+                }
+            }
+
+            return resultados;
+
+        } catch (SQLException e) {
+            throw new InfrastructureException("Erro ao buscar perguntas frequentes: " + e.getMessage());
         }
     }
 }
