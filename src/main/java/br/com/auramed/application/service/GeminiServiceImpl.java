@@ -22,7 +22,7 @@ public class GeminiServiceImpl implements GeminiService {
             logger.info("Gerando resposta com Gemini para: " + pergunta);
 
             String perguntaComContexto = construirPerguntaComContexto(pergunta, contexto);
-            String resposta = geminiAiService.responderPerguntaMedica(perguntaComContexto);
+            String resposta = geminiAiService.responderPergunta(perguntaComContexto);
 
             logger.info("Resposta gerada com sucesso pelo Gemini");
             return resposta;
@@ -33,11 +33,25 @@ public class GeminiServiceImpl implements GeminiService {
         }
     }
 
-    private String construirPerguntaComContexto(String pergunta, BaseConhecimento contexto) {
-        if (contexto != null && contexto.getResposta() != null) {
-            return "Contexto: " + contexto.getResposta() + "\n\nPergunta: " + pergunta;
+    @Override
+    public String categorizarPergunta(String pergunta) {
+        try {
+            return geminiAiService.categorizarPergunta(pergunta);
+        } catch (Exception e) {
+            logger.warn("Usando categorização fallback para: " + pergunta);
+            return GeminiService.super.categorizarPergunta(pergunta);
         }
-        return pergunta;
+    }
+
+    private String construirPerguntaComContexto(String pergunta, BaseConhecimento contexto) {
+        StringBuilder builder = new StringBuilder();
+
+        if (contexto != null && contexto.getResposta() != null) {
+            builder.append("Contexto relevante: ").append(contexto.getResposta()).append("\n\n");
+        }
+
+        builder.append("Pergunta do paciente: ").append(pergunta);
+        return builder.toString();
     }
 
     private String tratarRespostaFallback(String pergunta, BaseConhecimento contexto) {
@@ -48,13 +62,14 @@ public class GeminiServiceImpl implements GeminiService {
         }
 
         return "Desculpe, no momento nosso sistema está processando muitas solicitações. " +
-                "Por favor, tente novamente em alguns minutos.";
+                "Para agendamentos ou dúvidas urgentes, entre em contato pelo telefone (11) 5180-7800 " +
+                "ou e-mail centrodepesquisa.imrea@hc.fm.usp.br";
     }
 
     @Override
     public String testarConexao() {
         try {
-            String resposta = geminiAiService.responderPerguntaMedica("Responda apenas com 'OK'");
+            String resposta = geminiAiService.responderPergunta("Responda apenas com 'CONECTADO'");
             logger.info("Teste de conexão com Gemini: SUCCESS");
             return "Conexão OK - Resposta: " + resposta;
         } catch (Exception e) {
