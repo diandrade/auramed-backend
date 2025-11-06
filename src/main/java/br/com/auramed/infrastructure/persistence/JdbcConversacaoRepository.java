@@ -147,19 +147,7 @@ public class JdbcConversacaoRepository implements ConversacaoRepository {
 
     @Override
     public List<Object[]> buscarPerguntasFrequentes(int limite) {
-        String sql = """
-        SELECT DS_PERGUNTA_USUARIO, COUNT(*) as frequencia, 
-               COALESCE(TP_CATEGORIA, 'GERAL') as categoria 
-        FROM T_ARMD_CONVERSACAO 
-        WHERE DS_PERGUNTA_USUARIO IS NOT NULL 
-        AND LENGTH(TRIM(DS_PERGUNTA_USUARIO)) > 7
-        AND UPPER(DS_PERGUNTA_USUARIO) NOT IN ('OI', 'OLA', 'OLÁ', 'HELLO', 'HI', 'HEY', 'TCHAU', 'BYE', 'OK', 'TESTE')
-        AND REGEXP_LIKE(DS_PERGUNTA_USUARIO, '.*[A-Za-zÀ-ÿ].*')  -- Tem que ter pelo menos uma letra
-        GROUP BY DS_PERGUNTA_USUARIO, TP_CATEGORIA 
-        ORDER BY frequencia DESC 
-        FETCH FIRST ? ROWS ONLY
-        """;
-
+        String sql = "SELECT DS_PERGUNTA_USUARIO, COUNT(*) as frequencia, COALESCE(TP_CATEGORIA, 'GERAL') as categoria FROM T_ARMD_CONVERSACAO WHERE DS_PERGUNTA_USUARIO IS NOT NULL AND LENGTH(TRIM(DS_PERGUNTA_USUARIO)) > 7 AND UPPER(DS_PERGUNTA_USUARIO) NOT IN ('OI', 'OLA', 'OLÁ', 'HELLO', 'HI', 'HEY', 'TCHAU', 'BYE', 'OK', 'TESTE') AND REGEXP_LIKE(DS_PERGUNTA_USUARIO, '.*[A-Za-zÀ-ÿ].*') GROUP BY DS_PERGUNTA_USUARIO, TP_CATEGORIA ORDER BY frequencia DESC FETCH FIRST ? ROWS ONLY";
         List<Object[]> resultados = new ArrayList<>();
 
         try (Connection conn = databaseConnection.getConnection();
@@ -172,7 +160,6 @@ public class JdbcConversacaoRepository implements ConversacaoRepository {
                     String pergunta = rs.getString("DS_PERGUNTA_USUARIO");
                     Long frequencia = rs.getLong("frequencia");
                     String categoria = rs.getString("categoria");
-
                     Object[] resultado = new Object[]{pergunta, frequencia, categoria};
                     resultados.add(resultado);
                 }
@@ -182,6 +169,95 @@ public class JdbcConversacaoRepository implements ConversacaoRepository {
 
         } catch (SQLException e) {
             throw new InfrastructureException("Erro ao buscar perguntas frequentes: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public List<Object[]> buscarUsoPorMes() {
+        String sql = "SELECT TO_CHAR(DT_CONVERSACAO, 'YYYY-MM') as mes, COUNT(*) as quantidade FROM T_ARMD_CONVERSACAO WHERE DT_CONVERSACAO >= ADD_MONTHS(CURRENT_DATE, -6) GROUP BY TO_CHAR(DT_CONVERSACAO, 'YYYY-MM') ORDER BY mes";
+        List<Object[]> resultados = new ArrayList<>();
+
+        try (Connection conn = databaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                String mes = rs.getString("mes");
+                Long quantidade = rs.getLong("quantidade");
+                Object[] resultado = new Object[]{mes, quantidade};
+                resultados.add(resultado);
+            }
+
+            return resultados;
+
+        } catch (SQLException e) {
+            throw new InfrastructureException("Erro ao buscar uso por mês: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public List<String> buscarPerguntasComBaixaConfianca() {
+        String sql = "SELECT DS_PERGUNTA_USUARIO FROM T_ARMD_CONVERSACAO WHERE DS_PERGUNTA_USUARIO IS NOT NULL AND LENGTH(TRIM(DS_PERGUNTA_USUARIO)) > 10 AND (TP_CATEGORIA = 'OUTRAS_DUVIDAS' OR TP_FONTE_RESPOSTA = 'GEMINI') ORDER BY DT_CONVERSACAO DESC FETCH FIRST 10 ROWS ONLY";
+        List<String> perguntas = new ArrayList<>();
+
+        try (Connection conn = databaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                perguntas.add(rs.getString("DS_PERGUNTA_USUARIO"));
+            }
+
+            return perguntas;
+
+        } catch (SQLException e) {
+            throw new InfrastructureException("Erro ao buscar perguntas com baixa confiança: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public List<Object[]> buscarPerguntasFrequentes() {
+        return buscarPerguntasFrequentes(10);
+    }
+
+    @Override
+    public Long getTotalConversacoes() {
+        String sql = "SELECT COUNT(*) FROM T_ARMD_CONVERSACAO";
+
+        try (Connection conn = databaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getLong(1);
+            }
+            return 0L;
+
+        } catch (SQLException e) {
+            throw new InfrastructureException("Erro ao contar total de conversações: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public List<Object[]> buscarEstatisticasSentimentos() {
+        String sql = "SELECT TP_SENTIMENTO, COUNT(*) as quantidade FROM T_ARMD_CONVERSACAO WHERE TP_SENTIMENTO IS NOT NULL GROUP BY TP_SENTIMENTO ORDER BY quantidade DESC";
+        List<Object[]> resultados = new ArrayList<>();
+
+        try (Connection conn = databaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                String sentimento = rs.getString("TP_SENTIMENTO");
+                Long quantidade = rs.getLong("quantidade");
+                Object[] resultado = new Object[]{sentimento, quantidade};
+                resultados.add(resultado);
+            }
+
+            return resultados;
+
+        } catch (SQLException e) {
+            throw new InfrastructureException("Erro ao buscar estatísticas de sentimentos: " + e.getMessage());
         }
     }
 }

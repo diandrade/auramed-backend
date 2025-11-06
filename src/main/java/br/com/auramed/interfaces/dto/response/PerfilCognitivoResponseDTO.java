@@ -13,24 +13,8 @@ public class PerfilCognitivoResponseDTO {
     private LocalDateTime dataCadastro;
     private LocalDateTime dataAtualizacao;
 
-    // Construtores
     public PerfilCognitivoResponseDTO() {}
 
-    public PerfilCognitivoResponseDTO(Integer idPerfilCognitivo, Integer idPaciente, String inDificuldadeVisao,
-                                      String inUsaOculos, String inDificuldadeAudicao, String inUsaAparelhoAud,
-                                      String inDificuldadeCogn, LocalDateTime dataCadastro, LocalDateTime dataAtualizacao) {
-        this.idPerfilCognitivo = idPerfilCognitivo;
-        this.idPaciente = idPaciente;
-        this.inDificuldadeVisao = inDificuldadeVisao;
-        this.inUsaOculos = inUsaOculos;
-        this.inDificuldadeAudicao = inDificuldadeAudicao;
-        this.inUsaAparelhoAud = inUsaAparelhoAud;
-        this.inDificuldadeCogn = inDificuldadeCogn;
-        this.dataCadastro = dataCadastro;
-        this.dataAtualizacao = dataAtualizacao;
-    }
-
-    // Getters e Setters
     public Integer getIdPerfilCognitivo() {
         return idPerfilCognitivo;
     }

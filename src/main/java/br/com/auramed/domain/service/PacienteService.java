@@ -13,4 +13,5 @@ public interface PacienteService {
     List<Paciente> listarPorMedico(Integer idMedicoResponsavel);
     Paciente ativar(Integer idPessoa) throws EntidadeNaoLocalizadaException;
     Paciente inativar(Integer idPessoa) throws EntidadeNaoLocalizadaException;
+    boolean pacientePertenceAoMedico(Integer idPaciente, Integer idMedico) throws EntidadeNaoLocalizadaException;
 }

@@ -13,37 +13,21 @@ public class InfoTeleconsulta {
     private LocalDateTime dataCadastro;
     private LocalDateTime dataAtualizacao;
 
-    public InfoTeleconsulta(Integer idPaciente, String cdHabilidadeDigital, String cdCanalLembrete,
-                            String inPrecisaCuidador, String inJaFezTele) {
-        this.idPaciente = idPaciente;
-        this.cdHabilidadeDigital = cdHabilidadeDigital;
-        this.cdCanalLembrete = cdCanalLembrete;
-        this.inPrecisaCuidador = inPrecisaCuidador;
-        this.inJaFezTele = inJaFezTele;
-        this.dataCadastro = LocalDateTime.now();
-        this.dataAtualizacao = LocalDateTime.now();
-
-        validarHabilidadeDigital();
-        validarCanalLembrete();
-        validarPrecisaCuidador();
-        validarJaFezTele();
-    }
+    public InfoTeleconsulta() {}
 
     public void validarHabilidadeDigital() {
         if (cdHabilidadeDigital == null || cdHabilidadeDigital.isBlank()) {
-            throw new ValidacaoDeDominioException("Habilidade digital é obrigatória.");
+            return;
         }
-
-        if (!cdHabilidadeDigital.matches("^(BAIXA|MEDIA|ALTA|NENHUMA)$")) {
-            throw new ValidacaoDeDominioException("Habilidade digital deve ser BAIXA, MEDIA, ALTA ou NENHUMA.");
+        if (!cdHabilidadeDigital.matches("^(BAIXA|MEDIA|ALTA)$")) {
+            throw new ValidacaoDeDominioException("Habilidade digital deve ser BAIXA, MEDIA ou ALTA.");
         }
     }
 
     public void validarCanalLembrete() {
         if (cdCanalLembrete == null || cdCanalLembrete.isBlank()) {
-            throw new ValidacaoDeDominioException("Canal de lembrete é obrigatório.");
+            return;
         }
-
         if (!cdCanalLembrete.matches("^(WHATSAPP|SMS|EMAIL|TELEFONE)$")) {
             throw new ValidacaoDeDominioException("Canal de lembrete deve ser WHATSAPP, SMS, EMAIL ou TELEFONE.");
         }
@@ -51,22 +35,27 @@ public class InfoTeleconsulta {
 
     public void validarPrecisaCuidador() {
         if (inPrecisaCuidador == null || inPrecisaCuidador.isBlank()) {
-            throw new ValidacaoDeDominioException("Indicador de precisa de cuidador é obrigatório.");
+            return;
         }
-
         if (!inPrecisaCuidador.matches("^[SN]$")) {
-            throw new ValidacaoDeDominioException("Indicador de precisa de cuidador deve ser S ou N.");
+            throw new ValidacaoDeDominioException("Precisa cuidador deve ser S (Sim) ou N (Não).");
         }
     }
 
     public void validarJaFezTele() {
         if (inJaFezTele == null || inJaFezTele.isBlank()) {
-            throw new ValidacaoDeDominioException("Indicador de já fez teleconsulta é obrigatório.");
+            return;
         }
-
         if (!inJaFezTele.matches("^[SN]$")) {
-            throw new ValidacaoDeDominioException("Indicador de já fez teleconsulta deve ser S ou N.");
+            throw new ValidacaoDeDominioException("Já fez teleconsulta deve ser S (Sim) ou N (Não).");
         }
+    }
+
+    public void validar() {
+        validarHabilidadeDigital();
+        validarCanalLembrete();
+        validarPrecisaCuidador();
+        validarJaFezTele();
     }
 
     public Integer getIdInfoTeleconsulta() {
@@ -92,7 +81,6 @@ public class InfoTeleconsulta {
     public void setCdHabilidadeDigital(String cdHabilidadeDigital) {
         this.cdHabilidadeDigital = cdHabilidadeDigital;
         validarHabilidadeDigital();
-        this.dataAtualizacao = LocalDateTime.now();
     }
 
     public String getCdCanalLembrete() {
@@ -102,7 +90,6 @@ public class InfoTeleconsulta {
     public void setCdCanalLembrete(String cdCanalLembrete) {
         this.cdCanalLembrete = cdCanalLembrete;
         validarCanalLembrete();
-        this.dataAtualizacao = LocalDateTime.now();
     }
 
     public String getInPrecisaCuidador() {
@@ -112,7 +99,6 @@ public class InfoTeleconsulta {
     public void setInPrecisaCuidador(String inPrecisaCuidador) {
         this.inPrecisaCuidador = inPrecisaCuidador;
         validarPrecisaCuidador();
-        this.dataAtualizacao = LocalDateTime.now();
     }
 
     public String getInJaFezTele() {
@@ -122,7 +108,6 @@ public class InfoTeleconsulta {
     public void setInJaFezTele(String inJaFezTele) {
         this.inJaFezTele = inJaFezTele;
         validarJaFezTele();
-        this.dataAtualizacao = LocalDateTime.now();
     }
 
     public LocalDateTime getDataCadastro() {

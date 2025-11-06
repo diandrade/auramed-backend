@@ -11,4 +11,9 @@ public interface ConversacaoRepository {
     List<Conversacao> buscarTodos();
     void remover(Integer id);
     List<Object[]> buscarPerguntasFrequentes(int limite);
+    List<Object[]> buscarUsoPorMes();
+    List<Object[]> buscarPerguntasFrequentes();
+    List<String> buscarPerguntasComBaixaConfianca();
+    Long getTotalConversacoes();
+    List<Object[]> buscarEstatisticasSentimentos();
 }

@@ -9,19 +9,8 @@ public class PacienteResponseDTO {
     private LocalDateTime dataCadastro;
     private String ativo;
 
-    // Construtores
     public PacienteResponseDTO() {}
 
-    public PacienteResponseDTO(Integer idPessoa, Integer idMedicoResponsavel, String nrCartaoSUS,
-                               LocalDateTime dataCadastro, String ativo) {
-        this.idPessoa = idPessoa;
-        this.idMedicoResponsavel = idMedicoResponsavel;
-        this.nrCartaoSUS = nrCartaoSUS;
-        this.dataCadastro = dataCadastro;
-        this.ativo = ativo;
-    }
-
-    // Getters e Setters
     public Integer getIdPessoa() {
         return idPessoa;
     }

@@ -4,6 +4,7 @@ import br.com.auramed.domain.model.PerfilCognitivo;
 import br.com.auramed.interfaces.dto.request.PerfilCognitivoRequestDTO;
 import br.com.auramed.interfaces.dto.response.PerfilCognitivoResponseDTO;
 import jakarta.enterprise.context.ApplicationScoped;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,14 +17,14 @@ public class PerfilCognitivoMapperImpl implements PerfilCognitivoMapper {
             return null;
         }
 
-        PerfilCognitivo perfilCognitivo = new PerfilCognitivo(
-                dto.getIdPaciente(),
-                dto.getInDificuldadeVisao(),
-                dto.getInUsaOculos(),
-                dto.getInDificuldadeAudicao(),
-                dto.getInUsaAparelhoAud(),
-                dto.getInDificuldadeCogn()
-        );
+        PerfilCognitivo perfilCognitivo = new PerfilCognitivo();
+        perfilCognitivo.setInDificuldadeVisao(dto.getInDificuldadeVisao());
+        perfilCognitivo.setInUsaOculos(dto.getInUsaOculos());
+        perfilCognitivo.setInDificuldadeAudicao(dto.getInDificuldadeAudicao());
+        perfilCognitivo.setInUsaAparelhoAud(dto.getInUsaAparelhoAud());
+        perfilCognitivo.setInDificuldadeCogn(dto.getInDificuldadeCogn());
+        perfilCognitivo.setDataCadastro(LocalDateTime.now());
+        perfilCognitivo.setDataAtualizacao(LocalDateTime.now());
 
         return perfilCognitivo;
     }
@@ -34,26 +35,27 @@ public class PerfilCognitivoMapperImpl implements PerfilCognitivoMapper {
             return null;
         }
 
-        PerfilCognitivoResponseDTO response = new PerfilCognitivoResponseDTO();
-        response.setIdPerfilCognitivo(perfilCognitivo.getIdPerfilCognitivo());
-        response.setIdPaciente(perfilCognitivo.getIdPaciente());
-        response.setInDificuldadeVisao(perfilCognitivo.getInDificuldadeVisao());
-        response.setInUsaOculos(perfilCognitivo.getInUsaOculos());
-        response.setInDificuldadeAudicao(perfilCognitivo.getInDificuldadeAudicao());
-        response.setInUsaAparelhoAud(perfilCognitivo.getInUsaAparelhoAud());
-        response.setInDificuldadeCogn(perfilCognitivo.getInDificuldadeCogn());
-        response.setDataCadastro(perfilCognitivo.getDataCadastro());
-        response.setDataAtualizacao(perfilCognitivo.getDataAtualizacao());
+        PerfilCognitivoResponseDTO dto = new PerfilCognitivoResponseDTO();
+        dto.setIdPerfilCognitivo(perfilCognitivo.getIdPerfilCognitivo());
+        dto.setIdPaciente(perfilCognitivo.getIdPaciente());
+        dto.setInDificuldadeVisao(perfilCognitivo.getInDificuldadeVisao());
+        dto.setInUsaOculos(perfilCognitivo.getInUsaOculos());
+        dto.setInDificuldadeAudicao(perfilCognitivo.getInDificuldadeAudicao());
+        dto.setInUsaAparelhoAud(perfilCognitivo.getInUsaAparelhoAud());
+        dto.setInDificuldadeCogn(perfilCognitivo.getInDificuldadeCogn());
+        dto.setDataCadastro(perfilCognitivo.getDataCadastro());
+        dto.setDataAtualizacao(perfilCognitivo.getDataAtualizacao());
 
-        return response;
+        return dto;
     }
 
     @Override
-    public List<PerfilCognitivoResponseDTO> toResponseDTOList(List<PerfilCognitivo> perfisCognitivos) {
-        if (perfisCognitivos == null) {
-            return List.of();
+    public List<PerfilCognitivoResponseDTO> toResponseDTOList(List<PerfilCognitivo> perfilCognitivos) {
+        if (perfilCognitivos == null) {
+            return null;
         }
-        return perfisCognitivos.stream()
+
+        return perfilCognitivos.stream()
                 .map(this::toResponseDTO)
                 .collect(Collectors.toList());
     }

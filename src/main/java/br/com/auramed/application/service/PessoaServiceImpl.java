@@ -89,39 +89,39 @@ public class PessoaServiceImpl implements PessoaService {
     public Pessoa remover(Integer id) throws EntidadeNaoLocalizadaException {
         try {
             Pessoa pessoa = pessoaRepository.buscarPorId(id);
-            logger.info("🗑️ Iniciando exclusão em cascata para pessoa ID: " + id);
+            logger.info("Iniciando exclusão em cascata para pessoa ID: " + id);
 
             try {
                 Paciente paciente = pacienteService.localizar(id);
                 pacienteService.remover(id);
-                logger.info("✅ Paciente removido: " + id);
+                logger.info("Paciente removido: " + id);
             } catch (EntidadeNaoLocalizadaException e) {
-                logger.debug("ℹ️ Nenhum paciente encontrado para pessoa: " + id);
+                logger.debug("Nenhum paciente encontrado para pessoa: " + id);
             }
 
             try {
                 perfilCognitivoService.removerPorPaciente(id);
-                logger.info("✅ Perfil cognitivo removido: " + id);
+                logger.info("Perfil cognitivo removido: " + id);
             } catch (EntidadeNaoLocalizadaException e) {
-                logger.debug("ℹ️ Nenhum perfil cognitivo encontrado para paciente: " + id);
+                logger.debug("Nenhum perfil cognitivo encontrado para paciente: " + id);
             }
 
             try {
                 infoTeleconsultaService.removerPorPaciente(id);
-                logger.info("✅ Info teleconsulta removida: " + id);
+                logger.info("Info teleconsulta removida: " + id);
             } catch (EntidadeNaoLocalizadaException e) {
-                logger.debug("ℹ️ Nenhuma info teleconsulta encontrada para paciente: " + id);
+                logger.debug("Nenhuma info teleconsulta encontrada para paciente: " + id);
             }
 
             try {
                 enderecoService.removerPorPessoa(id);
-                logger.info("✅ Endereços removidos: " + id);
+                logger.info("Endereços removidos: " + id);
             } catch (EntidadeNaoLocalizadaException e) {
-                logger.debug("ℹ️ Nenhum endereço encontrado para pessoa: " + id);
+                logger.debug("Nenhum endereço encontrado para pessoa: " + id);
             }
 
             pessoaRepository.remover(id);
-            logger.info("✅ Pessoa removida com sucesso. ID: " + id);
+            logger.info("Pessoa removida com sucesso. ID: " + id);
 
             return pessoa;
 

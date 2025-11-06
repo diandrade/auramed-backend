@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class PessoaResponseDTO {
-    // Atributos
     private Integer id;
     private String nome;
     private String email;
@@ -16,25 +15,8 @@ public class PessoaResponseDTO {
     private LocalDateTime dataCadastro;
     private String ativo;
 
-    // Construtores
     public PessoaResponseDTO() {}
 
-    public PessoaResponseDTO(Integer id, String nome, String email, String cpf,
-                             LocalDate dataNascimento, String genero, String telefone,
-                             String tipoPessoa, LocalDateTime dataCadastro, String ativo) {
-        this.id = id;
-        this.nome = nome;
-        this.email = email;
-        this.cpf = cpf;
-        this.dataNascimento = dataNascimento;
-        this.genero = genero;
-        this.telefone = telefone;
-        this.tipoPessoa = tipoPessoa;
-        this.dataCadastro = dataCadastro;
-        this.ativo = ativo;
-    }
-
-    // Getters
     public Integer getId() {
         return id;
     }

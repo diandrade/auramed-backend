@@ -1,34 +1,13 @@
 package br.com.auramed.interfaces.dto.request;
 
 public class PerfilCognitivoRequestDTO {
-    private Integer idPaciente;
     private String inDificuldadeVisao;
     private String inUsaOculos;
     private String inDificuldadeAudicao;
     private String inUsaAparelhoAud;
     private String inDificuldadeCogn;
 
-    // Construtores
     public PerfilCognitivoRequestDTO() {}
-
-    public PerfilCognitivoRequestDTO(Integer idPaciente, String inDificuldadeVisao, String inUsaOculos,
-                                     String inDificuldadeAudicao, String inUsaAparelhoAud, String inDificuldadeCogn) {
-        this.idPaciente = idPaciente;
-        this.inDificuldadeVisao = inDificuldadeVisao;
-        this.inUsaOculos = inUsaOculos;
-        this.inDificuldadeAudicao = inDificuldadeAudicao;
-        this.inUsaAparelhoAud = inUsaAparelhoAud;
-        this.inDificuldadeCogn = inDificuldadeCogn;
-    }
-
-    // Getters e Setters
-    public Integer getIdPaciente() {
-        return idPaciente;
-    }
-
-    public void setIdPaciente(Integer idPaciente) {
-        this.idPaciente = idPaciente;
-    }
 
     public String getInDificuldadeVisao() {
         return inDificuldadeVisao;
@@ -68,5 +47,9 @@ public class PerfilCognitivoRequestDTO {
 
     public void setInDificuldadeCogn(String inDificuldadeCogn) {
         this.inDificuldadeCogn = inDificuldadeCogn;
+    }
+
+    public Integer getIdPaciente() {
+        return null;
     }
 }

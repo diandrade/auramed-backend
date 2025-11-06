@@ -20,16 +20,24 @@ public class JdbcInfoTeleconsultaRepository implements InfoTeleconsultaRepositor
     }
 
     private InfoTeleconsulta mapResultSetToInfoTeleconsulta(ResultSet rs) throws SQLException {
-        InfoTeleconsulta infoTeleconsulta = new InfoTeleconsulta(
-                rs.getInt("T_ARMD_PACIENTE_id_pessoa"),
-                rs.getString("cd_habilidade_digital"),
-                rs.getString("cd_canal_lembrete"),
-                rs.getString("in_precisa_cuidador"),
-                rs.getString("in_ja_fez_tele")
-        );
+        InfoTeleconsulta infoTeleconsulta = new InfoTeleconsulta();
         infoTeleconsulta.setIdInfoTeleconsulta(rs.getInt("id_info_teleconsulta"));
-        infoTeleconsulta.setDataCadastro(rs.getTimestamp("dt_cadastro").toLocalDateTime());
-        infoTeleconsulta.setDataAtualizacao(rs.getTimestamp("dt_atualizacao").toLocalDateTime());
+        infoTeleconsulta.setIdPaciente(rs.getInt("T_ARMD_PACIENTE_id_pessoa"));
+        infoTeleconsulta.setCdHabilidadeDigital(rs.getString("cd_habilidade_digital"));
+        infoTeleconsulta.setCdCanalLembrete(rs.getString("cd_canal_lembrete"));
+        infoTeleconsulta.setInPrecisaCuidador(rs.getString("in_precisa_cuidador"));
+        infoTeleconsulta.setInJaFezTele(rs.getString("in_ja_fez_tele"));
+
+        Timestamp dataCadastro = rs.getTimestamp("dt_cadastro");
+        if (dataCadastro != null) {
+            infoTeleconsulta.setDataCadastro(dataCadastro.toLocalDateTime());
+        }
+
+        Timestamp dataAtualizacao = rs.getTimestamp("dt_atualizacao");
+        if (dataAtualizacao != null) {
+            infoTeleconsulta.setDataAtualizacao(dataAtualizacao.toLocalDateTime());
+        }
+
         return infoTeleconsulta;
     }
 
@@ -166,6 +174,116 @@ public class JdbcInfoTeleconsultaRepository implements InfoTeleconsultaRepositor
 
         } catch (SQLException e) {
             throw new InfrastructureException("Erro ao remover infoTeleconsulta: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public List<Object[]> buscarHabilidadesDigitais() {
+        String sql = "SELECT cd_habilidade_digital, COUNT(*) as quantidade FROM T_ARMD_INFO_TELECONSULTA WHERE cd_habilidade_digital IS NOT NULL GROUP BY cd_habilidade_digital ORDER BY quantidade DESC";
+        List<Object[]> resultados = new ArrayList<>();
+
+        try (Connection conn = databaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                String habilidade = rs.getString("cd_habilidade_digital");
+                Long quantidade = rs.getLong("quantidade");
+                Object[] resultado = new Object[]{habilidade, quantidade};
+                resultados.add(resultado);
+            }
+
+            return resultados;
+
+        } catch (SQLException e) {
+            throw new InfrastructureException("Erro ao buscar habilidades digitais: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public List<Object[]> buscarCanaisLembrete() {
+        String sql = "SELECT cd_canal_lembrete, COUNT(*) as quantidade FROM T_ARMD_INFO_TELECONSULTA WHERE cd_canal_lembrete IS NOT NULL GROUP BY cd_canal_lembrete ORDER BY quantidade DESC";
+        List<Object[]> resultados = new ArrayList<>();
+
+        try (Connection conn = databaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                String canal = rs.getString("cd_canal_lembrete");
+                Long quantidade = rs.getLong("quantidade");
+                Object[] resultado = new Object[]{canal, quantidade};
+                resultados.add(resultado);
+            }
+
+            return resultados;
+
+        } catch (SQLException e) {
+            throw new InfrastructureException("Erro ao buscar canais de lembrete: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public List<Object[]> buscarPreferenciasCuidador() {
+        String sql = "SELECT in_precisa_cuidador, COUNT(*) as quantidade FROM T_ARMD_INFO_TELECONSULTA WHERE in_precisa_cuidador IS NOT NULL GROUP BY in_precisa_cuidador";
+        List<Object[]> resultados = new ArrayList<>();
+
+        try (Connection conn = databaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                String precisaCuidador = rs.getString("in_precisa_cuidador");
+                Long quantidade = rs.getLong("quantidade");
+                Object[] resultado = new Object[]{precisaCuidador, quantidade};
+                resultados.add(resultado);
+            }
+
+            return resultados;
+
+        } catch (SQLException e) {
+            throw new InfrastructureException("Erro ao buscar preferências de cuidador: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public List<Object[]> buscarExperienciaTeleconsulta() {
+        String sql = "SELECT in_ja_fez_tele, COUNT(*) as quantidade FROM T_ARMD_INFO_TELECONSULTA WHERE in_ja_fez_tele IS NOT NULL GROUP BY in_ja_fez_tele";
+        List<Object[]> resultados = new ArrayList<>();
+
+        try (Connection conn = databaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                String jaFezTele = rs.getString("in_ja_fez_tele");
+                Long quantidade = rs.getLong("quantidade");
+                Object[] resultado = new Object[]{jaFezTele, quantidade};
+                resultados.add(resultado);
+            }
+
+            return resultados;
+
+        } catch (SQLException e) {
+            throw new InfrastructureException("Erro ao buscar experiência com teleconsulta: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public Long getTotalRegistros() {
+        String sql = "SELECT COUNT(*) FROM T_ARMD_INFO_TELECONSULTA";
+
+        try (Connection conn = databaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getLong(1);
+            }
+            return 0L;
+
+        } catch (SQLException e) {
+            throw new InfrastructureException("Erro ao contar total de registros: " + e.getMessage());
         }
     }
 }

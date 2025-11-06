@@ -26,37 +26,36 @@ public class Paciente {
     }
 
     public void validarCartaoSUS() {
-        LOG.debug("🔍 INICIANDO VALIDAÇÃO DO CARTÃO SUS: " + this.nrCartaoSUS);
+        LOG.debug("INICIANDO VALIDAÇÃO DO CARTÃO SUS: " + this.nrCartaoSUS);
 
         if (nrCartaoSUS == null || nrCartaoSUS.isBlank()) {
-            LOG.error("❌ Cartão SUS está vazio");
+            LOG.error("Cartão SUS está vazio");
             throw new ValidacaoDeDominioException("Número do Cartão SUS é obrigatório.");
         }
 
-        // Remove caracteres não numéricos
         String cartaoLimpo = nrCartaoSUS.replaceAll("[^\\d]", "");
-        LOG.debug("📝 Cartão SUS limpo: " + cartaoLimpo);
+        LOG.debug("Cartão SUS limpo: " + cartaoLimpo);
 
         if (cartaoLimpo.length() != 15) {
-            LOG.error("❌ Cartão SUS não tem 15 dígitos: " + cartaoLimpo.length() + " dígitos encontrados");
+            LOG.error("Cartão SUS não tem 15 dígitos: " + cartaoLimpo.length() + " dígitos encontrados");
             throw new ValidacaoDeDominioException("Cartão SUS deve conter 15 dígitos numéricos.");
         }
 
         if (!cartaoLimpo.matches("\\d{15}")) {
-            LOG.error("❌ Cartão SUS contém caracteres inválidos: " + cartaoLimpo);
+            LOG.error("Cartão SUS contém caracteres inválidos: " + cartaoLimpo);
             throw new ValidacaoDeDominioException("Cartão SUS deve conter apenas números.");
         }
 
-        LOG.warn("⚠️ VALIDAÇÃO DO DÍGITO VERIFICADOR DESATIVADA PARA TESTES");
-        LOG.info("✅ CARTÃO SUS ACEITO (validação simplificada): " + cartaoLimpo);
+        LOG.warn("VALIDAÇÃO DO DÍGITO VERIFICADOR DESATIVADA PARA TESTES");
+        LOG.info("CARTÃO SUS ACEITO (validação simplificada): " + cartaoLimpo);
     }
 
     private boolean validarDigitoVerificadorSUS(String cartao) {
         try {
-            LOG.debug("🧮 Calculando dígito verificador para: " + cartao);
+            LOG.debug("Calculando dígito verificador para: " + cartao);
             return true;
         } catch (Exception e) {
-            LOG.error("💥 Erro na validação do Cartão SUS: " + e.getMessage(), e);
+            LOG.error("Erro na validação do Cartão SUS: " + e.getMessage(), e);
             throw new ValidacaoDeDominioException("Erro na validação do Cartão SUS.");
         }
     }

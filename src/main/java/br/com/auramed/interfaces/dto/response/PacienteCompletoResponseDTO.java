@@ -6,7 +6,6 @@ public class PacienteCompletoResponseDTO {
     private InfoTeleconsultaResponseDTO infoTeleconsulta;
     private PerfilCognitivoResponseDTO perfilCognitivo;
 
-    // Construtores
     public PacienteCompletoResponseDTO() {}
 
     public PacienteCompletoResponseDTO(PessoaResponseDTO pessoa, PacienteResponseDTO paciente,
@@ -17,7 +16,6 @@ public class PacienteCompletoResponseDTO {
         this.perfilCognitivo = perfilCognitivo;
     }
 
-    // Getters e Setters
     public PessoaResponseDTO getPessoa() {
         return pessoa;
     }

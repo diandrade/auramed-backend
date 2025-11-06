@@ -3,8 +3,6 @@ package br.com.auramed.interfaces.dto.request;
 import java.time.LocalDate;
 
 public class PessoaRequestDTO {
-    // Atributos
-    private Integer id;
     private String nome;
     private String email;
     private String cpf;
@@ -13,29 +11,7 @@ public class PessoaRequestDTO {
     private String telefone;
     private String tipoPessoa;
 
-    // Construtores
     public PessoaRequestDTO() {}
-
-    public PessoaRequestDTO(Integer id, String nome, String email, String cpf,
-                            LocalDate dataNascimento, String genero, String telefone, String tipoPessoa) {
-        this.id = id;
-        this.nome = nome;
-        this.email = email;
-        this.cpf = cpf;
-        this.dataNascimento = dataNascimento;
-        this.genero = genero;
-        this.telefone = telefone;
-        this.tipoPessoa = tipoPessoa;
-    }
-
-    // Getters e Setters
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getNome() {
         return nome;

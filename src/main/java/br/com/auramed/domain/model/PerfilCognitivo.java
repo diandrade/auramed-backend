@@ -14,31 +14,22 @@ public class PerfilCognitivo {
     private LocalDateTime dataCadastro;
     private LocalDateTime dataAtualizacao;
 
-    public PerfilCognitivo(Integer idPaciente, String inDificuldadeVisao, String inUsaOculos,
-                           String inDificuldadeAudicao, String inUsaAparelhoAud, String inDificuldadeCogn) {
-        this.idPaciente = idPaciente;
-        this.inDificuldadeVisao = inDificuldadeVisao;
-        this.inUsaOculos = inUsaOculos;
-        this.inDificuldadeAudicao = inDificuldadeAudicao;
-        this.inUsaAparelhoAud = inUsaAparelhoAud;
-        this.inDificuldadeCogn = inDificuldadeCogn;
-        this.dataCadastro = LocalDateTime.now();
-        this.dataAtualizacao = LocalDateTime.now();
-
-        validarIndicadores();
-    }
+    public PerfilCognitivo() {}
 
     public void validarIndicadores() {
-        validarIndicador("Dificuldade visão", inDificuldadeVisao);
-        validarIndicador("Uso de óculos", inUsaOculos);
-        validarIndicador("Dificuldade audição", inDificuldadeAudicao);
-        validarIndicador("Uso de aparelho auditivo", inUsaAparelhoAud);
-        validarIndicador("Dificuldade cognitiva", inDificuldadeCogn);
+        validarCampoSN(inDificuldadeVisao, "Dificuldade visão");
+        validarCampoSN(inUsaOculos, "Usa óculos");
+        validarCampoSN(inDificuldadeAudicao, "Dificuldade audição");
+        validarCampoSN(inUsaAparelhoAud, "Usa aparelho auditivo");
+        validarCampoSN(inDificuldadeCogn, "Dificuldade cognitiva");
     }
 
-    private void validarIndicador(String campo, String valor) {
-        if (valor != null && !valor.isBlank() && !valor.matches("^[SN]$")) {
-            throw new ValidacaoDeDominioException(campo + " deve ser S ou N.");
+    private void validarCampoSN(String valor, String campo) {
+        if (valor == null || valor.isBlank()) {
+            return;
+        }
+        if (!valor.matches("^[SN]$")) {
+            throw new ValidacaoDeDominioException(campo + " deve ser S (Sim) ou N (Não).");
         }
     }
 
@@ -64,8 +55,6 @@ public class PerfilCognitivo {
 
     public void setInDificuldadeVisao(String inDificuldadeVisao) {
         this.inDificuldadeVisao = inDificuldadeVisao;
-        validarIndicador("Dificuldade visão", inDificuldadeVisao);
-        this.dataAtualizacao = LocalDateTime.now();
     }
 
     public String getInUsaOculos() {
@@ -74,8 +63,6 @@ public class PerfilCognitivo {
 
     public void setInUsaOculos(String inUsaOculos) {
         this.inUsaOculos = inUsaOculos;
-        validarIndicador("Uso de óculos", inUsaOculos);
-        this.dataAtualizacao = LocalDateTime.now();
     }
 
     public String getInDificuldadeAudicao() {
@@ -84,8 +71,6 @@ public class PerfilCognitivo {
 
     public void setInDificuldadeAudicao(String inDificuldadeAudicao) {
         this.inDificuldadeAudicao = inDificuldadeAudicao;
-        validarIndicador("Dificuldade audição", inDificuldadeAudicao);
-        this.dataAtualizacao = LocalDateTime.now();
     }
 
     public String getInUsaAparelhoAud() {
@@ -94,8 +79,6 @@ public class PerfilCognitivo {
 
     public void setInUsaAparelhoAud(String inUsaAparelhoAud) {
         this.inUsaAparelhoAud = inUsaAparelhoAud;
-        validarIndicador("Uso de aparelho auditivo", inUsaAparelhoAud);
-        this.dataAtualizacao = LocalDateTime.now();
     }
 
     public String getInDificuldadeCogn() {
@@ -104,8 +87,6 @@ public class PerfilCognitivo {
 
     public void setInDificuldadeCogn(String inDificuldadeCogn) {
         this.inDificuldadeCogn = inDificuldadeCogn;
-        validarIndicador("Dificuldade cognitiva", inDificuldadeCogn);
-        this.dataAtualizacao = LocalDateTime.now();
     }
 
     public LocalDateTime getDataCadastro() {
