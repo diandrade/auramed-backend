@@ -8,5 +8,5 @@ import java.util.List;
 public interface PerfilCognitivoMapper {
     PerfilCognitivo toDomain(PerfilCognitivoRequestDTO dto);
     PerfilCognitivoResponseDTO toResponseDTO(PerfilCognitivo perfilCognitivo);
-    List<PerfilCognitivoResponseDTO> toResponseDTOList(List<PerfilCognitivo> perfisCognitivos);
+    List<PerfilCognitivoResponseDTO> toResponseDTOList(List<PerfilCognitivo> perfilCognitivos);
 }

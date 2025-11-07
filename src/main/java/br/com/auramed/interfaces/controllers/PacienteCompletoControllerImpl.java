@@ -41,15 +41,12 @@ public class PacienteCompletoControllerImpl implements PacienteCompletoControlle
     PerfilCognitivoMapper perfilCognitivoMapper;
 
     @Inject
-    PacienteCompletoMapper pacienteCompletoMapper;
-
-    @Inject
     Logger logger;
 
     @Override
     public PacienteCompletoResponseDTO criarPacienteCompleto(PacienteCompletoRequestDTO pacienteCompletoRequest) throws EntidadeNaoLocalizadaException {
         try {
-            logger.info("🏥 INICIANDO CRIAÇÃO DE PACIENTE COMPLETO");
+            logger.info("INICIANDO CRIAÇÃO DE PACIENTE COMPLETO");
 
             Pessoa pessoa = pessoaMapper.toDomain(pacienteCompletoRequest.getPessoa());
             Pessoa pessoaCriada = pessoaService.criar(pessoa);
@@ -57,7 +54,7 @@ public class PacienteCompletoControllerImpl implements PacienteCompletoControlle
             Integer idMedicoLogado = authenticationService.getMedicoLogadoId();
             Medico medicoLogado = authenticationService.getMedicoLogado();
 
-            logger.info("🔐 Vinculando paciente ao médico logado: " +
+            logger.info("Vinculando paciente ao médico logado: " +
                     medicoLogado.getPessoa().getNome() + " (ID: " + idMedicoLogado + ")");
 
             Paciente paciente = pacienteMapper.toDomain(pacienteCompletoRequest.getPaciente());
@@ -65,6 +62,7 @@ public class PacienteCompletoControllerImpl implements PacienteCompletoControlle
             paciente.setIdMedicoResponsavel(idMedicoLogado);
 
             Paciente pacienteCriado = pacienteService.criar(paciente);
+
             InfoTeleconsulta infoTeleconsulta = null;
             if (pacienteCompletoRequest.getInfoTeleconsulta() != null) {
                 infoTeleconsulta = infoTeleconsultaMapper.toDomain(pacienteCompletoRequest.getInfoTeleconsulta());
@@ -91,7 +89,7 @@ public class PacienteCompletoControllerImpl implements PacienteCompletoControlle
                 response.setPerfilCognitivo(perfilCognitivoMapper.toResponseDTO(perfilCognitivo));
             }
 
-            logger.info("✅ PACIENTE COMPLETO CRIADO COM SUCESSO - " +
+            logger.info("PACIENTE COMPLETO CRIADO COM SUCESSO - " +
                     "ID Pessoa: " + pessoaCriada.getId() +
                     " | Médico responsável: " + medicoLogado.getPessoa().getNome() +
                     " (ID: " + idMedicoLogado + ")");
@@ -99,7 +97,7 @@ public class PacienteCompletoControllerImpl implements PacienteCompletoControlle
             return response;
 
         } catch (Exception e) {
-            logger.error("💥 ERRO AO CRIAR PACIENTE COMPLETO: " + e.getMessage());
+            logger.error("ERRO AO CRIAR PACIENTE COMPLETO: " + e.getMessage());
             throw e;
         }
     }
@@ -107,7 +105,23 @@ public class PacienteCompletoControllerImpl implements PacienteCompletoControlle
     @Override
     public PacienteCompletoResponseDTO getPacienteCompleto(Integer idPaciente) throws EntidadeNaoLocalizadaException {
         try {
+            Integer idMedicoLogado = authenticationService.getMedicoLogadoId();
+            Medico medicoLogado = authenticationService.getMedicoLogado();
+
+            logger.info("Médico logado tentando acessar paciente - " +
+                    "Médico: " + medicoLogado.getPessoa().getNome() +
+                    " (ID: " + idMedicoLogado + "), " +
+                    "Paciente solicitado: " + idPaciente);
+
             Paciente paciente = pacienteService.localizar(idPaciente);
+
+            if (!paciente.getIdMedicoResponsavel().equals(idMedicoLogado)) {
+                logger.warn("ACESSO NEGADO - Médico " + idMedicoLogado +
+                        " tentou acessar paciente " + idPaciente +
+                        " que pertence ao médico " + paciente.getIdMedicoResponsavel());
+                throw new EntidadeNaoLocalizadaException("Paciente não encontrado ou acesso não autorizado");
+            }
+
             Pessoa pessoa = pessoaService.localizar(paciente.getIdPessoa());
 
             InfoTeleconsulta infoTeleconsulta = null;
@@ -133,6 +147,9 @@ public class PacienteCompletoControllerImpl implements PacienteCompletoControlle
             if (perfilCognitivo != null) {
                 response.setPerfilCognitivo(perfilCognitivoMapper.toResponseDTO(perfilCognitivo));
             }
+
+            logger.info("ACESSO AUTORIZADO - Médico " + medicoLogado.getPessoa().getNome() +
+                    " visualizou paciente " + pessoa.getNome());
 
             return response;
 

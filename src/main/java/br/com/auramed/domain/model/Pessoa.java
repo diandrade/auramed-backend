@@ -78,7 +78,7 @@ public class Pessoa {
         String cpfNumerico = cpf.replaceAll("\\D", "");
 
         if (cpfNumerico.length() < 11) {
-            System.out.println("⚠️ AVISO: CPF com formato incompleto: " + cpf + " (após limpeza: " + cpfNumerico + ")");
+            System.out.println("AVISO: CPF com formato incompleto: " + cpf + " (após limpeza: " + cpfNumerico + ")");
             return;
         }
 
@@ -178,7 +178,7 @@ public class Pessoa {
             if (e.getMessage().contains("CPF não pode ter todos os dígitos iguais")) {
                 throw e;
             }
-            System.out.println("⚠️ AVISO: " + e.getMessage());
+            System.out.println("AVISO: " + e.getMessage());
         }
     }
 

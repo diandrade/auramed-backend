@@ -4,6 +4,7 @@ import br.com.auramed.domain.model.InfoTeleconsulta;
 import br.com.auramed.interfaces.dto.request.InfoTeleconsultaRequestDTO;
 import br.com.auramed.interfaces.dto.response.InfoTeleconsultaResponseDTO;
 import jakarta.enterprise.context.ApplicationScoped;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,13 +17,13 @@ public class InfoTeleconsultaMapperImpl implements InfoTeleconsultaMapper {
             return null;
         }
 
-        InfoTeleconsulta infoTeleconsulta = new InfoTeleconsulta(
-                dto.getIdPaciente(),
-                dto.getCdHabilidadeDigital(),
-                dto.getCdCanalLembrete(),
-                dto.getInPrecisaCuidador(),
-                dto.getInJaFezTele()
-        );
+        InfoTeleconsulta infoTeleconsulta = new InfoTeleconsulta();
+        infoTeleconsulta.setCdHabilidadeDigital(dto.getCdHabilidadeDigital());
+        infoTeleconsulta.setCdCanalLembrete(dto.getCdCanalLembrete());
+        infoTeleconsulta.setInPrecisaCuidador(dto.getInPrecisaCuidador());
+        infoTeleconsulta.setInJaFezTele(dto.getInJaFezTele());
+        infoTeleconsulta.setDataCadastro(LocalDateTime.now());
+        infoTeleconsulta.setDataAtualizacao(LocalDateTime.now());
 
         return infoTeleconsulta;
     }
@@ -33,24 +34,25 @@ public class InfoTeleconsultaMapperImpl implements InfoTeleconsultaMapper {
             return null;
         }
 
-        InfoTeleconsultaResponseDTO response = new InfoTeleconsultaResponseDTO();
-        response.setIdInfoTeleconsulta(infoTeleconsulta.getIdInfoTeleconsulta());
-        response.setIdPaciente(infoTeleconsulta.getIdPaciente());
-        response.setCdHabilidadeDigital(infoTeleconsulta.getCdHabilidadeDigital());
-        response.setCdCanalLembrete(infoTeleconsulta.getCdCanalLembrete());
-        response.setInPrecisaCuidador(infoTeleconsulta.getInPrecisaCuidador());
-        response.setInJaFezTele(infoTeleconsulta.getInJaFezTele());
-        response.setDataCadastro(infoTeleconsulta.getDataCadastro());
-        response.setDataAtualizacao(infoTeleconsulta.getDataAtualizacao());
+        InfoTeleconsultaResponseDTO dto = new InfoTeleconsultaResponseDTO();
+        dto.setIdInfoTeleconsulta(infoTeleconsulta.getIdInfoTeleconsulta());
+        dto.setIdPaciente(infoTeleconsulta.getIdPaciente());
+        dto.setCdHabilidadeDigital(infoTeleconsulta.getCdHabilidadeDigital());
+        dto.setCdCanalLembrete(infoTeleconsulta.getCdCanalLembrete());
+        dto.setInPrecisaCuidador(infoTeleconsulta.getInPrecisaCuidador());
+        dto.setInJaFezTele(infoTeleconsulta.getInJaFezTele());
+        dto.setDataCadastro(infoTeleconsulta.getDataCadastro());
+        dto.setDataAtualizacao(infoTeleconsulta.getDataAtualizacao());
 
-        return response;
+        return dto;
     }
 
     @Override
     public List<InfoTeleconsultaResponseDTO> toResponseDTOList(List<InfoTeleconsulta> infoTeleconsultas) {
         if (infoTeleconsultas == null) {
-            return List.of();
+            return null;
         }
+
         return infoTeleconsultas.stream()
                 .map(this::toResponseDTO)
                 .collect(Collectors.toList());

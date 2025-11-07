@@ -2,12 +2,14 @@
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/application/service/AuthMedicoServiceImpl.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/application/service/AuthenticationServiceImpl.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/application/service/BaseConhecimentoServiceImpl.java
+/home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/application/service/CategoriaTester.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/application/service/CategorizacaoServiceImpl.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/application/service/ChatbotServiceImpl.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/application/service/ConversacaoServiceImpl.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/application/service/CuidadorServiceImpl.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/application/service/EnderecoServiceImpl.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/application/service/EspecialidadeServiceImpl.java
+/home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/application/service/FaqServiceImpl.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/application/service/GeminiServiceImpl.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/application/service/InfoTeleconsultaServiceImpl.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/application/service/MedicoServiceImpl.java
@@ -16,6 +18,7 @@
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/application/service/PasswordServiceImpl.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/application/service/PerfilCognitivoServiceImpl.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/application/service/PessoaServiceImpl.java
+/home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/application/service/RelatorioServiceImpl.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/domain/exception/EntidadeNaoLocalizadaException.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/domain/exception/ValidacaoDeDominioException.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/domain/model/AuthMedico.java
@@ -30,6 +33,7 @@
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/domain/model/Paciente.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/domain/model/PacienteCuidador.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/domain/model/PerfilCognitivo.java
+/home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/domain/model/PerguntaFrequente.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/domain/model/Pessoa.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/domain/model/RespostaChat.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/domain/model/Sentimento.java
@@ -56,6 +60,7 @@
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/domain/service/CuidadorService.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/domain/service/EnderecoService.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/domain/service/EspecialidadeService.java
+/home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/domain/service/FaqService.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/domain/service/GeminiAiService.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/domain/service/GeminiService.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/domain/service/InfoTeleconsultaService.java
@@ -66,12 +71,15 @@
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/domain/service/PasswordService.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/domain/service/PerfilCognitivoService.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/domain/service/PessoaService.java
+/home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/domain/service/RelatorioService.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/infrastructure/api/rest/AuthMedicoRestController.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/infrastructure/api/rest/BaseConhecimentoRestController.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/infrastructure/api/rest/ChatbotRestController.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/infrastructure/api/rest/CuidadorRestController.java
+/home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/infrastructure/api/rest/DashboardRestController.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/infrastructure/api/rest/EnderecoRestController.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/infrastructure/api/rest/EspecialidadeRestController.java
+/home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/infrastructure/api/rest/FaqRestController.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/infrastructure/api/rest/InfoTeleconsultaRestController.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/infrastructure/api/rest/MedicoRestController.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/infrastructure/api/rest/PacienteCompletoRestController.java
@@ -79,8 +87,10 @@
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/infrastructure/api/rest/PacienteRestController.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/infrastructure/api/rest/PerfilCognitivoRestController.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/infrastructure/api/rest/PessoaRestController.java
+/home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/infrastructure/api/rest/RelatorioRestController.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/infrastructure/config/CorsConfig.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/infrastructure/config/DatabaseConfig.java
+/home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/infrastructure/config/OptionsFilter.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/infrastructure/exception/InfrastructureException.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/infrastructure/persistence/DatabaseConnection.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/infrastructure/persistence/DatabaseConnectionImpl.java
@@ -123,6 +133,8 @@
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/interfaces/controllers/PerfilCognitivoControllerImpl.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/interfaces/controllers/PessoaController.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/interfaces/controllers/PessoaControllerImpl.java
+/home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/interfaces/controllers/RelatorioController.java
+/home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/interfaces/controllers/RelatorioControllerImpl.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/interfaces/dto/request/AuthMedicoRequestDTO.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/interfaces/dto/request/BaseConhecimentoRequestDTO.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/interfaces/dto/request/ChatRequestDTO.java
@@ -141,6 +153,7 @@
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/interfaces/dto/response/BaseConhecimentoResponseDTO.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/interfaces/dto/response/ChatResponseDTO.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/interfaces/dto/response/CuidadorResponseDTO.java
+/home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/interfaces/dto/response/DashboardResponseDTO.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/interfaces/dto/response/EnderecoResponseDTO.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/interfaces/dto/response/EspecialidadeResponseDTO.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/interfaces/dto/response/InfoTeleconsultaResponseDTO.java
@@ -151,6 +164,7 @@
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/interfaces/dto/response/PacienteResponseDTO.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/interfaces/dto/response/PerfilCognitivoResponseDTO.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/interfaces/dto/response/PessoaResponseDTO.java
+/home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/interfaces/dto/response/RelatorioResponseDTO.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/interfaces/mappers/AuthMedicoMapper.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/interfaces/mappers/AuthMedicoMapperImpl.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/interfaces/mappers/BaseConhecimentoMapper.java

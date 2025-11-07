@@ -6,18 +6,8 @@ public class PacienteCompletoRequestDTO {
     private InfoTeleconsultaRequestDTO infoTeleconsulta;
     private PerfilCognitivoRequestDTO perfilCognitivo;
 
-    // Construtores
     public PacienteCompletoRequestDTO() {}
 
-    public PacienteCompletoRequestDTO(PessoaRequestDTO pessoa, PacienteRequestDTO paciente,
-                                      InfoTeleconsultaRequestDTO infoTeleconsulta, PerfilCognitivoRequestDTO perfilCognitivo) {
-        this.pessoa = pessoa;
-        this.paciente = paciente;
-        this.infoTeleconsulta = infoTeleconsulta;
-        this.perfilCognitivo = perfilCognitivo;
-    }
-
-    // Getters e Setters
     public PessoaRequestDTO getPessoa() {
         return pessoa;
     }

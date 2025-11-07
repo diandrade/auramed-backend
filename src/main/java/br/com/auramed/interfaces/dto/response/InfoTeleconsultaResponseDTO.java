@@ -12,23 +12,8 @@ public class InfoTeleconsultaResponseDTO {
     private LocalDateTime dataCadastro;
     private LocalDateTime dataAtualizacao;
 
-    // Construtores
     public InfoTeleconsultaResponseDTO() {}
 
-    public InfoTeleconsultaResponseDTO(Integer idInfoTeleconsulta, Integer idPaciente, String cdHabilidadeDigital,
-                                       String cdCanalLembrete, String inPrecisaCuidador, String inJaFezTele,
-                                       LocalDateTime dataCadastro, LocalDateTime dataAtualizacao) {
-        this.idInfoTeleconsulta = idInfoTeleconsulta;
-        this.idPaciente = idPaciente;
-        this.cdHabilidadeDigital = cdHabilidadeDigital;
-        this.cdCanalLembrete = cdCanalLembrete;
-        this.inPrecisaCuidador = inPrecisaCuidador;
-        this.inJaFezTele = inJaFezTele;
-        this.dataCadastro = dataCadastro;
-        this.dataAtualizacao = dataAtualizacao;
-    }
-
-    // Getters e Setters
     public Integer getIdInfoTeleconsulta() {
         return idInfoTeleconsulta;
     }

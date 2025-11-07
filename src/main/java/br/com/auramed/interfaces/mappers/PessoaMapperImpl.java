@@ -17,13 +17,6 @@ public class PessoaMapperImpl implements PessoaMapper {
         }
 
         Pessoa pessoa = new Pessoa(dto.getNome(), dto.getTelefone(), dto.getTipoPessoa());
-
-        if (dto.getId() != null) {
-            pessoa.setId(dto.getId());
-        } else {
-            pessoa.setId(0);
-        }
-
         pessoa.setEmail(dto.getEmail());
         pessoa.setCpf(dto.getCpf());
         pessoa.setDataNascimento(dto.getDataNascimento());
@@ -38,26 +31,27 @@ public class PessoaMapperImpl implements PessoaMapper {
             return null;
         }
 
-        PessoaResponseDTO response = new PessoaResponseDTO();
-        response.setId(pessoa.getId());
-        response.setNome(pessoa.getNome());
-        response.setEmail(pessoa.getEmail());
-        response.setCpf(pessoa.getCpf());
-        response.setDataNascimento(pessoa.getDataNascimento());
-        response.setGenero(pessoa.getGenero());
-        response.setTelefone(pessoa.getTelefone());
-        response.setTipoPessoa(pessoa.getTipoPessoa());
-        response.setDataCadastro(pessoa.getDataCadastro());
-        response.setAtivo(pessoa.getAtivo());
+        PessoaResponseDTO dto = new PessoaResponseDTO();
+        dto.setId(pessoa.getId());
+        dto.setNome(pessoa.getNome());
+        dto.setEmail(pessoa.getEmail());
+        dto.setCpf(pessoa.getCpf());
+        dto.setDataNascimento(pessoa.getDataNascimento());
+        dto.setGenero(pessoa.getGenero());
+        dto.setTelefone(pessoa.getTelefone());
+        dto.setTipoPessoa(pessoa.getTipoPessoa());
+        dto.setDataCadastro(pessoa.getDataCadastro());
+        dto.setAtivo(pessoa.getAtivo());
 
-        return response;
+        return dto;
     }
 
     @Override
     public List<PessoaResponseDTO> toResponseDTOList(List<Pessoa> pessoas) {
         if (pessoas == null) {
-            return List.of();
+            return null;
         }
+
         return pessoas.stream()
                 .map(this::toResponseDTO)
                 .collect(Collectors.toList());

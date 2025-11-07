@@ -20,17 +20,25 @@ public class JdbcPerfilCognitivoRepository implements PerfilCognitivoRepository 
     }
 
     private PerfilCognitivo mapResultSetToPerfilCognitivo(ResultSet rs) throws SQLException {
-        PerfilCognitivo perfilCognitivo = new PerfilCognitivo(
-                rs.getInt("T_ARMD_PACIENTE_id_pessoa"),
-                rs.getString("in_dificuldade_visao"),
-                rs.getString("in_usa_oculos"),
-                rs.getString("in_dificuldade_audicao"),
-                rs.getString("in_usa_aparelho_aud"),
-                rs.getString("in_dificuldade_cogn")
-        );
+        PerfilCognitivo perfilCognitivo = new PerfilCognitivo();
         perfilCognitivo.setIdPerfilCognitivo(rs.getInt("id_perfil_cognitivo"));
-        perfilCognitivo.setDataCadastro(rs.getTimestamp("dt_cadastro").toLocalDateTime());
-        perfilCognitivo.setDataAtualizacao(rs.getTimestamp("dt_atualizacao").toLocalDateTime());
+        perfilCognitivo.setIdPaciente(rs.getInt("T_ARMD_PACIENTE_id_pessoa"));
+        perfilCognitivo.setInDificuldadeVisao(rs.getString("in_dificuldade_visao"));
+        perfilCognitivo.setInUsaOculos(rs.getString("in_usa_oculos"));
+        perfilCognitivo.setInDificuldadeAudicao(rs.getString("in_dificuldade_audicao"));
+        perfilCognitivo.setInUsaAparelhoAud(rs.getString("in_usa_aparelho_aud"));
+        perfilCognitivo.setInDificuldadeCogn(rs.getString("in_dificuldade_cogn"));
+
+        Timestamp dataCadastro = rs.getTimestamp("dt_cadastro");
+        if (dataCadastro != null) {
+            perfilCognitivo.setDataCadastro(dataCadastro.toLocalDateTime());
+        }
+
+        Timestamp dataAtualizacao = rs.getTimestamp("dt_atualizacao");
+        if (dataAtualizacao != null) {
+            perfilCognitivo.setDataAtualizacao(dataAtualizacao.toLocalDateTime());
+        }
+
         return perfilCognitivo;
     }
 
@@ -169,6 +177,116 @@ public class JdbcPerfilCognitivoRepository implements PerfilCognitivoRepository 
 
         } catch (SQLException e) {
             throw new InfrastructureException("Erro ao remover perfil cognitivo: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public List<Object[]> buscarNecessidadesAcessibilidade() {
+        String sql = "SELECT 'Visual' as tipo, COUNT(*) as quantidade FROM T_ARMD_PERFIL_COGNITIVO WHERE in_dificuldade_visao = 'S' " +
+                "UNION ALL " +
+                "SELECT 'Auditiva', COUNT(*) FROM T_ARMD_PERFIL_COGNITIVO WHERE in_dificuldade_audicao = 'S' " +
+                "UNION ALL " +
+                "SELECT 'Cognitiva', COUNT(*) FROM T_ARMD_PERFIL_COGNITIVO WHERE in_dificuldade_cogn = 'S'";
+        List<Object[]> resultados = new ArrayList<>();
+
+        try (Connection conn = databaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                String tipo = rs.getString("tipo");
+                Long quantidade = rs.getLong("quantidade");
+                Object[] resultado = new Object[]{tipo, quantidade};
+                resultados.add(resultado);
+            }
+
+            return resultados;
+
+        } catch (SQLException e) {
+            throw new InfrastructureException("Erro ao buscar necessidades de acessibilidade: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public List<Object[]> buscarUsoAuxiliares() {
+        String sql = "SELECT 'Óculos' as auxiliar, COUNT(*) as quantidade FROM T_ARMD_PERFIL_COGNITIVO WHERE in_usa_oculos = 'S' " +
+                "UNION ALL " +
+                "SELECT 'Aparelho Auditivo', COUNT(*) FROM T_ARMD_PERFIL_COGNITIVO WHERE in_usa_aparelho_aud = 'S'";
+        List<Object[]> resultados = new ArrayList<>();
+
+        try (Connection conn = databaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                String auxiliar = rs.getString("auxiliar");
+                Long quantidade = rs.getLong("quantidade");
+                Object[] resultado = new Object[]{auxiliar, quantidade};
+                resultados.add(resultado);
+            }
+
+            return resultados;
+
+        } catch (SQLException e) {
+            throw new InfrastructureException("Erro ao buscar uso de auxiliares: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public List<Object[]> buscarDadosAcessibilidade() {
+        return buscarNecessidadesAcessibilidade();
+    }
+
+    @Override
+    public Long count() {
+        String sql = "SELECT COUNT(*) FROM T_ARMD_PERFIL_COGNITIVO";
+
+        try (Connection conn = databaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getLong(1);
+            }
+            return 0L;
+
+        } catch (SQLException e) {
+            throw new InfrastructureException("Erro ao contar perfis cognitivos: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public List<Object[]> buscarEstatisticasCompletas() {
+        String sql = "SELECT " +
+                "COUNT(*) as total, " +
+                "SUM(CASE WHEN in_dificuldade_visao = 'S' THEN 1 ELSE 0 END) as com_dificuldade_visao, " +
+                "SUM(CASE WHEN in_usa_oculos = 'S' THEN 1 ELSE 0 END) as usa_oculos, " +
+                "SUM(CASE WHEN in_dificuldade_audicao = 'S' THEN 1 ELSE 0 END) as com_dificuldade_audicao, " +
+                "SUM(CASE WHEN in_usa_aparelho_aud = 'S' THEN 1 ELSE 0 END) as usa_aparelho_aud, " +
+                "SUM(CASE WHEN in_dificuldade_cogn = 'S' THEN 1 ELSE 0 END) as com_dificuldade_cogn " +
+                "FROM T_ARMD_PERFIL_COGNITIVO";
+        List<Object[]> resultados = new ArrayList<>();
+
+        try (Connection conn = databaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                Object[] resultado = new Object[]{
+                        rs.getLong("total"),
+                        rs.getLong("com_dificuldade_visao"),
+                        rs.getLong("usa_oculos"),
+                        rs.getLong("com_dificuldade_audicao"),
+                        rs.getLong("usa_aparelho_aud"),
+                        rs.getLong("com_dificuldade_cogn")
+                };
+                resultados.add(resultado);
+            }
+
+            return resultados;
+
+        } catch (SQLException e) {
+            throw new InfrastructureException("Erro ao buscar estatísticas completas: " + e.getMessage());
         }
     }
 }

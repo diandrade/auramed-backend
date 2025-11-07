@@ -9,6 +9,9 @@ public interface InfoTeleconsultaRepository {
     InfoTeleconsulta buscarPorPaciente(Integer idPaciente) throws EntidadeNaoLocalizadaException;
     List<InfoTeleconsulta> buscarTodos();
     InfoTeleconsulta salvar(InfoTeleconsulta infoTeleconsulta);
-    InfoTeleconsulta editar(InfoTeleconsulta infoTeleconsulta);
-    void remover(Integer idInfoTeleconsulta);
+    InfoTeleconsulta editar(InfoTeleconsulta infoTeleconsulta) throws EntidadeNaoLocalizadaException;
+    void remover(Integer idInfoTeleconsulta) throws EntidadeNaoLocalizadaException;
+    List<Object[]> buscarHabilidadesDigitais();
+    List<Object[]> buscarCanaisLembrete();
+    List<Object[]> buscarEstatisticasTeleconsulta();
 }

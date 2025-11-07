@@ -54,17 +54,23 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             String token = obterTokenDaRequisicaoAtual();
 
             if (token == null || token.isBlank()) {
-                logger.error("❌ Token não encontrado na requisição");
+                logger.error("Token não encontrado na requisição");
                 throw new EntidadeNaoLocalizadaException("Token de autenticação não encontrado");
             }
 
-            logger.debug("🔐 Obtendo médico do token: " + token);
-            return obterMedicoPorToken(token);
+            logger.debug("Validando token e obtendo médico...");
+            Medico medico = obterMedicoPorToken(token);
+
+            logger.info("MÉDICO AUTENTICADO - " +
+                    medico.getPessoa().getNome() + " (ID: " + medico.getId() + ")");
+
+            return medico;
 
         } catch (EntidadeNaoLocalizadaException e) {
+            logger.error("Falha na autenticação: " + e.getMessage());
             throw e;
         } catch (Exception e) {
-            logger.error("💥 Erro ao obter médico logado: " + e.getMessage());
+            logger.error("Erro ao obter médico logado: " + e.getMessage());
             throw new EntidadeNaoLocalizadaException("Erro ao obter médico autenticado");
         }
     }
@@ -77,30 +83,30 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private String obterTokenDaRequisicaoAtual() {
         try {
             if (httpHeaders == null) {
-                logger.warn("⚠️ HttpHeaders não disponível no contexto");
+                logger.warn("HttpHeaders não disponível no contexto");
                 return null;
             }
 
             List<String> authHeaders = httpHeaders.getRequestHeader("Authorization");
             if (authHeaders == null || authHeaders.isEmpty()) {
-                logger.debug("📭 Header Authorization não encontrado");
+                logger.debug("Header Authorization não encontrado");
                 return null;
             }
 
             String authHeader = authHeaders.get(0);
-            logger.debug("📨 Authorization header: " + authHeader);
+            logger.debug("Authorization header: " + authHeader);
 
             if (authHeader != null && authHeader.startsWith("Bearer ")) {
                 String token = authHeader.substring(7);
-                logger.debug("✅ Token extraído: " + token);
+                logger.debug("Token extraído: " + token);
                 return token;
             }
 
-            logger.warn("⚠️ Formato do header Authorization inválido");
+            logger.warn("Formato do header Authorization inválido");
             return null;
 
         } catch (Exception e) {
-            logger.error("💥 Erro ao obter token: " + e.getMessage());
+            logger.error("Erro ao obter token: " + e.getMessage());
             return null;
         }
     }

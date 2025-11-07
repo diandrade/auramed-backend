@@ -4,17 +4,11 @@ import br.com.auramed.domain.model.Paciente;
 import br.com.auramed.interfaces.dto.request.PacienteRequestDTO;
 import br.com.auramed.interfaces.dto.response.PacienteResponseDTO;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-import org.jboss.logging.Logger;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class PacienteMapperImpl implements PacienteMapper {
-
-    @Inject
-    Logger logger;
 
     @Override
     public Paciente toDomain(PacienteRequestDTO dto) {
@@ -22,16 +16,7 @@ public class PacienteMapperImpl implements PacienteMapper {
             return null;
         }
 
-        Paciente paciente = new Paciente(
-                dto.getIdPessoa(),
-                null, // Será definido pelo controller
-                dto.getNrCartaoSUS()
-        );
-
-        logger.debug("🔧 Paciente mapeado - ID Pessoa: " + dto.getIdPessoa() +
-                " | Médico: (será definido pelo contexto)");
-
-        return paciente;
+        return new Paciente(null, dto.getIdMedicoResponsavel(), dto.getNrCartaoSUS());
     }
 
     @Override
@@ -40,21 +25,22 @@ public class PacienteMapperImpl implements PacienteMapper {
             return null;
         }
 
-        PacienteResponseDTO response = new PacienteResponseDTO();
-        response.setIdPessoa(paciente.getIdPessoa());
-        response.setIdMedicoResponsavel(paciente.getIdMedicoResponsavel());
-        response.setNrCartaoSUS(paciente.getNrCartaoSUS());
-        response.setDataCadastro(paciente.getDataCadastro());
-        response.setAtivo(paciente.getAtivo());
+        PacienteResponseDTO dto = new PacienteResponseDTO();
+        dto.setIdPessoa(paciente.getIdPessoa());
+        dto.setIdMedicoResponsavel(paciente.getIdMedicoResponsavel());
+        dto.setNrCartaoSUS(paciente.getNrCartaoSUS());
+        dto.setDataCadastro(paciente.getDataCadastro());
+        dto.setAtivo(paciente.getAtivo());
 
-        return response;
+        return dto;
     }
 
     @Override
     public List<PacienteResponseDTO> toResponseDTOList(List<Paciente> pacientes) {
         if (pacientes == null) {
-            return List.of();
+            return null;
         }
+
         return pacientes.stream()
                 .map(this::toResponseDTO)
                 .collect(Collectors.toList());

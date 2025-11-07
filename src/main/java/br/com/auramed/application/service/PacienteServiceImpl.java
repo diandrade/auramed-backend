@@ -26,39 +26,39 @@ public class PacienteServiceImpl implements PacienteService {
     @Override
     public Paciente criar(Paciente paciente) {
         try {
-            logger.info("🏥 INICIANDO CRIAÇÃO DE PACIENTE - ID Pessoa: " + paciente.getIdPessoa());
+            logger.info("INICIANDO CRIAÇÃO DE PACIENTE - ID Pessoa: " + paciente.getIdPessoa());
 
-            logger.debug("🔍 Validando cartão SUS...");
+            logger.debug("Validando cartão SUS...");
             paciente.validarCartaoSUS();
 
-            logger.debug("🔍 Verificando pessoa...");
+            logger.debug("Verificando pessoa...");
             var pessoa = pessoaRepository.buscarPorId(paciente.getIdPessoa());
             if (!"PACIENTE".equals(pessoa.getTipoPessoa())) {
-                logger.error("❌ Pessoa não é do tipo PACIENTE: " + pessoa.getTipoPessoa());
+                logger.error("Pessoa não é do tipo PACIENTE: " + pessoa.getTipoPessoa());
                 throw new RuntimeException("A pessoa deve ser do tipo PACIENTE");
             }
 
-            logger.debug("🔍 Verificando médico responsável...");
+            logger.debug("Verificando médico responsável...");
             pessoaRepository.buscarPorId(paciente.getIdMedicoResponsavel());
 
-            logger.debug("🔍 Verificando unicidade do cartão SUS...");
+            logger.debug("Verificando unicidade do cartão SUS...");
             if (pacienteRepository.existeCartaoSUS(paciente.getNrCartaoSUS())) {
-                logger.error("❌ Cartão SUS já existe: " + paciente.getNrCartaoSUS());
+                logger.error("Cartão SUS já existe: " + paciente.getNrCartaoSUS());
                 throw new RuntimeException("Já existe paciente cadastrado com este Cartão SUS: " + paciente.getNrCartaoSUS());
             }
 
             Paciente pacienteSalvo = pacienteRepository.salvar(paciente);
-            logger.info("✅ PACIENTE CRIADO COM SUCESSO - ID Pessoa: " + pacienteSalvo.getIdPessoa() +
+            logger.info("PACIENTE CRIADO COM SUCESSO - ID Pessoa: " + pacienteSalvo.getIdPessoa() +
                     " | Médico: " + pacienteSalvo.getIdMedicoResponsavel() +
                     " | Cartão SUS: " + pacienteSalvo.getNrCartaoSUS());
 
             return pacienteSalvo;
 
         } catch (EntidadeNaoLocalizadaException e) {
-            logger.error("❌ Pessoa ou médico não encontrado: " + e.getMessage());
+            logger.error("Pessoa ou médico não encontrado: " + e.getMessage());
             throw new RuntimeException("Pessoa ou médico responsável não encontrado: " + e.getMessage());
         } catch (Exception e) {
-            logger.error("💥 ERRO AO CRIAR PACIENTE: " + e.getMessage());
+            logger.error("ERRO AO CRIAR PACIENTE: " + e.getMessage());
             throw new RuntimeException("Falha ao criar paciente: " + e.getMessage());
         }
     }
@@ -189,6 +189,17 @@ public class PacienteServiceImpl implements PacienteService {
         } catch (Exception e) {
             logger.error("Erro ao inativar paciente. ID Pessoa: " + idPessoa + ": " + e.getMessage());
             throw new RuntimeException("Falha ao inativar paciente: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public boolean pacientePertenceAoMedico(Integer idPaciente, Integer idMedico) throws EntidadeNaoLocalizadaException {
+        try {
+            Paciente paciente = pacienteRepository.buscarPorId(idPaciente);
+            return paciente.getIdMedicoResponsavel().equals(idMedico);
+        } catch (EntidadeNaoLocalizadaException e) {
+            logger.error("Paciente não encontrado para validação de permissão. ID: " + idPaciente);
+            throw e;
         }
     }
 }
