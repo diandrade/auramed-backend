@@ -1,7 +1,7 @@
 package br.com.auramed.interfaces.controllers;
 
 import br.com.auramed.domain.service.RelatorioService;
-import br.com.auramed.interfaces.dto.response.RelatorioResponseDTO;
+import br.com.auramed.interfaces.dto.response.DashboardResponseDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
@@ -12,7 +12,7 @@ public class RelatorioControllerImpl implements RelatorioController {
     RelatorioService relatorioService;
 
     @Override
-    public RelatorioResponseDTO getRelatorioCompleto() {
-        return relatorioService.gerarRelatorioCompleto();
+    public DashboardResponseDTO getRelatorioCompleto() {
+        return relatorioService.gerarDashboardCompleto();
     }
 }

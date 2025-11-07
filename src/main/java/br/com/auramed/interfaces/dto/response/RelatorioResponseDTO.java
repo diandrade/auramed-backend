@@ -7,7 +7,6 @@ public class RelatorioResponseDTO {
     public static class HabilidadeDigitalDTO {
         private String skill;
         private Long count;
-
         public String getSkill() { return skill; }
         public void setSkill(String skill) { this.skill = skill; }
         public Long getCount() { return count; }
@@ -18,7 +17,6 @@ public class RelatorioResponseDTO {
         private String name;
         private Long value;
         private String fill;
-
         public String getName() { return name; }
         public void setName(String name) { this.name = name; }
         public Long getValue() { return value; }
@@ -31,7 +29,6 @@ public class RelatorioResponseDTO {
         private String type;
         private Long count;
         private Long total;
-
         public String getType() { return type; }
         public void setType(String type) { this.type = type; }
         public Long getCount() { return count; }
@@ -43,7 +40,6 @@ public class RelatorioResponseDTO {
     public static class FaqPopularDTO {
         private String question;
         private Long views;
-
         public String getQuestion() { return question; }
         public void setQuestion(String question) { this.question = question; }
         public Long getViews() { return views; }
@@ -53,7 +49,6 @@ public class RelatorioResponseDTO {
     public static class UsoChatbotDTO {
         private String month;
         private Long usage;
-
         public String getMonth() { return month; }
         public void setMonth(String month) { this.month = month; }
         public Long getUsage() { return usage; }

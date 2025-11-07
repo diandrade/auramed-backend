@@ -16,4 +16,7 @@ public interface ConversacaoRepository {
     List<String> buscarPerguntasComBaixaConfianca();
     Long getTotalConversacoes();
     List<Object[]> buscarEstatisticasSentimentos();
+    List<Object[]> buscarUsoPorPeriodo(String periodo);
+    List<Object[]> buscarMetricasEngajamento();
+    List<Object[]> buscarEstatisticasFontesResposta();
 }

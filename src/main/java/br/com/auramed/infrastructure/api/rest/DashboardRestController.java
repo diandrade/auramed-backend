@@ -1,6 +1,5 @@
 package br.com.auramed.infrastructure.api.rest;
 
-import br.com.auramed.interfaces.controllers.RelatorioController;
 import br.com.auramed.domain.service.RelatorioService;
 import br.com.auramed.interfaces.dto.response.DashboardResponseDTO;
 import jakarta.inject.Inject;
@@ -8,26 +7,23 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-@Path("/api/relatorios")
+@Path("/api/dashboard")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class RelatorioRestController {
-
-    @Inject
-    RelatorioController relatorioController;
+public class DashboardRestController {
 
     @Inject
     RelatorioService relatorioService;
 
     @GET
     @Path("/completo")
-    public Response getRelatorioCompleto() {
+    public Response getDashboardCompleto() {
         try {
-            DashboardResponseDTO relatorio = relatorioController.getRelatorioCompleto();
-            return Response.ok(relatorio).build();
+            DashboardResponseDTO dashboard = relatorioService.gerarDashboardCompleto();
+            return Response.ok(dashboard).build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("Erro ao gerar relatório: " + e.getMessage())
+                    .entity("Erro ao gerar dashboard: " + e.getMessage())
                     .build();
         }
     }

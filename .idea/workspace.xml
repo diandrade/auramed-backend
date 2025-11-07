@@ -6,79 +6,37 @@
   <component name="ChangeListManager">
     <list default="true" id="675b3487-d989-468c-acfb-2e22e775cb51" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/application/service/AuthenticationServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/application/service/AuthenticationServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/application/service/InfoTeleconsultaServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/application/service/InfoTeleconsultaServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/application/service/PacienteServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/application/service/PacienteServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/application/service/PerfilCognitivoServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/application/service/PerfilCognitivoServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/application/service/PessoaServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/application/service/PessoaServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/domain/model/InfoTeleconsulta.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/domain/model/InfoTeleconsulta.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/domain/model/Paciente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/domain/model/Paciente.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/domain/model/PerfilCognitivo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/domain/model/PerfilCognitivo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/domain/model/Pessoa.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/domain/model/Pessoa.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/application/service/RelatorioServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/application/service/RelatorioServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/domain/repository/ConversacaoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/domain/repository/ConversacaoRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/domain/repository/InfoTeleconsultaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/domain/repository/InfoTeleconsultaRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/domain/repository/PerfilCognitivoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/domain/repository/PerfilCognitivoRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/domain/service/PacienteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/domain/service/PacienteService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/infrastructure/api/rest/PacienteCompletoRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/infrastructure/api/rest/PacienteCompletoRestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/domain/service/RelatorioService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/domain/service/RelatorioService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/infrastructure/api/rest/RelatorioRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/infrastructure/api/rest/RelatorioRestController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/infrastructure/persistence/JdbcConversacaoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/infrastructure/persistence/JdbcConversacaoRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/infrastructure/persistence/JdbcInfoTeleconsultaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/infrastructure/persistence/JdbcInfoTeleconsultaRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/infrastructure/persistence/JdbcPerfilCognitivoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/infrastructure/persistence/JdbcPerfilCognitivoRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/interfaces/controllers/PacienteCompletoControllerImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/interfaces/controllers/PacienteCompletoControllerImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/interfaces/dto/request/InfoTeleconsultaRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/interfaces/dto/request/InfoTeleconsultaRequestDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/interfaces/dto/request/PacienteCompletoRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/interfaces/dto/request/PacienteCompletoRequestDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/interfaces/dto/request/PacienteRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/interfaces/dto/request/PacienteRequestDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/interfaces/dto/request/PerfilCognitivoRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/interfaces/dto/request/PerfilCognitivoRequestDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/interfaces/dto/request/PessoaRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/interfaces/dto/request/PessoaRequestDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/interfaces/dto/response/InfoTeleconsultaResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/interfaces/dto/response/InfoTeleconsultaResponseDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/interfaces/dto/response/PacienteCompletoResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/interfaces/dto/response/PacienteCompletoResponseDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/interfaces/dto/response/PacienteResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/interfaces/dto/response/PacienteResponseDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/interfaces/dto/response/PerfilCognitivoResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/interfaces/dto/response/PerfilCognitivoResponseDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/interfaces/dto/response/PessoaResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/interfaces/dto/response/PessoaResponseDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/interfaces/mappers/InfoTeleconsultaMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/interfaces/mappers/InfoTeleconsultaMapperImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/interfaces/mappers/PacienteMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/interfaces/mappers/PacienteMapperImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/interfaces/mappers/PerfilCognitivoMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/interfaces/mappers/PerfilCognitivoMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/interfaces/mappers/PerfilCognitivoMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/interfaces/mappers/PerfilCognitivoMapperImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/interfaces/mappers/PessoaMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/interfaces/mappers/PessoaMapperImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/interfaces/controllers/RelatorioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/interfaces/controllers/RelatorioController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/interfaces/controllers/RelatorioControllerImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/interfaces/controllers/RelatorioControllerImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/auramed/interfaces/dto/response/RelatorioResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/auramed/interfaces/dto/response/RelatorioResponseDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/auramed-dev.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/auramed-dev.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/build-analytics-event.json" beforeDir="false" afterPath="$PROJECT_DIR$/target/build-analytics-event.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/build-metrics.json" beforeDir="false" afterPath="$PROJECT_DIR$/target/build-metrics.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/application/service/AuthenticationServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/application/service/AuthenticationServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/application/service/InfoTeleconsultaServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/application/service/InfoTeleconsultaServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/application/service/PacienteServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/application/service/PacienteServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/application/service/PerfilCognitivoServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/application/service/PerfilCognitivoServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/application/service/PessoaServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/application/service/PessoaServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/domain/model/InfoTeleconsulta.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/domain/model/InfoTeleconsulta.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/domain/model/Paciente.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/domain/model/Paciente.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/domain/model/PerfilCognitivo.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/domain/model/PerfilCognitivo.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/domain/model/Pessoa.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/domain/model/Pessoa.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/application/service/RelatorioServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/application/service/RelatorioServiceImpl.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/domain/repository/ConversacaoRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/domain/repository/ConversacaoRepository.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/domain/repository/InfoTeleconsultaRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/domain/repository/InfoTeleconsultaRepository.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/domain/repository/PerfilCognitivoRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/domain/repository/PerfilCognitivoRepository.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/domain/service/PacienteService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/domain/service/PacienteService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/infrastructure/api/rest/PacienteCompletoRestController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/infrastructure/api/rest/PacienteCompletoRestController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/infrastructure/config/CorsConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/infrastructure/config/CorsConfig.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/domain/service/RelatorioService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/domain/service/RelatorioService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/infrastructure/api/rest/RelatorioRestController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/infrastructure/api/rest/RelatorioRestController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/infrastructure/persistence/JdbcConversacaoRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/infrastructure/persistence/JdbcConversacaoRepository.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/infrastructure/persistence/JdbcInfoTeleconsultaRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/infrastructure/persistence/JdbcInfoTeleconsultaRepository.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/infrastructure/persistence/JdbcPerfilCognitivoRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/infrastructure/persistence/JdbcPerfilCognitivoRepository.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/controllers/PacienteCompletoControllerImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/controllers/PacienteCompletoControllerImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/dto/request/InfoTeleconsultaRequestDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/dto/request/InfoTeleconsultaRequestDTO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/dto/request/PacienteCompletoRequestDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/dto/request/PacienteCompletoRequestDTO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/dto/request/PacienteRequestDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/dto/request/PacienteRequestDTO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/dto/request/PerfilCognitivoRequestDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/dto/request/PerfilCognitivoRequestDTO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/dto/request/PessoaRequestDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/dto/request/PessoaRequestDTO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/dto/response/InfoTeleconsultaResponseDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/dto/response/InfoTeleconsultaResponseDTO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/dto/response/PacienteCompletoResponseDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/dto/response/PacienteCompletoResponseDTO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/dto/response/PacienteResponseDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/dto/response/PacienteResponseDTO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/dto/response/PerfilCognitivoResponseDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/dto/response/PerfilCognitivoResponseDTO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/dto/response/PessoaResponseDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/dto/response/PessoaResponseDTO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/mappers/InfoTeleconsultaMapperImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/mappers/InfoTeleconsultaMapperImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/mappers/PacienteMapperImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/mappers/PacienteMapperImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/mappers/PerfilCognitivoMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/mappers/PerfilCognitivoMapper.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/mappers/PerfilCognitivoMapperImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/mappers/PerfilCognitivoMapperImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/mappers/PessoaMapperImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/mappers/PessoaMapperImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/controllers/RelatorioController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/controllers/RelatorioController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/controllers/RelatorioControllerImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/controllers/RelatorioControllerImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/dto/response/RelatorioResponseDTO$AcessibilidadeDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/dto/response/RelatorioResponseDTO$AcessibilidadeDTO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/dto/response/RelatorioResponseDTO$CanalLembreteDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/dto/response/RelatorioResponseDTO$CanalLembreteDTO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/dto/response/RelatorioResponseDTO$FaqPopularDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/dto/response/RelatorioResponseDTO$FaqPopularDTO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/dto/response/RelatorioResponseDTO$HabilidadeDigitalDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/dto/response/RelatorioResponseDTO$HabilidadeDigitalDTO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/dto/response/RelatorioResponseDTO$UsoChatbotDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/dto/response/RelatorioResponseDTO$UsoChatbotDTO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/dto/response/RelatorioResponseDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/auramed/interfaces/dto/response/RelatorioResponseDTO.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/null/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/null/createdFiles.lst" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/null/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/null/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/quarkus/bootstrap/dev-app-model.dat" beforeDir="false" afterPath="$PROJECT_DIR$/target/quarkus/bootstrap/dev-app-model.dat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/quarkus/bootstrap/test-app-model.dat" beforeDir="false" afterPath="$PROJECT_DIR$/target/quarkus/bootstrap/test-app-model.dat" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -111,21 +69,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feature/fixando-api&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/infrastructure/config&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;two.files.diff.last.used.folder&quot;: &quot;/home/diandrade/Desktop/auramed&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "feature/relatorios-dinamicos",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/infrastructure/config",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "two.files.diff.last.used.folder": "/home/diandrade/Desktop/auramed"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/java/br/com/auramed/infrastructure/config" />

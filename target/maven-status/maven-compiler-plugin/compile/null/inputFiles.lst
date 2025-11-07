@@ -76,6 +76,7 @@
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/infrastructure/api/rest/BaseConhecimentoRestController.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/infrastructure/api/rest/ChatbotRestController.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/infrastructure/api/rest/CuidadorRestController.java
+/home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/infrastructure/api/rest/DashboardRestController.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/infrastructure/api/rest/EnderecoRestController.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/infrastructure/api/rest/EspecialidadeRestController.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/infrastructure/api/rest/FaqRestController.java
@@ -152,6 +153,7 @@
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/interfaces/dto/response/BaseConhecimentoResponseDTO.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/interfaces/dto/response/ChatResponseDTO.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/interfaces/dto/response/CuidadorResponseDTO.java
+/home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/interfaces/dto/response/DashboardResponseDTO.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/interfaces/dto/response/EnderecoResponseDTO.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/interfaces/dto/response/EspecialidadeResponseDTO.java
 /home/diandrade/Documents/auramed-sem2-java/src/main/java/br/com/auramed/interfaces/dto/response/InfoTeleconsultaResponseDTO.java

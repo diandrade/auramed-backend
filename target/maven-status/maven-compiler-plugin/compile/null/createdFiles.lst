@@ -26,6 +26,7 @@ br/com/auramed/infrastructure/config/DatabaseConfig.class
 br/com/auramed/interfaces/dto/response/BaseConhecimentoResponseDTO.class
 br/com/auramed/infrastructure/persistence/JdbcPessoaRepository.class
 br/com/auramed/interfaces/mappers/EspecialidadeMapper.class
+br/com/auramed/interfaces/dto/response/DashboardResponseDTO$MetricasChatbotDTO.class
 br/com/auramed/infrastructure/api/rest/PacienteRestController.class
 br/com/auramed/application/service/GeminiServiceImpl.class
 br/com/auramed/infrastructure/exception/InfrastructureException.class
@@ -37,6 +38,7 @@ br/com/auramed/infrastructure/config/OptionsFilter.class
 br/com/auramed/infrastructure/api/rest/EspecialidadeRestController.class
 br/com/auramed/interfaces/dto/request/BaseConhecimentoRequestDTO.class
 br/com/auramed/interfaces/controllers/ChatbotControllerImpl.class
+br/com/auramed/infrastructure/api/rest/DashboardRestController.class
 br/com/auramed/domain/service/PacienteCuidadorService.class
 br/com/auramed/interfaces/dto/response/CuidadorResponseDTO.class
 br/com/auramed/interfaces/mappers/InfoTeleconsultaMapper.class
@@ -47,9 +49,11 @@ br/com/auramed/application/service/ConversacaoServiceImpl.class
 br/com/auramed/interfaces/mappers/PerfilCognitivoMapperImpl.class
 br/com/auramed/infrastructure/persistence/JdbcBaseConhecimentoRepository.class
 br/com/auramed/domain/service/PasswordService.class
+br/com/auramed/interfaces/dto/response/DashboardResponseDTO$EstatisticaSentimentoDTO.class
 br/com/auramed/interfaces/mappers/CuidadorMapper.class
 br/com/auramed/interfaces/dto/request/PessoaRequestDTO.class
 br/com/auramed/interfaces/controllers/PacienteControllerImpl.class
+br/com/auramed/interfaces/dto/response/DashboardResponseDTO$SuporteEngajamentoDTO.class
 br/com/auramed/domain/service/ConversacaoService.class
 br/com/auramed/domain/model/PacienteCuidador.class
 br/com/auramed/interfaces/mappers/EspecialidadeMapperImpl.class
@@ -60,6 +64,7 @@ br/com/auramed/interfaces/controllers/PerfilCognitivoControllerImpl.class
 br/com/auramed/domain/service/EspecialidadeService.class
 br/com/auramed/application/service/PessoaServiceImpl.class
 br/com/auramed/interfaces/controllers/PacienteCuidadorControllerImpl.class
+br/com/auramed/interfaces/dto/response/DashboardResponseDTO$FaqPopularDTO.class
 br/com/auramed/domain/model/BaseConhecimento.class
 br/com/auramed/application/service/EspecialidadeServiceImpl.class
 br/com/auramed/domain/model/Sentimento.class
@@ -68,6 +73,7 @@ br/com/auramed/domain/repository/InfoTeleconsultaRepository.class
 br/com/auramed/infrastructure/api/rest/BaseConhecimentoRestController.class
 br/com/auramed/interfaces/controllers/MedicoControllerImpl.class
 br/com/auramed/interfaces/mappers/MedicoMapper.class
+br/com/auramed/interfaces/dto/response/DashboardResponseDTO$CanalLembreteDTO.class
 br/com/auramed/domain/service/PacienteService.class
 br/com/auramed/infrastructure/api/rest/InfoTeleconsultaRestController.class
 br/com/auramed/interfaces/mappers/PerfilCognitivoMapper.class
@@ -103,6 +109,7 @@ br/com/auramed/interfaces/mappers/ChatMapperImpl.class
 br/com/auramed/domain/service/MedicoService.class
 br/com/auramed/application/service/PasswordServiceImpl.class
 br/com/auramed/interfaces/controllers/EnderecoController.class
+br/com/auramed/interfaces/dto/response/DashboardResponseDTO$DificuldadeAcessibilidadeDTO.class
 br/com/auramed/interfaces/dto/response/MedicoResponseDTO.class
 br/com/auramed/interfaces/mappers/MedicoMapperImpl.class
 br/com/auramed/infrastructure/persistence/JdbcCuidadorRepository.class
@@ -124,11 +131,13 @@ br/com/auramed/infrastructure/persistence/JdbcAuthMedicoRepository.class
 br/com/auramed/infrastructure/config/CorsConfig.class
 br/com/auramed/interfaces/dto/request/PerfilCognitivoRequestDTO.class
 br/com/auramed/domain/service/InfoTeleconsultaService.class
+br/com/auramed/interfaces/dto/response/DashboardResponseDTO$HabilidadeDigitalDTO.class
 br/com/auramed/domain/repository/AuthMedicoRepository.class
 br/com/auramed/domain/service/GeminiAiService.class
 br/com/auramed/interfaces/controllers/BaseConhecimentoController.class
 br/com/auramed/infrastructure/api/rest/PacienteCompletoRestController.class
 br/com/auramed/domain/service/AnaliseSentimentalService.class
+br/com/auramed/interfaces/dto/response/DashboardResponseDTO$ProntidaoAcessibilidadeDTO.class
 br/com/auramed/interfaces/dto/response/AuthMedicoResponseDTO.class
 br/com/auramed/domain/repository/PacienteRepository.class
 br/com/auramed/interfaces/controllers/PerfilCognitivoController.class
@@ -167,6 +176,7 @@ br/com/auramed/domain/repository/PerfilCognitivoRepository.class
 br/com/auramed/domain/model/Medico.class
 br/com/auramed/infrastructure/persistence/JdbcInfoTeleconsultaRepository.class
 br/com/auramed/domain/service/ChatbotService.class
+br/com/auramed/interfaces/dto/response/DashboardResponseDTO$FonteRespostaDTO.class
 br/com/auramed/domain/service/BaseConhecimentoService.class
 br/com/auramed/infrastructure/api/rest/ChatbotRestController.class
 br/com/auramed/interfaces/mappers/ChatMapper.class
@@ -175,6 +185,7 @@ br/com/auramed/domain/service/AuthenticationService.class
 br/com/auramed/domain/exception/ValidacaoDeDominioException.class
 br/com/auramed/interfaces/dto/request/InfoTeleconsultaRequestDTO.class
 br/com/auramed/interfaces/dto/request/EspecialidadeRequestDTO.class
+br/com/auramed/interfaces/dto/response/DashboardResponseDTO$UsoChatbotDTO.class
 br/com/auramed/infrastructure/persistence/JdbcEspecialidadeRepository.class
 br/com/auramed/application/service/MedicoServiceImpl.class
 br/com/auramed/interfaces/dto/request/EnderecoRequestDTO.class
@@ -183,4 +194,5 @@ br/com/auramed/domain/repository/MedicoEspecialidadeRepository.class
 br/com/auramed/domain/model/Pessoa.class
 br/com/auramed/interfaces/dto/response/EnderecoResponseDTO.class
 br/com/auramed/application/service/PacienteCuidadorServiceImpl.class
+br/com/auramed/interfaces/dto/response/DashboardResponseDTO.class
 br/com/auramed/interfaces/controllers/RelatorioControllerImpl.class

@@ -1,7 +1,7 @@
 package br.com.auramed.domain.repository;
 
-import br.com.auramed.domain.model.InfoTeleconsulta;
 import br.com.auramed.domain.exception.EntidadeNaoLocalizadaException;
+import br.com.auramed.domain.model.InfoTeleconsulta;
 import java.util.List;
 
 public interface InfoTeleconsultaRepository {
@@ -13,7 +13,5 @@ public interface InfoTeleconsultaRepository {
     void remover(Integer idInfoTeleconsulta) throws EntidadeNaoLocalizadaException;
     List<Object[]> buscarHabilidadesDigitais();
     List<Object[]> buscarCanaisLembrete();
-    List<Object[]> buscarPreferenciasCuidador();
-    List<Object[]> buscarExperienciaTeleconsulta();
-    Long getTotalRegistros();
+    List<Object[]> buscarEstatisticasTeleconsulta();
 }

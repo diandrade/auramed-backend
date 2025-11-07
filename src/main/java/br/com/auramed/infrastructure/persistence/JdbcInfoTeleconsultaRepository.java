@@ -58,7 +58,7 @@ public class JdbcInfoTeleconsultaRepository implements InfoTeleconsultaRepositor
             }
 
         } catch (SQLException e) {
-            throw new InfrastructureException("Erro ao buscar infoTeleconsulta por ID: " + e.getMessage());
+            throw new InfrastructureException("Erro ao buscar info teleconsulta por ID: " + e.getMessage());
         }
     }
 
@@ -74,31 +74,31 @@ public class JdbcInfoTeleconsultaRepository implements InfoTeleconsultaRepositor
                 if (rs.next()) {
                     return mapResultSetToInfoTeleconsulta(rs);
                 } else {
-                    throw new EntidadeNaoLocalizadaException("InfoTeleconsulta não encontrada para paciente: " + idPaciente);
+                    throw new EntidadeNaoLocalizadaException("Info teleconsulta não encontrada para paciente: " + idPaciente);
                 }
             }
         } catch (SQLException e) {
-            throw new InfrastructureException("Erro ao buscar infoTeleconsulta por paciente: " + e.getMessage());
+            throw new InfrastructureException("Erro ao buscar info teleconsulta por paciente: " + e.getMessage());
         }
     }
 
     @Override
     public List<InfoTeleconsulta> buscarTodos() {
         String sql = "SELECT * FROM T_ARMD_INFO_TELECONSULTA";
-        List<InfoTeleconsulta> infoTeleconsultas = new ArrayList<>();
+        List<InfoTeleconsulta> infosTeleconsulta = new ArrayList<>();
 
         try (Connection conn = databaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                infoTeleconsultas.add(mapResultSetToInfoTeleconsulta(rs));
+                infosTeleconsulta.add(mapResultSetToInfoTeleconsulta(rs));
             }
 
-            return infoTeleconsultas;
+            return infosTeleconsulta;
 
         } catch (SQLException e) {
-            throw new InfrastructureException("Erro ao buscar todas infoTeleconsultas: " + e.getMessage());
+            throw new InfrastructureException("Erro ao buscar todas infos teleconsulta: " + e.getMessage());
         }
     }
 
@@ -118,7 +118,7 @@ public class JdbcInfoTeleconsultaRepository implements InfoTeleconsultaRepositor
 
             int affectedRows = stmt.executeUpdate();
             if (affectedRows == 0) {
-                throw new InfrastructureException("Nenhuma linha afetada ao salvar infoTeleconsulta.");
+                throw new InfrastructureException("Nenhuma linha afetada ao salvar info teleconsulta.");
             }
 
             try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
@@ -129,7 +129,7 @@ public class JdbcInfoTeleconsultaRepository implements InfoTeleconsultaRepositor
             return infoTeleconsulta;
 
         } catch (SQLException e) {
-            throw new InfrastructureException("Erro ao salvar infoTeleconsulta: " + e.getMessage());
+            throw new InfrastructureException("Erro ao salvar info teleconsulta: " + e.getMessage());
         }
     }
 
@@ -149,13 +149,13 @@ public class JdbcInfoTeleconsultaRepository implements InfoTeleconsultaRepositor
 
             int affectedRows = stmt.executeUpdate();
             if (affectedRows == 0) {
-                throw new EntidadeNaoLocalizadaException("InfoTeleconsulta não encontrada com ID: " + infoTeleconsulta.getIdInfoTeleconsulta());
+                throw new EntidadeNaoLocalizadaException("Info teleconsulta não encontrada com ID: " + infoTeleconsulta.getIdInfoTeleconsulta());
             }
 
             return infoTeleconsulta;
 
         } catch (SQLException e) {
-            throw new InfrastructureException("Erro ao editar infoTeleconsulta: " + e.getMessage());
+            throw new InfrastructureException("Erro ao editar info teleconsulta: " + e.getMessage());
         }
     }
 
@@ -169,17 +169,17 @@ public class JdbcInfoTeleconsultaRepository implements InfoTeleconsultaRepositor
 
             int affectedRows = stmt.executeUpdate();
             if (affectedRows == 0) {
-                throw new EntidadeNaoLocalizadaException("InfoTeleconsulta não encontrada com ID: " + idInfoTeleconsulta);
+                throw new EntidadeNaoLocalizadaException("Info teleconsulta não encontrada com ID: " + idInfoTeleconsulta);
             }
 
         } catch (SQLException e) {
-            throw new InfrastructureException("Erro ao remover infoTeleconsulta: " + e.getMessage());
+            throw new InfrastructureException("Erro ao remover info teleconsulta: " + e.getMessage());
         }
     }
 
     @Override
     public List<Object[]> buscarHabilidadesDigitais() {
-        String sql = "SELECT cd_habilidade_digital, COUNT(*) as quantidade FROM T_ARMD_INFO_TELECONSULTA WHERE cd_habilidade_digital IS NOT NULL GROUP BY cd_habilidade_digital ORDER BY quantidade DESC";
+        String sql = "SELECT cd_habilidade_digital as skill, COUNT(*) as count FROM T_ARMD_INFO_TELECONSULTA GROUP BY cd_habilidade_digital";
         List<Object[]> resultados = new ArrayList<>();
 
         try (Connection conn = databaseConnection.getConnection();
@@ -187,9 +187,9 @@ public class JdbcInfoTeleconsultaRepository implements InfoTeleconsultaRepositor
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                String habilidade = rs.getString("cd_habilidade_digital");
-                Long quantidade = rs.getLong("quantidade");
-                Object[] resultado = new Object[]{habilidade, quantidade};
+                String skill = rs.getString("skill");
+                Long count = rs.getLong("count");
+                Object[] resultado = new Object[]{skill, count};
                 resultados.add(resultado);
             }
 
@@ -202,7 +202,7 @@ public class JdbcInfoTeleconsultaRepository implements InfoTeleconsultaRepositor
 
     @Override
     public List<Object[]> buscarCanaisLembrete() {
-        String sql = "SELECT cd_canal_lembrete, COUNT(*) as quantidade FROM T_ARMD_INFO_TELECONSULTA WHERE cd_canal_lembrete IS NOT NULL GROUP BY cd_canal_lembrete ORDER BY quantidade DESC";
+        String sql = "SELECT cd_canal_lembrete as canal, COUNT(*) as quantidade FROM T_ARMD_INFO_TELECONSULTA GROUP BY cd_canal_lembrete";
         List<Object[]> resultados = new ArrayList<>();
 
         try (Connection conn = databaseConnection.getConnection();
@@ -210,7 +210,7 @@ public class JdbcInfoTeleconsultaRepository implements InfoTeleconsultaRepositor
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                String canal = rs.getString("cd_canal_lembrete");
+                String canal = rs.getString("canal");
                 Long quantidade = rs.getLong("quantidade");
                 Object[] resultado = new Object[]{canal, quantidade};
                 resultados.add(resultado);
@@ -224,66 +224,31 @@ public class JdbcInfoTeleconsultaRepository implements InfoTeleconsultaRepositor
     }
 
     @Override
-    public List<Object[]> buscarPreferenciasCuidador() {
-        String sql = "SELECT in_precisa_cuidador, COUNT(*) as quantidade FROM T_ARMD_INFO_TELECONSULTA WHERE in_precisa_cuidador IS NOT NULL GROUP BY in_precisa_cuidador";
+    public List<Object[]> buscarEstatisticasTeleconsulta() {
+        String sql = "SELECT " +
+                "COUNT(*) as total, " +
+                "SUM(CASE WHEN in_ja_fez_tele = 'S' THEN 1 ELSE 0 END) as ja_fez_tele, " +
+                "SUM(CASE WHEN in_precisa_cuidador = 'S' THEN 1 ELSE 0 END) as precisa_cuidador " +
+                "FROM T_ARMD_INFO_TELECONSULTA";
         List<Object[]> resultados = new ArrayList<>();
-
-        try (Connection conn = databaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-
-            while (rs.next()) {
-                String precisaCuidador = rs.getString("in_precisa_cuidador");
-                Long quantidade = rs.getLong("quantidade");
-                Object[] resultado = new Object[]{precisaCuidador, quantidade};
-                resultados.add(resultado);
-            }
-
-            return resultados;
-
-        } catch (SQLException e) {
-            throw new InfrastructureException("Erro ao buscar preferências de cuidador: " + e.getMessage());
-        }
-    }
-
-    @Override
-    public List<Object[]> buscarExperienciaTeleconsulta() {
-        String sql = "SELECT in_ja_fez_tele, COUNT(*) as quantidade FROM T_ARMD_INFO_TELECONSULTA WHERE in_ja_fez_tele IS NOT NULL GROUP BY in_ja_fez_tele";
-        List<Object[]> resultados = new ArrayList<>();
-
-        try (Connection conn = databaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-
-            while (rs.next()) {
-                String jaFezTele = rs.getString("in_ja_fez_tele");
-                Long quantidade = rs.getLong("quantidade");
-                Object[] resultado = new Object[]{jaFezTele, quantidade};
-                resultados.add(resultado);
-            }
-
-            return resultados;
-
-        } catch (SQLException e) {
-            throw new InfrastructureException("Erro ao buscar experiência com teleconsulta: " + e.getMessage());
-        }
-    }
-
-    @Override
-    public Long getTotalRegistros() {
-        String sql = "SELECT COUNT(*) FROM T_ARMD_INFO_TELECONSULTA";
 
         try (Connection conn = databaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 
             if (rs.next()) {
-                return rs.getLong(1);
+                Object[] resultado = new Object[]{
+                        rs.getLong("total"),
+                        rs.getLong("ja_fez_tele"),
+                        rs.getLong("precisa_cuidador")
+                };
+                resultados.add(resultado);
             }
-            return 0L;
+
+            return resultados;
 
         } catch (SQLException e) {
-            throw new InfrastructureException("Erro ao contar total de registros: " + e.getMessage());
+            throw new InfrastructureException("Erro ao buscar estatísticas de teleconsulta: " + e.getMessage());
         }
     }
 }

@@ -260,4 +260,92 @@ public class JdbcConversacaoRepository implements ConversacaoRepository {
             throw new InfrastructureException("Erro ao buscar estatísticas de sentimentos: " + e.getMessage());
         }
     }
+
+    @Override
+    public List<Object[]> buscarUsoPorPeriodo(String periodo) {
+        String sql = "";
+        switch (periodo.toUpperCase()) {
+            case "DAY":
+                sql = "SELECT TO_CHAR(DT_CONVERSACAO, 'DD/MM') as data, COUNT(*) as quantidade FROM T_ARMD_CONVERSACAO WHERE DT_CONVERSACAO >= CURRENT_DATE - 30 GROUP BY TO_CHAR(DT_CONVERSACAO, 'DD/MM') ORDER BY MIN(DT_CONVERSACAO)";
+                break;
+            case "WEEK":
+                sql = "SELECT TO_CHAR(DT_CONVERSACAO, 'WW') as semana, COUNT(*) as quantidade FROM T_ARMD_CONVERSACAO WHERE DT_CONVERSACAO >= CURRENT_DATE - 90 GROUP BY TO_CHAR(DT_CONVERSACAO, 'WW') ORDER BY MIN(DT_CONVERSACAO)";
+                break;
+            default:
+                sql = "SELECT TO_CHAR(DT_CONVERSACAO, 'MM/YYYY') as mes, COUNT(*) as quantidade FROM T_ARMD_CONVERSACAO WHERE DT_CONVERSACAO >= CURRENT_DATE - 365 GROUP BY TO_CHAR(DT_CONVERSACAO, 'MM/YYYY') ORDER BY MIN(DT_CONVERSACAO)";
+        }
+
+        List<Object[]> resultados = new ArrayList<>();
+
+        try (Connection conn = databaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                String periodoStr = rs.getString(1);
+                Long quantidade = rs.getLong("quantidade");
+                Object[] resultado = new Object[]{periodoStr, quantidade};
+                resultados.add(resultado);
+            }
+
+            return resultados;
+
+        } catch (SQLException e) {
+            throw new InfrastructureException("Erro ao buscar uso por período: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public List<Object[]> buscarMetricasEngajamento() {
+        String sql = "SELECT " +
+                "COUNT(*) as total_conversas, " +
+                "COUNT(DISTINCT ID_USUARIO) as usuarios_unicos, " +
+                "ROUND(COUNT(*) / NULLIF(COUNT(DISTINCT ID_USUARIO), 0), 2) as media_conversas_por_usuario, " +
+                "SUM(CASE WHEN LENGTH(DS_PERGUNTA_USUARIO) > 20 THEN 1 ELSE 0 END) as perguntas_detalhadas " +
+                "FROM T_ARMD_CONVERSACAO";
+        List<Object[]> resultados = new ArrayList<>();
+
+        try (Connection conn = databaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                Object[] resultado = new Object[]{
+                        rs.getLong("total_conversas"),
+                        rs.getLong("usuarios_unicos"),
+                        rs.getDouble("media_conversas_por_usuario"),
+                        rs.getLong("perguntas_detalhadas")
+                };
+                resultados.add(resultado);
+            }
+
+            return resultados;
+
+        } catch (SQLException e) {
+            throw new InfrastructureException("Erro ao buscar métricas de engajamento: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public List<Object[]> buscarEstatisticasFontesResposta() {
+        String sql = "SELECT TP_FONTE_RESPOSTA, COUNT(*) as quantidade FROM T_ARMD_CONVERSACAO WHERE TP_FONTE_RESPOSTA IS NOT NULL GROUP BY TP_FONTE_RESPOSTA ORDER BY quantidade DESC";
+        List<Object[]> resultados = new ArrayList<>();
+
+        try (Connection conn = databaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                String fonte = rs.getString("TP_FONTE_RESPOSTA");
+                Long quantidade = rs.getLong("quantidade");
+                Object[] resultado = new Object[]{fonte, quantidade};
+                resultados.add(resultado);
+            }
+
+            return resultados;
+
+        } catch (SQLException e) {
+            throw new InfrastructureException("Erro ao buscar estatísticas de fontes de resposta: " + e.getMessage());
+        }
+    }
 }

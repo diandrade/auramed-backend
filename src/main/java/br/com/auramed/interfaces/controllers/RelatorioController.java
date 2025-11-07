@@ -1,7 +1,7 @@
 package br.com.auramed.interfaces.controllers;
 
-import br.com.auramed.interfaces.dto.response.RelatorioResponseDTO;
+import br.com.auramed.interfaces.dto.response.DashboardResponseDTO;
 
 public interface RelatorioController {
-    RelatorioResponseDTO getRelatorioCompleto();
+    DashboardResponseDTO getRelatorioCompleto();
 }
