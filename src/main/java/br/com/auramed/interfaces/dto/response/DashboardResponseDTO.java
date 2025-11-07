@@ -40,10 +40,13 @@ public class DashboardResponseDTO {
     public static class FaqPopularDTO {
         private String question;
         private Long views;
+        private String categoria;
         public String getQuestion() { return question; }
         public void setQuestion(String question) { this.question = question; }
         public Long getViews() { return views; }
         public void setViews(Long views) { this.views = views; }
+        public String getCategoria() { return categoria; }
+        public void setCategoria(String categoria) { this.categoria = categoria; }
     }
 
     public static class UsoChatbotDTO {

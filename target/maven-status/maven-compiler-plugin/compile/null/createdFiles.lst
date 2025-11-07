@@ -172,6 +172,7 @@ br/com/auramed/domain/model/AuthMedico.class
 br/com/auramed/domain/repository/PacienteCuidadorRepository.class
 br/com/auramed/application/service/AnaliseSentimentalServiceImpl.class
 br/com/auramed/interfaces/controllers/PacienteCompletoController.class
+br/com/auramed/application/service/FaqServiceImpl$PerguntaAgrupada.class
 br/com/auramed/domain/repository/PerfilCognitivoRepository.class
 br/com/auramed/domain/model/Medico.class
 br/com/auramed/infrastructure/persistence/JdbcInfoTeleconsultaRepository.class
