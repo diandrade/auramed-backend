@@ -30,25 +30,46 @@ public class FaqServiceImpl implements FaqService {
             "PROCEDIMENTOS", Arrays.asList("encaminhamento", "retorno", "resultado", "exame", "receita", "atestado", "autorização", "autorizacao", "laudo")
     );
 
-    @Override
     public List<PerguntaFrequente> buscarPerguntasFrequentes(int limite) {
         try {
             logger.info("Buscando perguntas frequentes, limite: " + limite);
             List<Object[]> resultados = conversacaoRepository.buscarPerguntasFrequentes(limite * 10);
 
-            List<PerguntaIndividual> perguntasIndividuais = resultados.stream()
-                    .filter(resultado -> isPerguntaValida((String) resultado[0]))
-                    .map(resultado -> new PerguntaIndividual(
-                            (String) resultado[0],
-                            (Long) resultado[1],
-                            identificarCategoria((String) resultado[0])
-                    ))
-                    .sorted((p1, p2) -> Long.compare(p2.getFrequencia(), p1.getFrequencia()))
+            Map<String, PerguntaAgrupada> perguntasAgrupadas = new HashMap<>();
+
+            for (Object[] resultado : resultados) {
+                String pergunta = (String) resultado[0];
+                Long frequencia = (Long) resultado[1];
+                String categoria = identificarCategoria(pergunta);
+
+                if (!perguntasAgrupadas.containsKey(categoria)) {
+                    perguntasAgrupadas.put(categoria, new PerguntaAgrupada(categoria, frequencia, pergunta));
+                } else {
+                    PerguntaAgrupada existente = perguntasAgrupadas.get(categoria);
+                    existente.adicionarFrequencia(frequencia);
+                    if (frequencia > existente.getFrequenciaPrincipal()) {
+                        existente.setPerguntaPrincipal(pergunta);
+                        existente.setFrequenciaPrincipal(frequencia);
+                    }
+                }
+            }
+
+            List<PerguntaFrequente> faqs = perguntasAgrupadas.values().stream()
+                    .sorted((p1, p2) -> Long.compare(p2.getFrequenciaTotal(), p1.getFrequenciaTotal()))
+                    .limit(limite)
+                    .map(agrupada -> {
+                        String resposta = gerarRespostaPadrao(agrupada.getPerguntaPrincipal(), agrupada.getCategoria());
+                        String categoriaFormatada = formatarCategoriaParaFrontend(agrupada.getCategoria());
+                        return new PerguntaFrequente(
+                                agrupada.getPerguntaPrincipal(),
+                                resposta,
+                                agrupada.getFrequenciaTotal(),
+                                categoriaFormatada
+                        );
+                    })
                     .collect(Collectors.toList());
 
-            List<PerguntaFrequente> faqs = agruparTopPerguntasPorCategoria(perguntasIndividuais, limite);
-
-            logger.info("Encontradas " + faqs.size() + " perguntas no TOP " + limite);
+            logger.info("Encontradas " + faqs.size() + " categorias no TOP " + limite);
             return faqs;
 
         } catch (Exception e) {
@@ -244,5 +265,30 @@ public class FaqServiceImpl implements FaqService {
         public String getTexto() { return texto; }
         public long getFrequencia() { return frequencia; }
         public String getCategoria() { return categoria; }
+    }
+
+    private static class PerguntaAgrupada {
+        private final String categoria;
+        private long frequenciaTotal;
+        private String perguntaPrincipal;
+        private long frequenciaPrincipal;
+
+        public PerguntaAgrupada(String categoria, long frequenciaInicial, String perguntaInicial) {
+            this.categoria = categoria;
+            this.frequenciaTotal = frequenciaInicial;
+            this.perguntaPrincipal = perguntaInicial;
+            this.frequenciaPrincipal = frequenciaInicial;
+        }
+
+        public void adicionarFrequencia(long frequencia) {
+            this.frequenciaTotal += frequencia;
+        }
+
+        public String getCategoria() { return categoria; }
+        public long getFrequenciaTotal() { return frequenciaTotal; }
+        public String getPerguntaPrincipal() { return perguntaPrincipal; }
+        public long getFrequenciaPrincipal() { return frequenciaPrincipal; }
+        public void setPerguntaPrincipal(String perguntaPrincipal) { this.perguntaPrincipal = perguntaPrincipal; }
+        public void setFrequenciaPrincipal(long frequenciaPrincipal) { this.frequenciaPrincipal = frequenciaPrincipal; }
     }
 }

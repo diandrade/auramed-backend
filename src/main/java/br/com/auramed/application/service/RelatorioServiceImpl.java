@@ -92,12 +92,17 @@ public class RelatorioServiceImpl implements RelatorioService {
             DashboardResponseDTO.SuporteEngajamentoDTO dados = new DashboardResponseDTO.SuporteEngajamentoDTO();
 
             List<Object[]> faqsResult = conversacaoRepository.buscarPerguntasFrequentes(10);
-            dados.setFaqsPopulares(faqsResult.stream().map(result -> {
+            List<DashboardResponseDTO.FaqPopularDTO> faqsPopulares = faqsResult.stream().map(result -> {
                 DashboardResponseDTO.FaqPopularDTO dto = new DashboardResponseDTO.FaqPopularDTO();
                 dto.setQuestion((String) result[0]);
                 dto.setViews(((Number) result[1]).longValue());
+
+                String categoria = identificarCategoriaFaq((String) result[0]);
+                dto.setCategoria(categoria);
+
                 return dto;
-            }).collect(Collectors.toList()));
+            }).collect(Collectors.toList());
+            dados.setFaqsPopulares(faqsPopulares);
 
             List<Object[]> usoResult = conversacaoRepository.buscarUsoPorPeriodo("MONTH");
             dados.setUsoChatbot(usoResult.stream().map(result -> {
@@ -308,5 +313,32 @@ public class RelatorioServiceImpl implements RelatorioService {
         dto.setFonte(fonte);
         dto.setQuantidade(quantidade);
         return dto;
+    }
+
+    private String identificarCategoriaFaq(String pergunta) {
+        if (pergunta == null) return "GERAL";
+
+        String perguntaLower = pergunta.toLowerCase();
+
+        if (perguntaLower.contains("agendar") || perguntaLower.contains("marcar") || perguntaLower.contains("consulta")) {
+            return "AGENDAMENTO";
+        }
+        if (perguntaLower.contains("documento") || perguntaLower.contains("cpf") || perguntaLower.contains("rg")) {
+            return "DOCUMENTACAO";
+        }
+        if (perguntaLower.contains("teleconsulta") || perguntaLower.contains("online") || perguntaLower.contains("virtual")) {
+            return "TELECONSULTA";
+        }
+        if (perguntaLower.contains("horário") || perguntaLower.contains("funciona") || perguntaLower.contains("abre")) {
+            return "HORARIO";
+        }
+        if (perguntaLower.contains("telefone") || perguntaLower.contains("email") || perguntaLower.contains("contato")) {
+            return "CONTATO";
+        }
+        if (perguntaLower.contains("gratuito") || perguntaLower.contains("pago") || perguntaLower.contains("custo")) {
+            return "CUSTOS";
+        }
+
+        return "OUTRAS_DUVIDAS";
     }
 }
