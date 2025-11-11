@@ -1,42 +1,136 @@
-# Manual para Cadastro de Paciente - Front-end
+Claro\! Aqui está um `README.md` gerado para o seu projeto **Auramed**, seguindo o formato que você solicitou e usando as informações dos arquivos do repositório.
 
-## 📋 Visão Geral
-Este manual descreve os endpoints e formatos de dados necessários para realizar o cadastro completo de um paciente no sistema Auramed.
+-----
 
-## 🔐 Autenticação
-Todos os endpoints (exceto login) requerem autenticação via Bearer Token no header:
-```http
-Authorization: Bearer seu-token-jwt
+# 🩺 Auramed - REST API de Gerenciamento de Pacientes
+
+Uma API RESTful desenvolvida com **Quarkus** para cadastro e gerenciamento de pacientes, médicos e teleconsultas, seguindo os princípios da **Clean Architecture**.
+
+-----
+
+## 🚀 Tecnologias
+
+  - **Java 21** – Linguagem de programação
+  - **Quarkus 3.29.0** – Framework Supersonic Subatomic Java
+  - **Oracle Database** – Banco de dados relacional
+  - **LangChain4j (Gemini)** – Integração com IA Generativa
+  - **JAX-RS (quarkus-rest)** – API REST
+  - **JDBC** – Acesso a dados
+  - **Maven** – Gerenciamento de dependências
+
+-----
+
+## 🏗️ Arquitetura do Projeto
+
+A estrutura do projeto segue os princípios da Clean Architecture, separando responsabilidades em camadas distintas:
+
+```
+📦 auramed
+├── 📁 domain         # Camada de Domínio
+│   ├── model        # Entidades (Paciente, Medico, Pessoa)
+│   ├── repository   # Interfaces de repositório
+│   ├── service      # Interfaces de serviço
+│   └── exception    # Exceções de domínio
+├── 📁 application    # Camada de Aplicação
+│   └── service      # Implementações de serviço (Regras de negócio)
+├── 📁 infrastructure # Camada de Infraestrutura
+│   ├── api/rest     # Controllers REST (Exposição da API)
+│   ├── persistence  # Implementações JDBC dos repositórios
+│   ├── config       # Configurações (Banco, CORS)
+│   └── exception    # Exceções de infraestrutura
+└── 📁 interfaces     # Camada de Interface (Adapters)
+    ├── controllers  # Interfaces dos Controllers
+    ├── dto          # Data Transfer Objects (Request/Response)
+    └── mappers      # Mappers (DTO ↔ Domain)
 ```
 
-## 🚀 Endpoints Principais
+-----
 
-### 1. 🔑 Login do Médico
-**Endpoint:** `POST /auth/login`
+## 📋 Endpoints da API
 
-**Request:**
-```json
+### 🔐 Autenticação
+
+| Método | Endpoint | Descrição |
+| --- | --- | --- |
+| `POST` | `/auth/login` | Realiza login do médico e retorna um token JWT. |
+
+### ❤️ Pacientes (Endpoints Principais)
+
+| Método | Endpoint | Descrição |
+| --- | --- | --- |
+| `POST` | `/pacientes-completo` | Cadastra um paciente com todos os dados (Pessoa, Paciente, InfoTeleconsulta, PerfilCognitivo). |
+| `GET` | `/pacientes-completo` | Lista todos os pacientes (com dados completos) vinculados ao médico logado. |
+| `GET` | `/pacientes-completo/{id}` | Busca um paciente específico (com dados completos) por ID. |
+| `DELETE`| `/pacientes/{idPessoa}` | Exclui um paciente e todos os seus dados relacionados (em cascata). |
+
+### ✏️ Entidades Individuais (Atualização)
+
+| Método | Endpoint | Descrição |
+| --- | --- | --- |
+| `PUT` | `/pessoas/{id}` | Atualiza dados básicos da pessoa (nome, email, telefone, etc). |
+| `PUT` | `/pacientes/{idPessoa}` | Atualiza dados específicos do paciente (Cartão SUS). |
+| `PUT` | `/info-teleconsulta/{id}` | Atualiza as informações de teleconsulta do paciente. |
+| `PUT` | `/perfil-cognitivo/{id}` | Atualiza o perfil cognitivo do paciente. |
+
+### 🤖 IA e Relatórios
+
+| Método | Endpoint | Descrição |
+| --- | --- | --- |
+| `POST` | `/chatbot` | Envia uma pergunta para o chatbot (Gemini AI) sobre a base de conhecimento. |
+| `GET` | `/relatorios/dashboard` | Retorna dados consolidados para o dashboard do médico. |
+
+-----
+
+## 🛠️ Como Executar
+
+### ✅ Pré-requisitos
+
+  - **Java 21**
+  - **Maven 3.8+**
+  - **Oracle Database** (configurado e acessível)
+
+-----
+
+### 📦 Passo a Passo
+
+1.  Clone o repositório:
+
+    ```bash
+    git clone https://github.com/seu-usuario/auramed-sem2-java.git
+    cd auramed-sem2-java
+    ```
+
+2.  Configure a conexão com o banco de dados no arquivo `src/main/resources/application.properties`.
+
+3.  Execute o projeto em modo de desenvolvimento:
+
+    ```bash
+    mvn quarkus:dev
+    ```
+
+-----
+
+## 📝 Exemplos de Uso
+
+### Obter Token de Autenticação
+
+```bash
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
 {
   "email": "medico@exemplo.com",
   "senha": "senha123"
 }
 ```
 
-**Response:**
-```json
-{
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-}
-```
+### Cadastrar Paciente (Completo)
 
-### 2. 📝 Cadastro Completo de Paciente (Recomendado)
+```bash
+POST http://localhost:8080/pacientes-completo
+Content-Type: application/json
+Authorization: Bearer seu-token-jwt-obtido-no-login
 
-**Endpoint:** `POST /pacientes-completo`
-
-**Descrição:** Cria um paciente com todas as informações em uma única requisição.
-
-**Request Body:**
-```json
 {
   "pessoa": {
     "nome": "João da Silva Santos",
@@ -67,343 +161,150 @@ Authorization: Bearer seu-token-jwt
 }
 ```
 
-**Response (Sucesso - 201 Created):**
-```json
-{
-  "pessoa": {
-    "id": 100,
-    "nome": "João da Silva Santos",
-    "email": "joao.silva@email.com",
-    "cpf": "12345678901",
-    "dataNascimento": "1980-05-15",
-    "genero": "M",
-    "telefone": "11999998888",
-    "tipoPessoa": "PACIENTE",
-    "dataCadastro": "2024-01-15T10:30:00",
-    "ativo": "S"
-  },
-  "paciente": {
-    "idPessoa": 100,
-    "idMedicoResponsavel": 1,
-    "nrCartaoSUS": "123456789012345",
-    "dataCadastro": "2024-01-15T10:30:00",
-    "ativo": "S"
-  },
-  "infoTeleconsulta": {
-    "idInfoTeleconsulta": 50,
-    "idPaciente": 100,
-    "cdHabilidadeDigital": "MEDIA",
-    "cdCanalLembrete": "WHATSAPP",
-    "inPrecisaCuidador": "N",
-    "inJaFezTele": "S",
-    "dataCadastro": "2024-01-15T10:30:00",
-    "dataAtualizacao": "2024-01-15T10:30:00"
-  },
-  "perfilCognitivo": {
-    "idPerfilCognitivo": 25,
-    "idPaciente": 100,
-    "inDificuldadeVisao": "N",
-    "inUsaOculos": "S",
-    "inDificuldadeAudicao": "N",
-    "inUsaAparelhoAud": "N",
-    "inDificuldadeCogn": "N",
-    "dataCadastro": "2024-01-15T10:30:00",
-    "dataAtualizacao": "2024-01-15T10:30:00"
-  }
-}
+### Listar Pacientes do Médico
+
+```bash
+GET http://localhost:8080/pacientes-completo
+Authorization: Bearer seu-token-jwt-obtido-no-login
 ```
 
-### 3. 📋 Listar Todos os Pacientes do Médico Logado
+-----
 
-**Endpoint:** `GET /pacientes-completo`
+## 🧪 Testando a API
 
-**Descrição:** Retorna todos os pacientes do médico logado com dados completos.
+### Com Insomnia/Postman
 
-**Response:**
-```json
-[
-  {
-    "pessoa": {
-      "id": 1,
-      "nome": "João da Silva Santos",
-      "email": "joao.silva@email.com",
-      "cpf": "12345678901",
-      "dataNascimento": "1980-05-15",
-      "genero": "M",
-      "telefone": "11999998888",
-      "tipoPessoa": "PACIENTE",
-      "dataCadastro": "2024-01-15T10:30:00",
-      "ativo": "S"
-    },
-    "paciente": {
-      "idPessoa": 1,
-      "idMedicoResponsavel": 5,
-      "nrCartaoSUS": "123456789012345",
-      "dataCadastro": "2024-01-15T10:30:00",
-      "ativo": "S"
-    },
-    "infoTeleconsulta": {
-      "idInfoTeleconsulta": 1,
-      "idPaciente": 1,
-      "cdHabilidadeDigital": "MEDIA",
-      "cdCanalLembrete": "WHATSAPP",
-      "inPrecisaCuidador": "N",
-      "inJaFezTele": "S",
-      "dataCadastro": "2024-01-15T10:30:00",
-      "dataAtualizacao": "2024-01-15T10:30:00"
-    },
-    "perfilCognitivo": {
-      "idPerfilCognitivo": 1,
-      "idPaciente": 1,
-      "inDificuldadeVisao": "N",
-      "inUsaOculos": "S",
-      "inDificuldadeAudicao": "N",
-      "inUsaAparelhoAud": "N",
-      "inDificuldadeCogn": "N",
-      "dataCadastro": "2024-01-15T10:30:00",
-      "dataAtualizacao": "2024-01-15T10:30:00"
-    }
-  }
-]
+1.  Importe a coleção de endpoints (se disponível) ou crie as requisições manualmente.
+2.  Execute a requisição de `/auth/login` primeiro para obter o `Bearer Token`.
+3.  Configure o token nas demais requisições que exigem autenticação.
+
+### Com `curl`
+
+```bash
+# Obter token (substitua com dados válidos)
+TOKEN=$(curl -s -X POST http://localhost:8080/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email": "medico@exemplo.com", "senha": "senha123"}' | jq -r .token)
+
+echo "Token obtido: $TOKEN"
+
+# Listar pacientes usando o token
+curl -H "Authorization: Bearer $TOKEN" http://localhost:8080/pacientes-completo
 ```
 
-### 4. 🔍 Buscar Paciente Específico
+-----
 
-**Endpoint:** `GET /pacientes-completo/{idPaciente}`
+## 🗂️ Estrutura do Projeto (Detalhada)
 
-**Descrição:** Busca um paciente específico por ID com todos os dados.
-
-**Response:** Igual ao cadastro, mas para um paciente específico.
-
-## ✏️ Endpoints de Atualização (PUT)
-
-### 5. Atualizar Dados da Pessoa
-**Endpoint:** `PUT /pessoas/{id}`
-
-```json
-{
-  "nome": "João da Silva Santos Atualizado",
-  "email": "joao.novo@email.com",
-  "cpf": "12345678901",
-  "dataNascimento": "1980-05-15",
-  "genero": "M",
-  "telefone": "11999998888",
-  "tipoPessoa": "PACIENTE"
-}
+```
+src/
+├── main/
+│   ├── java/
+│   │   └── br/
+│   │       └── com/
+│   │           └── auramed/
+│   │               ├── domain/
+│   │               │   ├── model/
+│   │               │   ├── repository/
+│   │               │   ├── service/
+│   │               │   └── exception/
+│   │               ├── application/
+│   │               │   └── service/
+│   │               ├── infrastructure/
+│   │               │   ├── api/rest/
+│   │               │   ├── persistence/
+│   │               │   ├── config/
+│   │               │   └── exception/
+│   │               └── interfaces/
+│   │                   ├── controllers/
+│   │                   ├── dto/
+│   │                   └── mappers/
+│   └── resources/
+│       └── application.properties
+└── test/
 ```
 
-### 6. Atualizar Dados do Paciente
-**Endpoint:** `PUT /pacientes/{idPessoa}`
+-----
 
-```json
-{
-  "idMedicoResponsavel": 1,
-  "nrCartaoSUS": "123456789012345"
-}
+## 🔧 Desenvolvimento
+
+### Comandos Úteis
+
+```bash
+# Desenvolvimento com hot reload
+mvn quarkus:dev
+
+# Compilar
+mvn clean compile
+
+# Executar testes
+mvn test
+
+# Empacotar (cria o .jar)
+mvn package
+
+# Verificar árvore de dependências
+mvn dependency:tree
 ```
 
-### 7. Atualizar Info Teleconsulta
-**Endpoint:** `PUT /info-teleconsulta/{idInfoTeleconsulta}`
+💡 O Quarkus oferece **hot reload** durante o desenvolvimento. Basta salvar um arquivo `.java` e o Quarkus recompila e atualiza a aplicação automaticamente.
 
-```json
-{
-  "cdHabilidadeDigital": "ALTA",
-  "cdCanalLembrete": "EMAIL",
-  "inPrecisaCuidador": "S",
-  "inJaFezTele": "N"
-}
-```
+-----
 
-### 8. Atualizar Perfil Cognitivo
-**Endpoint:** `PUT /perfil-cognitivo/{idPerfilCognitivo}`
-
-```json
-{
-  "inDificuldadeVisao": "S",
-  "inUsaOculos": "S",
-  "inDificuldadeAudicao": "N",
-  "inUsaAparelhoAud": "N",
-  "inDificuldadeCogn": "S"
-}
-```
-
-## 🗑️ Endpoints de Exclusão (DELETE)
-
-### 9. Excluir Paciente Completo
-**Endpoint:** `DELETE /pacientes/{idPessoa}`
-
-**Descrição:** Remove o paciente e todas as informações relacionadas (cascata).
-
-**Response:** `204 No Content`
-
-### 10. Excluir Info Teleconsulta
-**Endpoint:** `DELETE /info-teleconsulta/{idInfoTeleconsulta}`
-
-**Response:** `204 No Content`
-
-### 11. Excluir Perfil Cognitivo
-**Endpoint:** `DELETE /perfil-cognitivo/{idPerfilCognitivo}`
-
-**Response:** `204 No Content`
-
-## 📝 Regras de Validação
+## 📊 Modelo de Dados (Simplificado)
 
 ### Pessoa
-- **Nome:** Obrigatório, mínimo 2 palavras, cada palavra com pelo menos 2 caracteres
-- **Telefone:** Obrigatório, 10-15 dígitos numéricos
-- **Tipo Pessoa:** Obrigatório, valores: `CUIDADOR`, `MEDICO`, `PACIENTE`
-- **Email:** Opcional, formato de email válido
-- **CPF:** Opcional, exatamente 11 dígitos
-- **Gênero:** Opcional, valores: `F` (Feminino), `M` (Masculino), `O` (Outro)
+
+  - `ID_PESSOA (PK)`: Identificador único
+  - `NM_PESSOA`: Nome da pessoa
+  - `NM_EMAIL`: Email
+  - `NR_CPF`: CPF
+  - `DT_NASCIMENTO`: Data de Nascimento
+  - `CD_GENERO`: Gênero (M, F, O)
+  - `NR_TELEFONE`: Telefone
+  - `TP_PESSOA`: Tipo (PACIENTE, MEDICO, CUIDADOR)
 
 ### Paciente
-- **Cartão SUS:** Obrigatório, exatamente 15 dígitos numéricos
-- **Médico Responsável:** Obrigatório, ID de médico existente
 
-### Info Teleconsulta
-- **Habilidade Digital:** Opcional, valores: `BAIXA`, `MEDIA`, `ALTA`
-- **Canal Lembrete:** Opcional, valores: `WHATSAPP`, `SMS`, `EMAIL`, `TELEFONE`
-- **Precisa Cuidador:** Opcional, valores: `S`, `N`
-- **Já Fez Teleconsulta:** Opcional, valores: `S`, `N`
+  - `ID_PESSOA (PK, FK)`: Referência à Pessoa
+  - `ID_MEDICO (FK)`: Referência ao Médico responsável
+  - `NR_CARTAO_SUS`: Número do Cartão SUS
 
-### Perfil Cognitivo
-- Todos os campos são opcionais, aceitam valores: `S`, `N`
+### InfoTeleconsulta
 
-## 🛠️ Códigos de Exemplo
+  - `ID_INFO_TELECONSULTA (PK)`: Identificador único
+  - `ID_PACIENTE (FK)`: Referência ao Paciente
+  - `CD_HABILIDADE_DIGITAL`: (BAIXA, MEDIA, ALTA)
+  - `CD_CANAL_LEMBRETE`: (WHATSAPP, SMS, EMAIL, TELEFONE)
+  - `IN_PRECISA_CUIDADOR`: (S/N)
+  - `IN_JA_FEZ_TELE`: (S/N)
 
-### JavaScript/TypeScript
-```javascript
-// Cadastro completo de paciente
-async function cadastrarPacienteCompleto(dadosPaciente) {
-  try {
-    const response = await fetch('/pacientes-completo', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('token')
-      },
-      body: JSON.stringify(dadosPaciente)
-    });
-    
-    if (response.status === 201) {
-      return await response.json();
-    } else {
-      const error = await response.text();
-      throw new Error(`Erro no cadastro: ${error}`);
-    }
-  } catch (error) {
-    console.error('Erro:', error);
-    throw error;
-  }
-}
+### PerfilCognitivo
 
-// Listar pacientes do médico
-async function listarPacientes() {
-  try {
-    const response = await fetch('/pacientes-completo', {
-      headers: {
-        'Authorization': 'Bearer ' + localStorage.getItem('token')
-      }
-    });
-    
-    if (response.ok) {
-      return await response.json();
-    } else {
-      throw new Error('Erro ao listar pacientes');
-    }
-  } catch (error) {
-    console.error('Erro:', error);
-    throw error;
-  }
-}
+  - `ID_PERFIL_COGNITIVO (PK)`: Identificador único
+  - `ID_PACIENTE (FK)`: Referência ao Paciente
+  - `IN_DIFICULDADE_VISAO`: (S/N)
+  - `IN_USA_OCULOS`: (S/N)
+  - `IN_DIFICULDADE_AUDICAO`: (S/N)
+  - ... (e outros indicadores cognitivos)
 
-// Atualizar paciente
-async function atualizarPaciente(idPessoa, dadosAtualizados) {
-  try {
-    const response = await fetch(`/pacientes/${idPessoa}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('token')
-      },
-      body: JSON.stringify(dadosAtualizados)
-    });
-    
-    if (response.ok) {
-      return await response.json();
-    } else {
-      const error = await response.text();
-      throw new Error(`Erro na atualização: ${error}`);
-    }
-  } catch (error) {
-    console.error('Erro:', error);
-    throw error;
-  }
-}
+-----
 
-// Excluir paciente
-async function excluirPaciente(idPessoa) {
-  try {
-    const response = await fetch(`/pacientes/${idPessoa}`, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': 'Bearer ' + localStorage.getItem('token')
-      }
-    });
-    
-    if (response.status !== 204) {
-      throw new Error('Erro ao excluir paciente');
-    }
-  } catch (error) {
-    console.error('Erro:', error);
-    throw error;
-  }
-}
-```
+## 📄 Licença
 
-## ⚠️ Tratamento de Erros
+Este projeto está sob a licença **MIT**. Veja o arquivo `LICENSE` para mais detalhes.
 
-### Códigos de Status HTTP
-- `200 OK`: Requisição bem-sucedida
-- `201 Created`: Cadastro realizado com sucesso
-- `204 No Content`: Exclusão realizada com sucesso
-- `400 Bad Request`: Dados inválidos ou validação falhou
-- `401 Unauthorized`: Token inválido ou não fornecido
-- `404 Not Found`: Recurso não encontrado
-- `500 Internal Server Error`: Erro interno do servidor
+-----
 
-### Exemplo de Resposta de Erro
-```json
-{
-  "timestamp": "2024-01-15T10:30:00",
-  "status": 400,
-  "error": "Bad Request",
-  "message": "Cartão SUS deve conter 15 dígitos numéricos.",
-  "path": "/pacientes-completo"
-}
-```
+## 👥 Autor
 
-## 💡 Dicas para o Front-end
+(Substitua pelo seu nome e link do GitHub)
+**Diego Andrade dos Santos** – [@diandrade](https://github.com/diandrade)
 
-1. **Validação Client-side:** Implemente validações básicas antes de enviar para a API
-2. **Feedback ao Usuário:** Mostre mensagens claras de sucesso/erro
-3. **Loading States:** Exiba indicadores de carregamento durante as requisições
-4. **Formulários:** Agrupe campos relacionados e use validação em tempo real
-5. **Fallback:** Tenha um plano para quando o endpoint completo falhar
+-----
 
-## 🔄 Fluxo Recomendado
+## 🙏 Agradecimentos
 
-1. **Login** → Obter token JWT
-2. **Cadastrar** → Usar `/pacientes-completo` para criar paciente
-3. **Listar** → Usar `/pacientes-completo` para ver todos os pacientes
-4. **Buscar** → Usar `/pacientes-completo/{id}` para detalhes específicos
-5. **Atualizar** → Usar endpoints PUT específicos
-6. **Excluir** → Usar DELETE no paciente (remove em cascata)
-
-## 🔒 Observações de Segurança
-
-- O campo `idMedicoResponsavel` no cadastro é **ignorado** e substituído automaticamente pelo ID do médico logado
-- Médicos só podem acessar/editar/excluir seus próprios pacientes
-- Todas as operações são validadas contra o médico logado
-
-Este manual fornece todas as informações necessárias para implementar o CRUD completo de pacientes no front-end de forma eficiente e segura.
+  - Equipe FIAP
+  - Comunidade Quarkus
+  - Oracle
