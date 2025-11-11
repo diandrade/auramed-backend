@@ -1,7 +1,3 @@
-Claro\! Aqui está um `README.md` gerado para o seu projeto **Auramed**, seguindo o formato que você solicitou e usando as informações dos arquivos do repositório.
-
------
-
 # 🩺 Auramed - REST API de Gerenciamento de Pacientes
 
 Uma API RESTful desenvolvida com **Quarkus** para cadastro e gerenciamento de pacientes, médicos e teleconsultas, seguindo os princípios da **Clean Architecture**.
