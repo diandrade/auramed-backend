@@ -294,7 +294,6 @@ Este projeto está sob a licença **MIT**. Veja o arquivo `LICENSE` para mais de
 
 ## 👥 Autor
 
-(Substitua pelo seu nome e link do GitHub)
 **Diego Andrade dos Santos** – [@diandrade](https://github.com/diandrade)
 
 -----
